@@ -1,9 +1,29 @@
 <template>
-  <div>Recommend</div>
+  <div class="recommend" >
+    <div class="recommend-content">
+      <div class="swiper-wrapper">
+
+      </div>
+    </div>
+
+  </div>
 </template>
 <script>
+import { getRecommendData } from '@/assets/api/recommend'
 export default {
-  name: 'Recommend'
+  name: 'Recommend',
+  methods: {
+    getData () {
+      getRecommendData().then((res) => {
+        if (res.code === 0) {
+          console.log(res.data.slider)
+        }
+      })
+    }
+  },
+  mounted () {
+    this.getData()
+  }
 }
 </script>
 
