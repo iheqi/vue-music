@@ -1,4 +1,4 @@
-import jsonp from '../js/jsonp'
+import jsonp from './jsonp'
 import { ParamsModel, options } from './config'
 
 export function getRecommendData() {

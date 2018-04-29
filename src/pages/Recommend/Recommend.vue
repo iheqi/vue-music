@@ -7,7 +7,7 @@
   </div>
 </template>
 <script>
-import { getRecommendData } from '@/assets/api/recommend'
+import { getRecommendData } from '@/providers/recommend'
 import RecommendSwiper from './components/Swiper'
 import RecommendList from './components/List'
 
