@@ -1,10 +1,9 @@
 <template>
-  <div class="recommend" >
-    <div class="recommend-content">
+  <div class="recommend">
+    <div>
       <recommend-swiper :list='list'></recommend-swiper>
       <recommend-list :songList='songList'></recommend-list>
     </div>
-
   </div>
 </template>
 <script>
