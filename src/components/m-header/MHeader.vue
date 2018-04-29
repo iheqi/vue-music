@@ -13,7 +13,6 @@ export default {
 <style lang="stylus" scoped>
   @import '~styles/variables.styl'
       .m-header
-        position : relative
         height : .88rem
         text-align : center
         color : $color-theme

@@ -27,7 +27,9 @@ export default {
               autoPlay: {
                 delay: 3000,//5秒切换一次
               },
-              loop: true
+              loop: true,
+              observeParents: true,             // 解决画廊隐藏或显示由于计算而引起的错误 
+              observer: true 
           },
       } 
   },

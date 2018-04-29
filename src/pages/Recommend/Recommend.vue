@@ -2,6 +2,7 @@
   <div class="recommend" >
     <div class="recommend-content">
       <recommend-swiper :list='list'></recommend-swiper>
+      <recommend-list :songList='songList'></recommend-list>
     </div>
 
   </div>
@@ -9,15 +10,18 @@
 <script>
 import { getRecommendData } from '@/assets/api/recommend'
 import RecommendSwiper from './components/Swiper'
+import RecommendList from './components/List'
 
 export default {
   name: 'Recommend',
   components: {
-    RecommendSwiper
+    RecommendSwiper,
+    RecommendList
   },
   data () {
     return {
-      list: []
+      list: [],
+      songList: []
     }
   },
   methods: {
@@ -25,6 +29,7 @@ export default {
       getRecommendData().then((res) => {
         if (res.code === 0) {
           this.list = res.data.slider
+          this.songList = res.data.songList
         }
       })
     }

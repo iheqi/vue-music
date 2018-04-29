@@ -12,3 +12,21 @@ export function getRecommendData() {
 
   return jsonp(url, data, options)
 }
+
+export function getSongList() {
+  const url = 'https://c.y.qq.com/v8/fcg-bin/v8.fcg'
+
+  const data = Object.assign({}, ParamsModel, {
+    platform: 'yqq',
+    uin: 0,
+    hostUin: 0,
+    sin: 0,
+    ein: 0,
+    sortId: 5,
+    needNewCode: 0,
+    categoryId: 10000000,
+    rnd: Math.random()
+  })
+  return jsonp(url, data, options)
+  
+}
