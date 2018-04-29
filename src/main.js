@@ -10,6 +10,14 @@ import fastclick from 'fastclick'
 import 'swiper/dist/css/swiper.css'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 
+import VueLazyload from 'vue-lazyload'
+
+Vue.use(VueLazyload, {
+  preLoad: 1.3,
+  loading: require('./assets/imgs/logo@3x.png'),
+  attempt: 1
+})
+
 fastclick.attach(document.body)
 Vue.config.productionTip = false
 Vue.use(VueAwesomeSwiper)

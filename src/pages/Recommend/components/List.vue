@@ -1,10 +1,11 @@
 <template>
   <div class="recommend-list">
     <h1 class="list-title">热门歌单推荐</h1>
+
     <ul>
       <li class="song-item" v-for="song of songList" :key="song.id">
         <div class="icon">
-          <img :src="song.picUrl" width="60" height="60">
+          <img v-lazy="song.picUrl" width="60" height="60">
         </div>
 
         <div class="text">
@@ -13,16 +14,29 @@
         </div>
       </li>
     </ul>
+    <div v-show="ifLoading">
+        <loading></loading>
+    </div>
   </div>
 
 
 </template>
 
 <script>
+import Loading from '@/components/loading/Loading'
+
 export default {
   name: 'RecommendList',
   props: {
     songList: Array
+  },
+  components: {
+    Loading
+  },
+  computed: {
+    ifLoading () {
+      return !this.songList.length
+    }
   }  
 }
 </script>
