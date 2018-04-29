@@ -1,22 +1,30 @@
 <template>
   <div class="recommend" >
     <div class="recommend-content">
-      <div class="swiper-wrapper">
-
-      </div>
+      <recommend-swiper :list='list'></recommend-swiper>
     </div>
 
   </div>
 </template>
 <script>
 import { getRecommendData } from '@/assets/api/recommend'
+import RecommendSwiper from './components/Swiper'
+
 export default {
   name: 'Recommend',
+  components: {
+    RecommendSwiper
+  },
+  data () {
+    return {
+      list: []
+    }
+  },
   methods: {
     getData () {
       getRecommendData().then((res) => {
         if (res.code === 0) {
-          console.log(res.data.slider)
+          this.list = res.data.slider
         }
       })
     }
