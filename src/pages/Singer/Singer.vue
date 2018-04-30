@@ -1,10 +1,13 @@
 <template>
-  <div>Singer</div>
+  <div>
+    <list-view :groups='singers'></list-view>
+  </div>
+ 
 </template>
 <script>
 import { getSingerList } from '@/providers/singer'
 import SingerModel from '@/providers/SingerModel'
-
+import ListView from '@/components/list-view/ListView'
 export default {
   name: 'Singer',
   data () {
@@ -12,14 +15,18 @@ export default {
       singers: []
     }
   },
+  components: {
+    ListView
+  },
   methods: {
     getSingerData() {
       getSingerList().then((res) => {
         if (res.code === 0) {
           this.singers = res.data.list
         }
-        console.log(res.data.list)
-        console.log(this.normalizeSinger(res.data.list))
+        this.singers = this.normalizeSinger(res.data.list)
+        console.log(this.singers)
+        
       })
     },
     normalizeSinger(list) {
@@ -53,16 +60,19 @@ export default {
 
       // 为了得到有序列表，我们需要处理 map
       let ret = []
+      let hot = []
       for (let key in singers) {
         let val = singers[key]
         if (val.letter.match(/[a-zA-Z]/g)) {
           ret.push(val)
-        } 
+        } else if (val.letter === '热门') {
+            hot.push(val)
+        }
       }
       ret.sort((a, b) => {
         return a.letter.charCodeAt(0) - b.letter.charCodeAt(0)
       })
-      return singers.hotSingers.items.concat(ret)
+      return hot.concat(ret)
     }
   },
   mounted () {

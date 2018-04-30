@@ -20,17 +20,12 @@ export default {
   },
   data () {
       return {
-          swiperOption: {
-              pagination: {
-                el: '.swiper-pagination',
-              },
-              autoPlay: {
-                delay: 3000,//5秒切换一次
-              },
-              loop: true,
-              observeParents: true,             // 解决画廊隐藏或显示由于计算而引起的错误 
-              observer: true 
-          },
+        swiperOption: {
+            pagination: '.swiper-pagination',
+            loop: true,
+            observeParents: true,             // 解决画廊隐藏或显示由于计算而引起的错误 
+            observer: true                    // 这里会在自身或父级元素dom变化时刷新一次
+        }
       } 
   },
   /* 解决当list还是[]时渲染的问题 */
