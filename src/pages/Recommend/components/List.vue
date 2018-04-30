@@ -1,21 +1,23 @@
 <template>
-  <div class="recommend-list">
-    <h1 class="list-title">热门歌单推荐</h1>
+  <div class="recommend-list" ref="wrapper">
+    <div>
+      <h1 class="list-title">热门歌单推荐</h1>
 
-    <ul>
-      <li class="song-item" v-for="song of songList" :key="song.id">
-        <div class="icon">
-          <img v-lazy="song.picUrl" width="60" height="60">
-        </div>
+      <ul>
+        <li class="song-item" v-for="song of songList" :key="song.id">
+          <div class="icon">
+            <img v-lazy="song.picUrl" width="60" height="60">
+          </div>
 
-        <div class="text">
-          <h2 class="author">{{song.songListAuthor}}</h2>
-          <p class="desc">{{song.songListDesc}}</p>
-        </div>
-      </li>
-    </ul>
-    <div v-show="ifLoading">
-        <loading></loading>
+          <div class="text">
+            <h2 class="author">{{song.songListAuthor}}</h2>
+            <p class="desc">{{song.songListDesc}}</p>
+          </div>
+        </li>
+      </ul>
+      <div v-show="ifLoading">
+          <loading></loading>
+      </div>
     </div>
   </div>
 
@@ -24,11 +26,12 @@
 
 <script>
 import Loading from '@/components/loading/Loading'
+import Bscroll from 'better-scroll'
 
 export default {
   name: 'RecommendList',
   props: {
-    songList: Array
+    songList: Array,
   },
   components: {
     Loading
@@ -37,6 +40,11 @@ export default {
     ifLoading () {
       return !this.songList.length
     }
+  },
+  mounted () {
+    this.$nextTick(() => {
+      this.scroll = new Bscroll(this.$refs.wrapper)
+    }) 
   }  
 }
 </script>

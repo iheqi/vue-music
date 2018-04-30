@@ -1,6 +1,7 @@
 <template>
   <div>
-    <list-view :groups='singers'></list-view>
+    <list-view :groups='singers' :letter='letter'></list-view>
+    <alphabet :singers='singers' @clickLetter='handleLetterClick'></alphabet>
   </div>
  
 </template>
@@ -8,17 +9,24 @@
 import { getSingerList } from '@/providers/singer'
 import SingerModel from '@/providers/SingerModel'
 import ListView from '@/components/list-view/ListView'
+import Alphabet from './components/Alphabet'
+
 export default {
   name: 'Singer',
   data () {
     return {
-      singers: []
+      singers: [],
+      letter: ''        // 传到list
     }
   },
   components: {
-    ListView
+    ListView,
+    Alphabet
   },
   methods: {
+    handleLetterClick(letter) {
+      this.letter = letter
+    },
     getSingerData() {
       getSingerList().then((res) => {
         if (res.code === 0) {

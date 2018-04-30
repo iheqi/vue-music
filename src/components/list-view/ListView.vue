@@ -1,10 +1,14 @@
 <template>
   <div class="list-view" ref='wrapper'>
     <ul>
-      <li v-for="singers of groups" :key="singers.letter" class="list-group">
+      <li v-for="singers of groups" :key="singers.letter" class="list-group"  :ref="singers.letter">
         <h2 class="singers-title">{{singers.letter}}</h2>
         <ul>
-          <li v-for="singer of singers.items" :key="singer.id" class="singer-item">
+          <li 
+            v-for="singer of singers.items" 
+            :key="singer.id" 
+            class="singer-item"
+          >
             <img class="singer-avatar" v-lazy="singer.avatar">
             <span class="singer-name">{{singer.name}}</span>
           </li>
@@ -23,18 +27,30 @@ export default {
     groups: {
       type: Array,
       default: []
-    }
+    },
+    letter: String
   },
   mounted () {
-    this.scroll = new Bscroll(this.$refs.wrapper)
-  }  
+      this.scroll = new Bscroll(this.$refs.wrapper)
+  },
+  watch: {
+    letter () {
+      if (this.letter) {
+        const element = this.$refs[this.letter][0]  // 因为获取v-for中的元素得到的会是一个元素数组，
+        this.scroll.scrollToElement(element)        // 就像getElementsByTagName那样，所有用下标获到真正的元素
+      }
+    }
+  },  
 }
 </script>
 <style lang="stylus" scoped>
   @import "~styles/variables.styl"
     .list-view
-      width: 100%
-      height: 100%
+      position : absolute
+      top : 1.76rem
+      bottom : 0
+      left : 0
+      right : 0
       overflow: hidden
       background: $color-background
       .list-group

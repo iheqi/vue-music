@@ -1,9 +1,7 @@
 <template>
   <div id="app">
-    <template class="header-fixed">
-      <m-header></m-header>
-      <tab></tab>
-    </template>
+    <m-header></m-header>
+    <tab></tab>
     <keep-alive>
       <router-view></router-view>
     </keep-alive>
@@ -26,8 +24,5 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  .header-fixed
-    position : fixed
-    left : 0
-    top : 0
+
 </style>
