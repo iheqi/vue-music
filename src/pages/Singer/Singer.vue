@@ -1,7 +1,7 @@
 <template>
   <div>
-    <list-view :groups='singers' :letter='letter'></list-view>
-    <alphabet :singers='singers' @clickLetter='handleLetterClick'></alphabet>
+    <list-view :groups='singers' :letter='letter' @scrollList="handleScroll"></list-view>
+    <alphabet :singers='singers' @clickLetter='handleLetterClick' :index='index'></alphabet>
   </div>
  
 </template>
@@ -16,7 +16,8 @@ export default {
   data () {
     return {
       singers: [],
-      letter: ''        // 传到list
+      letter: '',        // 传到list
+      index: 0           // 传到字母表
     }
   },
   components: {
@@ -26,6 +27,10 @@ export default {
   methods: {
     handleLetterClick(letter) {
       this.letter = letter
+    },
+    handleScroll(i) {
+      console.log(i)
+      this.index = i
     },
     getSingerData() {
       getSingerList().then((res) => {

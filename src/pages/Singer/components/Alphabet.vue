@@ -16,14 +16,18 @@
 export default {
   name: 'Alphabet',
   props: {
-    singers: Array
+    singers: Array,
+    index: {
+      type: Number,
+      default: 0
+    }
   },
   data () {
     return {
       touchStatus: false,
       startY: 0,
       timer: null,
-      selectLetter: '热门'
+      selectLetter: this.letters ? this.letters[this.index] : "热门"
     }
   },
   computed: {
@@ -35,10 +39,11 @@ export default {
       return letters
     }
   },
-  // updated钩子，当data中的数据改变时触发，然后页面渲染，也就是等组件完全加载好后再去获取startY
-  /* updated () {
-    this.startY = this.$refs['A'][0].offsetTop
-  }, */
+  watch: {
+    index () {
+      this.selectLetter = this.letters[this.index]
+    }
+  },
   methods: {
     handleLetterClick (el) {
       let letter = el.target.innerText 

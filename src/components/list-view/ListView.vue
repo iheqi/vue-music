@@ -1,7 +1,12 @@
 <template>
   <div class="list-view" ref='wrapper'>
     <ul>
-      <li v-for="singers of groups" :key="singers.letter" class="list-group"  :ref="singers.letter">
+      <li 
+        v-for="singers of groups" 
+        :key="singers.letter" 
+        :ref="singers.letter"  
+        class="list-group"
+      >
         <h2 class="singers-title">{{singers.letter}}</h2>
         <ul>
           <li 
@@ -31,7 +36,58 @@ export default {
     letter: String
   },
   mounted () {
-      this.scroll = new Bscroll(this.$refs.wrapper)
+    this.calculateHeight()
+    this.scroll = new Bscroll(this.$refs.wrapper, {
+      click: true,
+      probeType: 2,       // 这配置有点坑
+    })
+    
+    this.scroll.on('scroll', this.scrollAlpha)
+  },
+  data () {
+    return {
+      listHeight: [],
+      scroll: {},
+      timer: null
+    }
+  },
+  
+  methods: {
+
+    calculateHeight() {
+      const list = document.querySelectorAll('.list-group')
+      let height = 0
+      this.listHeight.push(height)
+      for (let li of list) {
+        height += li.offsetHeight
+        this.listHeight.push(height)
+      }
+
+      console.log(this.listHeight)
+    },
+    scrollAlpha() {
+      if (this.timer) {
+        clearTimeout(this.timer)
+      }
+      this.timer = setTimeout(() => {
+        let scrollTop = -this.scroll.y
+        // 判断其滚动到哪一位置
+        let list =  this.listHeight
+        for (let i = 0; i < list.length - 1; i++) {
+          let height1 = list[i]
+          let height2 = list[i + 1]
+          
+          console.log("scrollTop", scrollTop)
+          console.log("height1", height1)
+          console.log("height2", height2)
+
+          if (scrollTop >= height1 && scrollTop < height2) {
+            this.$emit('scrollList', i)
+            console.log("i", i)
+          }
+        }
+      }, 10)
+    }
   },
   watch: {
     letter () {
