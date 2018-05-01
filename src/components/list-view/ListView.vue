@@ -1,26 +1,25 @@
 <template>
   <div class="list-view" ref='wrapper'>
-    <ul>
-      <li 
-        v-for="singers of groups" 
-        :key="singers.letter" 
-        :ref="singers.letter"  
-        class="list-group"
-      >
-        <h2 class="singers-title">{{singers.letter}}</h2>
-        <ul>
-          <li 
-            v-for="singer of singers.items" 
-            :key="singer.id" 
-            class="singer-item"
-          >
-            <img class="singer-avatar" v-lazy="singer.avatar">
-            <span class="singer-name">{{singer.name}}</span>
-          </li>
-        </ul>
-      </li>
-    </ul>
-    
+      <ul>
+        <li 
+          v-for="singers of groups" 
+          :key="singers.letter" 
+          :ref="singers.letter"  
+          class="list-group"
+        >
+          <h2 class="singers-title">{{singers.letter}}</h2>
+          <ul>
+            <li 
+              v-for="singer of singers.items" 
+              :key="singer.id" 
+              class="singer-item"
+            >
+              <img class="singer-avatar" v-lazy="singer.avatar">
+              <span class="singer-name">{{singer.name}}</span>
+            </li>
+          </ul>
+        </li>
+      </ul>
   </div>
 </template>
 <script>
@@ -41,8 +40,8 @@ export default {
       click: true,
       probeType: 2,       // 这配置有点坑
     })
-    
-    this.scroll.on('scroll', this.scrollAlpha)
+    let fuck = this.scroll
+    fuck.on('scroll', this.scrollAlpha)          // 时有效时无效，fuck
   },
   data () {
     return {
@@ -62,8 +61,6 @@ export default {
         height += li.offsetHeight
         this.listHeight.push(height)
       }
-
-      console.log(this.listHeight)
     },
     scrollAlpha() {
       if (this.timer) {
@@ -76,17 +73,12 @@ export default {
         for (let i = 0; i < list.length - 1; i++) {
           let height1 = list[i]
           let height2 = list[i + 1]
-          
-          console.log("scrollTop", scrollTop)
-          console.log("height1", height1)
-          console.log("height2", height2)
 
           if (scrollTop >= height1 && scrollTop < height2) {
             this.$emit('scrollList', i)
-            console.log("i", i)
           }
         }
-      }, 10)
+      }, 500)
     }
   },
   watch: {
@@ -130,4 +122,5 @@ export default {
             margin-left: .4rem
             color: $color-text-l
             font-size: $font-size-medium
+      
 </style>

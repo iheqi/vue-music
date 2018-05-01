@@ -2,6 +2,9 @@
   <div>
     <list-view :groups='singers' :letter='letter' @scrollList="handleScroll"></list-view>
     <alphabet :singers='singers' @clickLetter='handleLetterClick' :index='index'></alphabet>
+    <div class="fixed-header">
+        <div class="fixed-title">{{letter}}</div>
+    </div>
   </div>
  
 </template>
@@ -16,8 +19,8 @@ export default {
   data () {
     return {
       singers: [],
-      letter: '',        // 传到list
-      index: 0           // 传到字母表
+      letter: '热门',        // 传到list
+      index: 0               // 传到字母表
     }
   },
   components: {
@@ -95,6 +98,19 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+@import "~styles/variables.styl"
 
+  .fixed-header
+    position: fixed 
+    top: 1.76rem
+    left: 0
+    width: 100%
+    .fixed-title
+      height: .6rem
+      line-height: .6rem
+      padding-left: .4rem
+      font-size: $font-size-small
+      color: $color-text-l
+      background: $color-highlight-background
 </style>
 
