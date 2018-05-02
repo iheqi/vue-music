@@ -8,6 +8,7 @@
             v-for="singer of singers.items" 
             :key="singer.id" 
             class="singer-item"
+            @click="selectSinger(singer)"
           >
             <img class="singer-avatar" v-lazy="singer.avatar">
             <span class="singer-name">{{singer.name}}</span>
@@ -20,6 +21,7 @@
 </template>
 <script>
 import Bscroll from 'better-scroll'
+import { mapMutations } from 'vuex'
 
 export default {
   name: 'ListView',
@@ -30,8 +32,17 @@ export default {
     },
     letter: String
   },
+  methods: {
+    ...mapMutations(['setSinger']),
+    selectSinger(singer) {
+      this.$emit('select', singer)
+      this.setSinger(singer)
+    }
+  },
   mounted () {
-      this.scroll = new Bscroll(this.$refs.wrapper)
+      this.scroll = new Bscroll(this.$refs.wrapper, {
+        click: true
+      })
   },
   watch: {
     letter () {

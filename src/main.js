@@ -11,6 +11,8 @@ import 'swiper/dist/css/swiper.css'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 
 import VueLazyload from 'vue-lazyload'
+import store from './store'
+
 
 Vue.use(VueLazyload, {
   preLoad: 1.3,
@@ -26,5 +28,6 @@ Vue.use(VueAwesomeSwiper)
 new Vue({
   el: '#app',
   router,
+  store,
   render: h => h(App)
 })

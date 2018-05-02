@@ -1,7 +1,8 @@
 <template>
   <div>
-    <list-view :groups='singers' :letter='letter'></list-view>
+    <list-view :groups='singers' :letter='letter' @select="selectSinger"></list-view>
     <alphabet :singers='singers' @clickLetter='handleLetterClick'></alphabet>
+    <router-view></router-view>
   </div>
  
 </template>
@@ -10,6 +11,7 @@ import { getSingerList } from '@/providers/singer'
 import SingerModel from '@/providers/SingerModel'
 import ListView from '@/components/list-view/ListView'
 import Alphabet from './components/Alphabet'
+import { mapMutations } from 'vuex'
 
 export default {
   name: 'Singer',
@@ -33,8 +35,6 @@ export default {
           this.singers = res.data.list
         }
         this.singers = this.normalizeSinger(res.data.list)
-        console.log(this.singers)
-        
       })
     },
     normalizeSinger(list) {
@@ -81,7 +81,14 @@ export default {
         return a.letter.charCodeAt(0) - b.letter.charCodeAt(0)
       })
       return hot.concat(ret)
-    }
+    },
+    selectSinger(singer) {
+      this.$router.push({
+        path: `/singer/${singer.id}`
+      })
+      this.setSinger(singer)
+    },
+    ...mapMutations(['setSinger'])
   },
   mounted () {
     this.getSingerData()
