@@ -27,8 +27,7 @@ export default {
 @import '~styles/variables.styl'
   .song-list
     margin-top : .4rem
-    overflow: hidden
-    
+    background : $color-background    
     .item
       display: flex
       align-items: center

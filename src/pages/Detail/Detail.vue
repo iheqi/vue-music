@@ -33,12 +33,13 @@ export default {
   },
   methods: {
     getDetail() {
+      if (!this.singer.id) {
+        this.$router.push('/singer')
+        return
+      }
       getSingerDetail(this.singer.id).then((res) => {
         if (res.code == 0) {
           this.songs = this.normalizeSongs(res.data.list)
-          console.log(res.data.list.musicData)
-          console.log(res.data.list)
-          console.log(res.data)
           console.log(this.songs)
         }
       })
@@ -63,7 +64,7 @@ export default {
 @import '~styles/variables.styl';
   .singer-detail
     position : fixed
-    z-index : 100
+    z-index : 10
     top : 0
     left : 0
     right : 0

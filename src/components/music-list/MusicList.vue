@@ -1,12 +1,14 @@
 <template>
   <div class="music-list">
-    <div class="back">
-      <div class="iconfont back-icon">
+    <header class="header">
+      <div class="iconfont back-icon" @click="goBack">
         &#xe60a;
       </div>
-    </div>
-    <h1 class="title" v-html="title"></h1>
-    <div class="bg-img" :style="bgStyle"></div>
+      <h1 class="title" v-html="title"></h1>
+    </header>
+    <div class="bg-img" :style="bgStyle" ref="bgImg"></div>
+
+    <!-- <div class="bg-layer" ref="layer"></div> -->
 
     <div class="song-list-wrapper" ref="songWrapper">
       <song-list :songs='songs'></song-list>
@@ -23,10 +25,15 @@ export default {
   props: {
     bgImg: String,
     songs: Array,
-    title: String,
+    title: String
   },
   components: {
     SongList
+  },
+  methods: {
+    goBack() {
+      this.$router.push('/singer')
+    },
   },
   computed: {
     bgStyle() {
@@ -34,41 +41,48 @@ export default {
     }
   },
   mounted () {
-    this.scroll = new Bscroll(this.$refs.songWrapper)
+    this.scroll = new Bscroll(this.$refs.songWrapper, {
+      click: true,
+      probeType: 3       // 无节流
+    })
   }
 }
 </script>
 <style lang="stylus" scoped>
   @import '~styles/variables.styl'
     .music-list
-      .back
-        position absolute
+      .header
+        width: 100%
+        position: absolute
         top: 0
-        left: .12rem
+        z-index : 10
+        display : flex
         .back-icon
-          display: block
           padding: .16rem
           font-size: .6rem
           color: $color-theme
-      .title
-        position: absolute
-        top: 0
-        left: 10%
-        width: 80%
-        text-align: center
-        line-height: .8rem
-        font-size: $font-size-large
-        color: $color-text 
+        .title
+          text-align: center
+          line-height: .8rem
+          font-size: $font-size-large
+          color: $color-text 
+          margin-left : 30%
       .bg-img
+        position : relative
         height: 0
         padding-top: 70%
         background-size: cover
+        z-index : 8
       .song-list-wrapper
         position: fixed
-        top: 5rem
+        padding-top : 3.70rem 
+        top: .9rem
         bottom: 0
         width: 100%
-        background: $color-background
+        z-index : 9 
         overflow : hidden
+      /* .bg-layer
+        background: $color-background 
+        height : 6rem */
           
 </style>
