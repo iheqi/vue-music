@@ -5,53 +5,46 @@
         &#xe60a;
       </div>
     </div>
-      <h1 class="title" v-html="title"></h1>
-      <div class="bg-img" :style="bgStyle">
+    <h1 class="title" v-html="title"></h1>
+    <div class="bg-img" :style="bgStyle"></div>
 
-      </div>
-
+    <div class="song-list-wrapper" ref="songWrapper">
+      <song-list :songs='songs'></song-list>
+    </div>
   </div>
 </template>
 
 <script>
+import SongList from '../song-list/SongList'
+import Bscroll from 'better-scroll'
+
 export default {
   name: 'MusicList',
   props: {
-    bgImg: {
-      type: String,
-      default: ''
-    },
-    songs: {
-      type: Array,
-      default: []
-    },
-    title: {
-      type: String,
-      default: ''
-    },
+    bgImg: String,
+    songs: Array,
+    title: String,
+  },
+  components: {
+    SongList
   },
   computed: {
     bgStyle() {
       return `background-image:url(${this.bgImg})`
     }
+  },
+  mounted () {
+    this.scroll = new Bscroll(this.$refs.songWrapper)
   }
 }
 </script>
 <style lang="stylus" scoped>
   @import '~styles/variables.styl'
     .music-list
-      position: fixed
-      z-index: 100
-      top: 0
-      left: 0
-      bottom: 0
-      right: 0
-      background: $color-background
       .back
         position absolute
         top: 0
         left: .12rem
-        z-index: 50
         .back-icon
           display: block
           padding: .16rem
@@ -61,7 +54,6 @@ export default {
         position: absolute
         top: 0
         left: 10%
-        z-index: 40
         width: 80%
         text-align: center
         line-height: .8rem
@@ -71,5 +63,12 @@ export default {
         height: 0
         padding-top: 70%
         background-size: cover
+      .song-list-wrapper
+        position: fixed
+        top: 5rem
+        bottom: 0
+        width: 100%
+        background: $color-background
+        overflow : hidden
           
 </style>

@@ -63,7 +63,7 @@ export default {
 @import '~styles/variables.styl';
   .singer-detail
     position : fixed
-    z-index : 200
+    z-index : 100
     top : 0
     left : 0
     right : 0
