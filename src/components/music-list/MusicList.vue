@@ -8,9 +8,7 @@
     </header>
     <div class="bg-img" :style="bgStyle" ref="bgImg"></div>
 
-    <!-- <div class="bg-layer" ref="layer"></div> -->
-
-    <div class="song-list-wrapper" ref="songWrapper">
+    <div class="song-list-wrapper" ref="songWrapper" @pullingDown='scaleImg'>
       <song-list :songs='songs'></song-list>
     </div>
   </div>
@@ -30,10 +28,34 @@ export default {
   components: {
     SongList
   },
+  data () {
+    return {
+      timer: null
+    }
+  },
   methods: {
     goBack() {
       this.$router.push('/singer')
     },
+    
+    scaleImg() {
+      /* if (this.timer) {
+        clearTimeout(this.timer)
+      } */
+      
+      let scale = 1 + (this.scroll.y / 250)
+      if (scale > 1) {
+        this.$refs.bgImg.style['transform'] = `scale(${scale})`
+        
+        /* this.timer = setTimeout(() => {
+        }, 10) */
+      }
+      
+      console.log(scale)
+    },
+    scaleOneImg () {
+      this.$refs.bgImg.style['transform'] = `scale(1)`
+    }
   },
   computed: {
     bgStyle() {
@@ -43,8 +65,10 @@ export default {
   mounted () {
     this.scroll = new Bscroll(this.$refs.songWrapper, {
       click: true,
-      probeType: 3       // 无节流
-    })
+      probeType: 2
+    }),
+    this.scroll.on('scroll', this.scaleImg)
+    this.scroll.on('touchEnd', this.scaleOneImg)
   }
 }
 </script>
@@ -73,16 +97,14 @@ export default {
         padding-top: 70%
         background-size: cover
         z-index : 8
+        transition : all 0.2s
       .song-list-wrapper
         position: fixed
-        padding-top : 3.70rem 
+        padding-top : 4rem 
         top: .9rem
         bottom: 0
         width: 100%
         z-index : 9 
         overflow : hidden
-      /* .bg-layer
-        background: $color-background 
-        height : 6rem */
           
 </style>

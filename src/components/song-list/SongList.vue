@@ -1,6 +1,6 @@
 <template>
-  <div class="song-list">
-    <ul>
+  <div>
+    <ul class="song-list">
       <li v-for="song of songs" :key="song.id" class="item">
         <div class="content">
           <h2 class="song-name">{{song.name}}</h2>
@@ -26,8 +26,9 @@ export default {
 <style lang="stylus" scoped>
 @import '~styles/variables.styl'
   .song-list
-    margin-top : .4rem
-    background : $color-background    
+    background : $color-background
+    padding-top : .4rem
+    
     .item
       display: flex
       align-items: center
@@ -41,6 +42,6 @@ export default {
         .name
           color: $color-text
         .desc
-          margin-top: 4px
+          margin-top: .1rem
           color: $color-text-d
 </style>
