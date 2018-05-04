@@ -18,9 +18,9 @@
     </div>
 
     <div class="song-list-wrapper" ref="songWrapper" @pullingDown='scaleImg'>
-      <song-list :songs='songs'></song-list>
+      <song-list :songs='songs' @openPlayer='openPlayer'></song-list>
     </div>
-    <loading v-show="!songs.length"></loading>
+    <loading v-show="!songs.length" class="loading"></loading>
   </div>
 </template>
 
@@ -28,6 +28,7 @@
 import SongList from '../song-list/SongList'
 import Bscroll from 'better-scroll'
 import Loading from '@/components/loading/Loading'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'MusicList',
@@ -38,7 +39,7 @@ export default {
   },
   components: {
     SongList,
-    Loading
+    Loading,
   },
   data () {
     return {
@@ -65,7 +66,14 @@ export default {
     },
     scaleOneImg () {
       this.$refs.bgImg.style['transform'] = `scale(1)`
-    }
+    },
+    openPlayer(item, index) {
+      this.selectPlay({
+        list: this.songs,
+        index
+      })
+    },
+    ...mapActions(['selectPlay'])
   },
   computed: {
     bgStyle() {
@@ -95,6 +103,7 @@ export default {
           padding: .16rem
           font-size: .6rem
           color: $color-theme
+          z-index : 11
         .title
           text-align: center
           line-height: .8rem
@@ -144,5 +153,7 @@ export default {
         width: 100%
         z-index : 9 
         overflow : hidden
+      .loading
+        padding-top : 1.2rem 
           
 </style>

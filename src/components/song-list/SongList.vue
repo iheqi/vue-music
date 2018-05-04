@@ -1,7 +1,7 @@
 <template>
   <div>
     <ul class="song-list">
-      <li v-for="song of songs" :key="song.id" class="item">
+      <li v-for="(song, i) of songs" :key="song.id" class="item" @click='openPlayer(song, i)'>
         <div class="content">
           <h2 class="song-name">{{song.name}}</h2>
           <p class="desc">{{getDesc(song)}}</p>
@@ -20,6 +20,9 @@ export default {
     getDesc(song) {
       return `${song.singer}·${song.album}`
     },
+    openPlayer(item, i) {
+      this.$emit('openPlayer', item, i)
+    }
   }
 }
 </script>
