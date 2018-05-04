@@ -32,17 +32,62 @@ export default {
     },
     letter: String
   },
+  data () {
+    return {
+      listHeight: [],
+    }
+  },
+  computed: {
+    listHeightComp () {
+      return this.listHeight
+    }
+  },
   methods: {
     ...mapMutations(['setSinger']),
     selectSinger(singer) {
       this.$emit('select', singer)
       this.setSinger(singer)
+    },
+    calculateHeight() {
+      const list = document.querySelectorAll('.list-group')
+      this.listHeight = []         // 离开后不会清空，导致重复推入，这里手动清空
+      let height = 0
+      this.listHeight.push(height)
+      for (let li of list) {
+        height += li.offsetHeight
+        this.listHeight.push(height)
+      }
+      console.log(this.listHeight)
+    },
+    scrollAlpha() {
+
+        let scrollTop = -this.scroll.y
+        // 判断其滚动到哪一位置
+        let list =  this.listHeight   
+        for (let i = 0; i < list.length - 1; i++) {
+          let height1 = list[i]
+          let height2 = list[i + 1]
+          if (scrollTop >= height1 && scrollTop < height2) {
+            this.$emit('scrollList', i)
+            console.log(i)
+            
+          }
+        }
     }
   },
+  activated () {
+    setTimeout(() => {
+      this.calculateHeight()
+    }, 100)
+       // mounted只有第一次才获取得到（），computed又获取不到dom，只能在这了
+  },
+
   mounted () {
       this.scroll = new Bscroll(this.$refs.wrapper, {
-        click: true
-      })
+        click: true,
+        probeType: 2
+      }),
+      this.scroll.on('scroll', this.scrollAlpha)
   },
   watch: {
     letter () {

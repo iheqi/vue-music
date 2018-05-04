@@ -99,8 +99,9 @@ export default {
           text-align: center
           line-height: .8rem
           font-size: $font-size-large
-          color: $color-text 
-          margin-left : 30%
+          color: $color-text
+          position : absolute
+          width : 100% 
       .bg-img
         position : relative
         height: 0
