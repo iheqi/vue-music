@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <transition name='normal'>
     <div class="normal-player">
       <div class="background">
         <img width="100%" height="100%" src="" alt="">
@@ -8,15 +8,23 @@
       <div class="top">
         <player-header :currentSong='currentSong'></player-header>
       </div>
-      <lyric :currentSong='currentSong'></lyric>
+
+      <div>
+        <lyric :currentSong='currentSong'></lyric>
+      </div>
       
+      <div class="bottom">
+        <operators></operators>
+      </div>
     </div>
-  </div>
+  </transition>
 </template>
 <script>
 import { mapGetters } from 'vuex'
 import PlayerHeader from './PlayerHeader'
 import Lyric from './Lyric'
+import Operators from './Operators'
+
 export default {
   name: 'NormalPlayer',
 
@@ -25,12 +33,21 @@ export default {
   },
   components: {
     PlayerHeader,
-    Lyric
+    Lyric,
+    Operators
   }
 }
 </script>
 <style lang="stylus" scoped>
   @import '~styles/variables.styl';
+    .normal-enter-active, .normal-leave-active
+      transition : all .3s cubic-bezier(.86, .18, .82, 1.32)
+
+    .normal-enter, .normal-leave-to
+      opacity : 0
+      transform : translateY(100px)
+
+      
     .normal-player
       position: fixed
       left: 0

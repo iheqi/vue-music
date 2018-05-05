@@ -3,21 +3,24 @@
     <div class="middle-l">
       <div class="cd-wrapper">
         <div class="cd">
-          <img class="image" :src="currentSong.img">
+          <img class="image" :src="currentSong.img" :class="cdRotate">
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'Lyric',
   props: {
     currentSong: null
   },
-  methods: {
-    back() {
-
+  computed: {
+    ...mapState(['playing']),
+    cdRotate () {
+      return this.playing ? 'play' : 'play pause'   // 'play pause'而不是'pause'
     }
   }
 }
@@ -58,4 +61,13 @@ export default {
               width: 100%
               height: 100%
               border-radius: 50%
+              &.play
+                animation: rotate 20s linear infinite
+              &.pause
+                animation-play-state: paused    // 设置动画运行或暂停。默认running
+    @keyframes rotate
+      0%
+        transform: rotate(0)
+      100%
+        transform: rotate(360deg)
 </style>

@@ -1,46 +1,58 @@
 <template>
-  <div>
+  <transition>
     <div class="mini-player" @click="openNormal">
       <div class="icon">
-        <img :src="currentSong.img" width="40" height="40">
+        <img :src="currentSong.img" width="40" height="40" :class="cdRotate">
       </div>
       <div class="text">
-        <h2 class="name" v-html="currentSong.name">
-
-        </h2>
-        <p class="desc" v-html="currentSong.singer">
-
-        </p>
+        <h2 class="name" v-html="currentSong.name"></h2>
+        <p class="desc" v-html="currentSong.singer"></p>
       </div>
 
-      <div class="control">
-        <i class="iconfont icon-mini">&#xe63a;</i>
+      <div class="control" @click.stop="togglePlay">
+        <i class="iconfont icon-mini" v-html="ifPlaying"></i>
       </div>
 
       <div class="control">
         <i class="iconfont icon-playlist">&#xe62b;</i>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 <script>
-import { mapMutations, mapGetters } from 'vuex'
+import { mapMutations, mapGetters, mapState } from 'vuex'
 
 export default {
   name: 'MiniPlayer',
   methods: {
-    ...mapMutations(['setFullScreen']),
+    ...mapMutations(['setFullScreen', 'setPlaying']),
     openNormal() {
       this.setFullScreen(true)
+    },
+    togglePlay () {
+      this.setPlaying(!this.playing)
     }
   },
   computed: {
     ...mapGetters(['currentSong']),
+    ...mapState(['playing']),
+    ifPlaying () {
+      return this.playing ? '&#xe600;' : '&#xe63a;'
+    },
+    ...mapState(['playing']),
+    cdRotate () {
+      return this.playing ? 'play' : 'play pause'   // 'play pause'而不是'pause'
+    }
   }
 }
 </script>
 <style lang="stylus" scoped>
   @import '~styles/variables.styl';
+    .mini-enter-active, .mini-leave-active
+      transition : all .4s
+    .mini-enter, .mini-leave-to
+      opacity : 0
+
     .mini-player
       display: flex
       align-items: center
@@ -57,6 +69,11 @@ export default {
         padding: 0 .2rem 0 .4rem
         img
           border-radius: 50%
+          &.play
+            animation: cd-rotate 20s linear infinite
+          &.pause
+            animation-play-state: paused    // 设置动画运行或暂停。默认running
+    
       .text
         display: flex
         flex-direction: column
@@ -80,4 +97,9 @@ export default {
         .icon-playlist
           font-size: 30px
           color: $color-theme-d
+  @keyframes cd-rotate
+    0%
+      transform: rotate(0)
+    100%
+      transform: rotate(360deg)
 </style>
