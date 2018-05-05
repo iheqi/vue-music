@@ -17,7 +17,7 @@ export default {
     MiniPlayer
   },
   computed: {
-    ...mapState(['fullScreen', 'playlist'])
+    ...mapState(['fullScreen', 'playlist']),
   }
 }
 </script>

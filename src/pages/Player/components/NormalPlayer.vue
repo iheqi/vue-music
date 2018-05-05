@@ -8,12 +8,15 @@
       <div class="top">
         <player-header :currentSong='currentSong'></player-header>
       </div>
+      <lyric :currentSong='currentSong'></lyric>
+      
     </div>
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
 import PlayerHeader from './PlayerHeader'
+import Lyric from './Lyric'
 export default {
   name: 'NormalPlayer',
 
@@ -21,7 +24,8 @@ export default {
     ...mapGetters(['currentSong'])
   },
   components: {
-    PlayerHeader
+    PlayerHeader,
+    Lyric
   }
 }
 </script>

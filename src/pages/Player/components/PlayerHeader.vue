@@ -8,6 +8,8 @@
   </div>
 </template>
 <script>
+import { mapMutations } from 'vuex'
+
 export default {
   name: 'PlayerHeader',
   props: {
@@ -15,8 +17,9 @@ export default {
   },
   methods: {
     back() {
-
-    }
+      this.setFullScreen(false)
+    },
+    ...mapMutations(['setFullScreen'])
   }
 }
 </script>
