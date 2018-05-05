@@ -52,16 +52,9 @@ export default {
     },
     
     scaleImg() {
-      /* if (this.timer) {
-        clearTimeout(this.timer)
-      } */
-      
       let scale = 1 + (this.scroll.y / 250)
       if (scale > 1) {
         this.$refs.bgImg.style['transform'] = `scale(${scale})`
-        
-        /* this.timer = setTimeout(() => {
-        }, 10) */
       }
     },
     scaleOneImg () {
@@ -70,7 +63,7 @@ export default {
     openPlayer(item, index) {
       this.selectPlay({
         list: this.songs,
-        index
+        index     // 传入当前歌手的歌单和所点击的歌的索引
       })
     },
     ...mapActions(['selectPlay'])

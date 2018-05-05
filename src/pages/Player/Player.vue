@@ -1,8 +1,8 @@
 <template>
-  <div class="player">
-    <normal-player v-show="fullScreen"></normal-player>
+  <div class="player" v-show='playlist.length'>
+    <normal-player v-show="fullScreen" :currentTime='currentTime'></normal-player>
     <mini-player v-show="!fullScreen"></mini-player>
-    <audio :src="currentSong.url" ref="audio"></audio>
+    <audio :src="currentSong.url" ref="audio" @error="error" @timeupdate="updateTime"></audio>
   </div>
 </template>
 
@@ -35,8 +35,18 @@ export default {
       })
     }
   },
-  mounted () {
-    console.log(this.currentSong)
+  data () {
+    return {
+      currentTime: 0
+    }
+  },
+  methods: {
+    error () {
+      //
+    },
+    updateTime(ev) {
+      this.currentTime = ev.target.currentTime
+    }
   }
 }
 </script>

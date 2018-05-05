@@ -87,7 +87,6 @@ export default {
     position : fixed
     top : 10%
     right : 0
-    height : 80%
     display : flex
     flex-direction : column
     justify-content : center
@@ -95,13 +94,14 @@ export default {
     background: $color-background-d
     font-family: Helvetica
     border-radius: .2rem
+    padding: .1rem 0
     .item
       text-align : center
       height : $font-size-small
       color: $color-text-l
       font-size: $font-size-small
       overflow : hidden
-      margin-top : .16rem
+      margin: .08rem 0
     .active
       color : $color-theme
 </style>

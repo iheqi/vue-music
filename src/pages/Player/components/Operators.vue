@@ -4,18 +4,17 @@
       <i class="iconfont">&#xe649;</i>
     </div>
     <div class="icon i-left">
-      <i class="iconfont">&#xe610;</i>
+      <i class="iconfont" @click="preSong">&#xe610;</i>
     </div>
     <div class="icon i-center">
-      <i class="iconfont" v-html='ifPlaying' @click='togglePlay'></i>
+      <i class="iconfont" v-html='ifPlaying' @click='togglePlaying'></i>
     </div>
     <div class="icon i-right">
-      <i class="iconfont">&#xe611;</i>
+      <i class="iconfont" @click="nextSong">&#xe611;</i>
     </div>
     <div class="icon i-right">
       <i class="iconfont">&#xe612;</i>
     </div>
-    
   </div>
 </template>
 
@@ -25,14 +24,34 @@ import { mapMutations, mapGetters, mapState } from  'vuex'
 export default {
   name: 'Operators',
   methods: {
-    ...mapMutations(['setPlaying']),
-    togglePlay () {
+    ...mapMutations(['setPlaying', 'setCurrentIndex']),
+    togglePlaying () {
       this.setPlaying(!this.playing)
     },
+    preSong() {    // 还需处理快速点击时的报错
+      let index = this.currentIndex - 1
+      if (index == -1) {
+        index = this.playlist.length - 1
+      }
+      this.setCurrentIndex(index)
+      if (!this.playing) {      // 解决其暂停状态下点击时播放而图标没变化
+        this.togglePlaying()
+      }
+    },
+    nextSong() {
+      let index = this.currentIndex + 1
+      if (index == this.playlist.length) {
+        index = 0
+      }
+      this.setCurrentIndex(index)
+      if (!this.playing) {
+        this.togglePlaying()
+      }
+    }
 
   },
   computed: {
-    ...mapState(['playing']),
+    ...mapState(['playing', 'currentIndex', 'playlist']),
     ifPlaying() {
       return this.playing ? '&#xe600;' : '&#xe63a;'
     }
@@ -46,7 +65,7 @@ export default {
   
     .operators
       position: absolute
-      bottom: 50px
+      bottom: 1rem
       width: 100%
       display: flex
       align-items: center

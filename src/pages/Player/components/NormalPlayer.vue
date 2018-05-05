@@ -14,6 +14,13 @@
       </div>
       
       <div class="bottom">
+        <div class="progress-wrapper">
+          <span class="time time-l">{{format(currentTime)}}</span>
+            <div class="progress-bar-wrapper">
+              <progress-bar :percent='percent'></progress-bar>
+            </div>
+          <span class="time time-r">{{format(currentSong.duration)}}</span>
+        </div>
         <operators></operators>
       </div>
     </div>
@@ -24,17 +31,44 @@ import { mapGetters } from 'vuex'
 import PlayerHeader from './PlayerHeader'
 import Lyric from './Lyric'
 import Operators from './Operators'
+import ProgressBar from './ProgressBar'
 
 export default {
   name: 'NormalPlayer',
-
+  props: {
+    currentTime: {
+      default: 0
+    }
+  },
   computed: {
-    ...mapGetters(['currentSong'])
+    ...mapGetters(['currentSong']),
+    percent() {
+        console.log(this.currentTime)
+      
+      return this.currentTime / this.currentSong.duration
+    }
   },
   components: {
     PlayerHeader,
     Lyric,
-    Operators
+    Operators,
+    ProgressBar
+  },
+  methods: {
+    format(interval) {
+      interval = interval | 0   // 即取整
+      const minute = interval / 60 | 0
+      const second = this.pad(interval % 60)
+      return `${minute}:${second}`
+    },
+    pad(num, n = 2) {    // 补个0
+      let len = num.toString().length
+      while (len < n) {
+        num = '0' + num
+        len++
+      }
+      return num
+    },
   }
 }
 </script>
@@ -47,7 +81,6 @@ export default {
       opacity : 0
       transform : translateY(100px)
 
-      
     .normal-player
       position: fixed
       left: 0
@@ -65,4 +98,26 @@ export default {
         z-index: -1
         opacity: 0.6
         filter: blur(20px)
+      .bottom
+        .progress-wrapper
+          display: flex
+          align-items: center
+          width: 90%
+          padding: 10px 0
+          position : absolute
+          bottom : 2rem
+          flex : 1
+          padding : 0 5%
+          .time
+            color: $color-text
+            font-size: $font-size-small
+            flex: 0 0 .6rem
+            line-height: .6rem
+            width: .6rem
+            &.time-l
+              text-align: left
+            &.time-r
+              text-align: right
+          .progress-bar-wrapper
+            flex: 1
 </style>

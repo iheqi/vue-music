@@ -55,7 +55,6 @@ export default {
       this.setSinger(singer)
     },
     handleScroll(i) {
-      console.log("singer", i)
       this.index = i
     },
     ...mapMutations(['setSinger'])

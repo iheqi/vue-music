@@ -69,8 +69,6 @@ export default {
           let height2 = list[i + 1]
           if (scrollTop >= height1 && scrollTop < height2) {
             this.$emit('scrollList', i)
-            console.log(i)
-            
           }
         }
     }
