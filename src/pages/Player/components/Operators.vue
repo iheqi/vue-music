@@ -1,7 +1,7 @@
 <template>
   <div class="operators">
     <div class="icon i-left">
-      <i class="iconfont">&#xe649;</i>
+      <i class="iconfont" v-html="iconMode" @click="setIconMode"></i>
     </div>
     <div class="icon i-left">
       <i class="iconfont" @click="preSong">&#xe610;</i>
@@ -24,7 +24,7 @@ import { mapMutations, mapGetters, mapState } from  'vuex'
 export default {
   name: 'Operators',
   methods: {
-    ...mapMutations(['setPlaying', 'setCurrentIndex']),
+    ...mapMutations(['setPlaying', 'setCurrentIndex', 'setMode']),
     togglePlaying () {
       this.setPlaying(!this.playing)
     },
@@ -47,13 +47,30 @@ export default {
       if (!this.playing) {
         this.togglePlaying()
       }
-    }
+    },
+    setIconMode() {
+      this.setMode()
+    },
 
   },
   computed: {
-    ...mapState(['playing', 'currentIndex', 'playlist']),
+    ...mapState(['playing', 'currentIndex', 'playlist', 'mode']),
     ifPlaying() {
       return this.playing ? '&#xe600;' : '&#xe63a;'
+    },
+    iconMode() {
+      let iconMode = '&#xe649;'
+      switch (this.mode) {
+        case 1: 
+          iconMode = '&#xe649;'
+          break
+        case 2:
+          iconMode = '&#xe721;'
+          break
+        case 3:
+          iconMode = '&#xe613;'
+      }
+      return iconMode
     }
   },
 

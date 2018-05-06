@@ -15,8 +15,12 @@ export default {
   setSequenceList(state, flag) {
     state.sequenceList = flag
   },
-  setMode(state, mode) {
-    state.mode = mode
+  setMode(state) {
+    if (state.mode === 3) {
+      state.mode = 1
+      return 
+    }
+    state.mode++
   },
   setCurrentIndex(state, index) {
     state.currentIndex = index

@@ -4,7 +4,7 @@ const state = {
   fullScreen: false,
   playlist: [],
   sequenceList: [],
-  mode: 0,
+  mode: 1,
   currentIndex: -1
 }
 

@@ -43,8 +43,6 @@ export default {
   computed: {
     ...mapGetters(['currentSong']),
     percent() {
-        console.log(this.currentTime)
-      
       return this.currentTime / this.currentSong.duration
     }
   },

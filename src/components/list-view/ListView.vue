@@ -57,7 +57,6 @@ export default {
         height += li.offsetHeight
         this.listHeight.push(height)
       }
-      console.log(this.listHeight)
     },
     scrollAlpha() {
 
