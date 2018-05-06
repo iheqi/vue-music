@@ -1,9 +1,15 @@
 <template>
-  <div class="progress-bar" ref="progressBar">
+  <div class="progress-bar" ref="progressBar" @click="progressClick">
     <div class="bar-inner">
       <div class="progress" ref="progress"></div>  <!-- 黄色条 -->
 
-      <div class="progress-btn-wrapper" ref="progressBtn">
+      <div 
+        class="progress-btn-wrapper" 
+        ref="progressBtn"
+        @touchstart='progressTouchStart'
+        @touchmove='progressTouchMove'
+        @touchend='progressTouchEnd'
+      >
         <div class="progress-btn"></div>
       </div>
     </div>
@@ -18,16 +24,48 @@ export default {
       default: 0
     }
   },
+  created() {
+    this.touch = {}
+  },
+  methods: {
+    progressTouchStart(ev) {
+      this.touch.initiated = true
+      this.touch.startX = ev.touches[0].pageX             // 触摸点
+      this.touch.left = this.$refs.progress.clientWidth  // 目前进度
+    },
+    progressTouchMove(ev) {
+      if (!this.touch.initiated) {
+        return 
+      }
+      const deltaX = ev.touches[0].pageX - this.touch.startX  // 触摸距离
+      const finalWidth = Math.max(0, this.touch.left + deltaX)  // 最终进度
+      const offsetWidth = Math.min(finalWidth,  this.$refs.progressBar.clientWidth - 16)  // 不超过总长度
+      this.setProgress(offsetWidth)
+    },
+    progressTouchEnd() {
+      this.touch.initiated = false
+      this.percentChange()
+    },
+    setProgress(offsetWidth) {
+      this.$refs.progress.style.width = offsetWidth + 'px'
+      this.$refs.progressBtn.style['transform'] = `translateX(${offsetWidth}px)` // 小球的移动
+    },
+    percentChange() {
+      const barWidth = this.$refs.progressBar.clientWidth - 16
+      const percent = this.$refs.progress.clientWidth / barWidth
+      this.$emit('percentChange', percent)
+    },
+    progressClick(ev) {
+      this.setProgress(ev.offsetX)  // 相对于元素的偏移量
+      this.percentChange()
+    }
+  },
   watch: {
     percent(newVal) {
-      console.log(newVal)
-      if (newVal >= 0) {
+      if (newVal >= 0 && !this.touch.initiated) {
         const barWidth = this.$refs.progressBar.clientWidth - 16   // clientWidth: width + padding
         const offsetWidth = newVal * barWidth
-        this.$refs.progress.style.width = offsetWidth + 'px'
-
-        // 小球的移动
-        this.$refs.progressBtn.style['transform'] = `translateX(${offsetWidth}px)`
+        this.setProgress(offsetWidth)
       }
     }
   }

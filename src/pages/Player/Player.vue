@@ -1,6 +1,6 @@
 <template>
   <div class="player" v-show='playlist.length'>
-    <normal-player v-show="fullScreen" :currentTime='currentTime'></normal-player>
+    <normal-player v-show="fullScreen" :currentTime='currentTime' @percentChange='percentChange'></normal-player>
     <mini-player v-show="!fullScreen"></mini-player>
     <audio :src="currentSong.url" ref="audio" @error="error" @timeupdate="updateTime"></audio>
   </div>
@@ -46,7 +46,14 @@ export default {
     },
     updateTime(ev) {
       this.currentTime = ev.target.currentTime
-    }
+    },
+    percentChange(percent) {
+      this.$refs.audio.currentTime = this.currentSong.duration * percent
+      if (!this.playing) {   // 滑动后自动播放
+        this.setPlaying(!this.playing)
+      }
+    },
+    ...mapMutations(['setPlaying'])
   }
 }
 </script>

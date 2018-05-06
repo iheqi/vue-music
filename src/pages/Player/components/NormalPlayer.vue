@@ -17,7 +17,7 @@
         <div class="progress-wrapper">
           <span class="time time-l">{{format(currentTime)}}</span>
             <div class="progress-bar-wrapper">
-              <progress-bar :percent='percent'></progress-bar>
+              <progress-bar :percent='percent' @percentChange='percentChange'></progress-bar>
             </div>
           <span class="time time-r">{{format(currentSong.duration)}}</span>
         </div>
@@ -69,6 +69,9 @@ export default {
       }
       return num
     },
+    percentChange(percent) {
+      this.$emit('percentChange', percent)
+    }
   }
 }
 </script>
