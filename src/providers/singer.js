@@ -3,7 +3,7 @@ import { ParamsModel, options } from './config'
 import jsonp from './jsonp';
 import SingerModel from './SingerModel'
 
-export function getSingerList() {
+export function getSingerList() {  // 和为一个对象传入
   const url = 'https://c.y.qq.com/v8/fcg-bin/v8.fcg'
   const data = Object.assign({}, ParamsModel, {
     channel: 'singer',
