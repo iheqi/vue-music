@@ -2,7 +2,13 @@
   <div class="player" v-show='playlist.length'>
     <normal-player v-show="fullScreen" :currentTime='currentTime' @percentChange='percentChange'></normal-player>
     <mini-player v-show="!fullScreen"></mini-player>
-    <audio :src="currentSong.url" ref="audio" @error="error" @timeupdate="updateTime"></audio>
+    <audio 
+      :src="currentSong.url" 
+      ref="audio" 
+      @error="error" 
+      @timeupdate="updateTime"
+      @ended="end"
+    ></audio>
   </div>
 </template>
 
@@ -53,7 +59,10 @@ export default {
         this.setPlaying(!this.playing)
       }
     },
-    ...mapMutations(['setPlaying'])
+    ...mapMutations(['setPlaying']),
+    end () {
+      this.bus.$emit('ended');
+    }
   }
 }
 </script>

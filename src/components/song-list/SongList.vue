@@ -31,7 +31,7 @@ export default {
   .song-list
     background : $color-background
     padding-top : .4rem
-    
+    padding-bottom: 5.2rem  // 解决滚不到底部
     .item
       display: flex
       align-items: center
@@ -47,4 +47,5 @@ export default {
         .desc
           margin-top: .1rem
           color: $color-text-d
+
 </style>

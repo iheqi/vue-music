@@ -17,7 +17,7 @@
       <div class="filter" ref="filter"></div>
     </div>
 
-    <div class="song-list-wrapper" ref="songWrapper" @pullingDown='scaleImg'>
+    <div class="song-list-wrapper" ref="wrapper" @pullingDown='scaleImg'>
       <song-list :songs='songs' @openPlayer='openPlayer'></song-list>
     </div>
     <loading v-show="!songs.length" class="loading"></loading>
@@ -74,12 +74,19 @@ export default {
     }
   },
   mounted () {
-    this.scroll = new Bscroll(this.$refs.songWrapper, {
-      click: true,
-      probeType: 2
-    }),
-    this.scroll.on('scroll', this.scaleImg)
-    this.scroll.on('touchEnd', this.scaleOneImg)
+    this.$nextTick(() => {
+      /* setTimeout(() => {
+          
+      }, 2000) */
+      this.scroll = new Bscroll(this.$refs['wrapper'], {
+            click: true,
+            probeType: 2
+          })
+          this.scroll.on('scroll', this.scaleImg)
+          this.scroll.on('touchEnd', this.scaleOneImg)
+    })
+    
+    
   }
 }
 </script>
@@ -140,7 +147,7 @@ export default {
           background: rgba(7, 17, 27, 0.4)
       .song-list-wrapper
         position: fixed
-        padding-top : 4.2rem 
+        padding-top : 4.2rem // bs的滚动距离是按内容长度算的，这样会使滚不到底部
         top: .9rem
         bottom: 0
         width: 100%

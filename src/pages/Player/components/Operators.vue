@@ -51,13 +51,27 @@ export default {
     setIconMode() {
       this.setMode()
     },
-
+    
+    orderPlay() {
+      if (this.currentIndex === this.playlist.length-1) {
+        this.togglePlaying()
+        return 
+      }
+      this.nextSong()
+    },
+    loopPlay() {
+      this.togglePlaying()
+      setTimeout(() => {
+        this.togglePlaying()
+      }, 100)
+    }
   },
   computed: {
     ...mapState(['playing', 'currentIndex', 'playlist', 'mode']),
     ifPlaying() {
       return this.playing ? '&#xe600;' : '&#xe63a;'
     },
+    
     iconMode() {
       let iconMode = '&#xe649;'
       switch (this.mode) {
@@ -73,7 +87,37 @@ export default {
       return iconMode
     }
   },
-
+  watch: {
+    mode() {
+      let next
+      switch (this.mode) {
+        case 1:  // 列表循环
+          next = this.nextSong
+          break
+        case 2:  // 顺序播放
+          next = this.orderPlay
+          break
+        case 3:
+          next = this.loopPlay
+      }
+      console.log('change')
+      this.modeNext = next
+    },
+  },
+  mounted() {
+    this.bus.$on('ended', () => {
+      switch (this.mode) {
+        case 1:  // 列表循环
+          this.nextSong()
+          break
+        case 2:  // 顺序播放
+          this.orderPlay()
+          break
+        case 3:
+          this.loopPlay()
+      }
+    });
+  }
 }
 </script>
 
