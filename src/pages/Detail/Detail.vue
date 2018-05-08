@@ -40,7 +40,6 @@ export default {
       getSingerDetail(this.singer.id).then((res) => {
         if (res.code == 0) {
           this.songs = this.normalizeSongs(res.data.list)
-          console.log(this.songs)
         }
       })
     },

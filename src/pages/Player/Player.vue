@@ -32,7 +32,6 @@ export default {
     currentSong() {
       this.$nextTick(() => {
         this.$refs.audio.play()
-        this.currentSong.getLyric()
       })
     },
     playing(newVal) {

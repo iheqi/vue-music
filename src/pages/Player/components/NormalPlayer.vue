@@ -10,7 +10,7 @@
       </div>
 
       <div>
-        <lyric :currentSong='currentSong'></lyric>
+        <lyric></lyric>
       </div>
       
       <div class="bottom">

@@ -1,30 +1,49 @@
 <template>
   <div class="middle">
-    <div class="middle-l">
+    <div class="middle-l" v-show="false">
       <div class="cd-wrapper">
         <div class="cd">
           <img class="image" :src="currentSong.img" :class="cdRotate">
         </div>
       </div>
     </div>
+
+    <div class="middle-r">
+      <div class="lyric-wrapper" ref="lyricWrapper">
+        <div>
+          <div v-if="currentLyric">
+            <p 
+              v-for="(line, index) of currentLyric.lines" 
+              :key="index"
+              class='text'
+              :class="{'current': currentLineNum === index}"
+              ref="lyricLine"
+            >
+              {{line.txt}}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import Lyric from 'lyric-parser'
+import Bscroll from 'better-scroll'
 
 export default {
   name: 'Lyric',
   data () {
     return {
-      currentLyric: null
+      currentLyric: null,
+      currentLineNum: 0
     }
   },
-  props: {
-    currentSong: null
-  },
+  
   computed: {
     ...mapState(['playing']),
+    ...mapGetters(['currentSong']),
     cdRotate () {
       return this.playing ? 'play' : 'play pause'   // 'play pause'而不是'pause'
     }
@@ -37,10 +56,30 @@ export default {
   methods: {
     getLyric() {
       this.currentSong.getLyric().then((lyric) => {
-        this.currentLyric = new Lyric(lyric)
+        this.currentLyric = new Lyric(lyric, this.handleLyric)
+        if (this.playing) {
+          this.currentLyric.play()   // 滚动api
+        }
       })
-      console.log(this.currentLyric)
+      
+      setTimeout(() => {
+        console.log(this.currentLyric)
+      }, 2000)
+    },
+    handleLyric({lineNum, txt}) {   // 回调还有参数
+      this.currentLineNum = lineNum
+      if (lineNum > 6) {
+        let lineEl = this.$refs.lyricLine[lineNum - 6]  // 6行约中间
+        this.scroll.scrollToElement(lineEl, 800)
+      } else {
+        this.scroll.scrollTo(0, 0, 1000)
+      }
     }
+  },
+  mounted () {
+    this.$nextTick(() => {
+      this.scroll = new Bscroll(this.$refs.lyricWrapper)
+    })
   }
 }
 </script>
@@ -84,6 +123,22 @@ export default {
                 animation: rotate 20s linear infinite
               &.pause
                 animation-play-state: paused    // 设置动画运行或暂停。默认running
+      .middle-r
+        display: inline-block
+        width: 100%
+        height: 100%
+        .lyric-wrapper
+          width: 80%
+          height : 100%
+          margin: 0 auto
+          overflow: hidden
+          text-align: center
+          .text
+            line-height: 32px
+            color: $color-text-l
+            font-size: $font-size-medium
+            &.current
+              color: $color-text
     @keyframes rotate
       0%
         transform: rotate(0)
