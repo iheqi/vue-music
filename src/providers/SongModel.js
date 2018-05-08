@@ -1,4 +1,7 @@
 import { getSongLyric } from './song'
+import { Base64 } from 'js-base64'
+import { resolve } from 'url';
+
 
 export default class SongModel {
   constructor({id, mid, singer, name, album, duration, img, url}) {
@@ -12,15 +15,22 @@ export default class SongModel {
     this.url = url
   }
   getLyric() {
-    
-    getSongLyric(this.mid).then((res) => {
-      if (res.retcode === 0) {
-        this.lyric = res.lyric
-      }
-      console.log(res)
-      console.log(this.lyric)
+    if (this.lyric) {
+      return Promise.resolve(this.lyric)
+    }
+
+    return new Promise((resolve, reject) => {
+      getSongLyric(this.mid).then((res) => {
+        if (res.retcode === 0) {
+          this.lyric = Base64.decode(res.lyric)
+          resolve(this.lyric)
+        } else {
+          reject('no lyric')
+        }
+      })
     })
   }
+
 }
 
 export function createSong(musicData) {

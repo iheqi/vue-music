@@ -11,9 +11,15 @@
 </template>
 <script>
 import { mapState } from 'vuex'
+import Lyric from 'lyric-parser'
 
 export default {
   name: 'Lyric',
+  data () {
+    return {
+      currentLyric: null
+    }
+  },
   props: {
     currentSong: null
   },
@@ -21,6 +27,19 @@ export default {
     ...mapState(['playing']),
     cdRotate () {
       return this.playing ? 'play' : 'play pause'   // 'play pause'而不是'pause'
+    }
+  },
+  watch: {
+    currentSong() {
+      this.getLyric()
+    }
+  },
+  methods: {
+    getLyric() {
+      this.currentSong.getLyric().then((lyric) => {
+        this.currentLyric = new Lyric(lyric)
+      })
+      console.log(this.currentLyric)
     }
   }
 }

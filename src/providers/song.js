@@ -2,7 +2,6 @@ import { ParamsModel, options } from './config'
 import jsonp from './jsonp';
 import axios from 'axios'
 
-
 export function getSongLyric(mid) {
   const url = '/api/getLyric'
 
