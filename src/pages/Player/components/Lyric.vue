@@ -8,6 +8,10 @@
               <img class="image" :src="currentSong.img" :class="cdRotate">
             </div>
           </div>
+
+          <div class="playing-line-wrapper">
+            <div class="playing-line">{{playingLine}}</div>
+          </div>
         </div>
       </swiper-slide>
 
@@ -49,10 +53,13 @@ export default {
           pagination: '.swiper-pagination',
           observeParents: true,             // 解决画廊隐藏或显示由于计算而引起的错误 
           observer: true                    // 这里会在自身或父级元素dom变化时刷新一次
-      }
+      },
+      playingLine: ''
     }
   },
-  
+  props: {
+    currentTime: 0
+  },
   computed: {
     ...mapState(['playing']),
     ...mapGetters(['currentSong']),
@@ -62,7 +69,21 @@ export default {
   },
   watch: {
     currentSong() {
+      if (this.currentLyric) {
+        this.currentLyric.stop()   // play()api是用定时器实现的，在换歌时清除之前的，防止跳动
+        console.log('stop')
+      }
       this.getLyric()
+    },
+    playing() {
+      if (this.currentLyric) {
+        this.currentLyric.togglePlay()   // 歌词滚动跟随播放状态
+      }
+    },
+    currentTime() {
+      if (this.currentLyric) {
+        this.currentLyric.seek(this.currentTime * 1000)
+      }
     }
   },
   methods: {
@@ -72,11 +93,12 @@ export default {
         if (this.playing) {
           this.currentLyric.play()   // 滚动api
         }
+      }).catch(() => {    // 如果没有获取到
+        this.currentLyric = null
+        this.currentLineNum = 0
+        this.playingLine = ''
       })
-      
-      setTimeout(() => {
-        console.log(this.currentLyric)
-      }, 2000)
+
     },
     handleLyric({lineNum, txt}) {   // 回调还有参数
       this.currentLineNum = lineNum
@@ -86,11 +108,19 @@ export default {
       } else {
         this.scroll.scrollTo(0, 0, 1000)
       }
+      this.playingLine = txt
     }
   },
   mounted () {
     this.$nextTick(() => {
       this.scroll = new Bscroll(this.$refs.lyricWrapper)
+
+      /* this.bus.$on('percentChange', () => {
+        if (this.currentLyric) {
+          console.log('seek', this.currentTime)   // currentTime来自父组件，同时监听了percentChange，回调处理后父组件的currentTime可能还没改变
+          this.currentLyric.seek(this.currentTime * 1000)
+        }
+      }) */
     })
   }
 }
@@ -106,7 +136,6 @@ export default {
       top: 1.6rem
       bottom: 3.2rem
       white-space: nowrap
-      font-size: 0
       .swiper
         height : 100% !important
         .middle-l
@@ -140,6 +169,16 @@ export default {
                   animation: rotate 20s linear infinite
                 &.pause
                   animation-play-state: paused    // 设置动画运行或暂停。默认running
+          .playing-line-wrapper
+            width: 80%
+            height : 30px
+            text-align : center 
+            margin: 30px auto 0 auto
+            .playing-line
+              height: 20px
+              line-height: 20px
+              font-size: $font-size-medium
+              color: $color-text-l
         .middle-r
           display: inline-block
           width: 100%

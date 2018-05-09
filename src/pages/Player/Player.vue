@@ -1,6 +1,6 @@
 <template>
   <div class="player" v-show='playlist.length'>
-    <normal-player v-show="fullScreen" :currentTime='currentTime' @percentChange='percentChange'></normal-player>
+    <normal-player v-show="fullScreen" :currentTime='currentTime'></normal-player>
     <mini-player v-show="!fullScreen"></mini-player>
     <audio 
       :src="currentSong.url" 
@@ -30,9 +30,9 @@ export default {
   
   watch: {
     currentSong() {
-      this.$nextTick(() => {
+      setTimeout(() => {   // 处理从后台切回的情况
         this.$refs.audio.play()
-      })
+      }, 1000)
     },
     playing(newVal) {
       const audio = this.$refs.audio
@@ -63,6 +63,13 @@ export default {
     end () {
       this.bus.$emit('ended');
     }
+  },
+  mounted () {
+    this.$nextTick(() => {
+      this.bus.$on('percentChange', (percent) => {
+        this.percentChange(percent)
+      })
+    })
   }
 }
 </script>

@@ -53,7 +53,8 @@ export default {
     percentChange() {
       const barWidth = this.$refs.progressBar.clientWidth - 16
       const percent = this.$refs.progress.clientWidth / barWidth
-      this.$emit('percentChange', percent)
+      //this.$emit('percentChange', percent)
+      this.bus.$emit('percentChange', percent)
     },
     progressClick(ev) {
       this.setProgress(ev.offsetX)  // 相对于元素的偏移量
