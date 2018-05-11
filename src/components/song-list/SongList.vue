@@ -28,6 +28,8 @@ export default {
 </script>
 <style lang="stylus" scoped>
 @import '~styles/variables.styl'
+@import '~styles/mixins'
+
   .song-list
     background : $color-background
     padding-top : .4rem
@@ -42,10 +44,12 @@ export default {
       .content
         flex: 1
         line-height: .4rem
+        overflow : hidden
         .name
           color: $color-text
+          ellipsis()
         .desc
           margin-top: .1rem
           color: $color-text-d
-
+          ellipsis()
 </style>

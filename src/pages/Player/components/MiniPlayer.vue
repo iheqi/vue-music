@@ -48,6 +48,8 @@ export default {
 </script>
 <style lang="stylus" scoped>
   @import '~styles/variables.styl';
+  @import '~styles/mixins';
+  
     .mini-enter-active, .mini-leave-active
       transition : all .4s
     .mini-enter, .mini-leave-to
@@ -84,9 +86,11 @@ export default {
         .name
           font-size: $font-size-medium
           color: $color-text
+          ellipsis()
         .desc
           font-size: $font-size-small
           color: $color-text-d
+          ellipsis()
       .control
         flex: 0 0 30px
         width: 30px

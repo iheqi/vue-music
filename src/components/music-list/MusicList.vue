@@ -96,6 +96,8 @@ export default {
 </script>
 <style lang="stylus" scoped>
   @import '~styles/variables.styl'
+  @import '~styles/mixins'
+  
     .music-list
       position : fixed
       z-index : 101
@@ -122,6 +124,7 @@ export default {
           color: $color-text
           position : absolute
           width : 100% 
+          ellipsis()
       .bg-img
         position : relative
         height: 0
