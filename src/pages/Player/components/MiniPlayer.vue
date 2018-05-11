@@ -61,7 +61,7 @@ export default {
       position: fixed
       left: 0
       bottom: 0
-      z-index: 100
+      z-index: 88
       width: 100%
       height: 1.2rem
       background: $color-highlight-background

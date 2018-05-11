@@ -6,7 +6,8 @@ const state = {
   sequenceList: [],
   mode: 1,
   currentIndex: -1,
-  disc: {}
+  disc: {},
+  topList: {}
 }
 
 export default state

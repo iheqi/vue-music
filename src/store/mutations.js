@@ -28,5 +28,9 @@ export default {
 
   setDisc(state, songs) {
     state.disc = songs
+  },
+
+  setTopList(state, topList) {
+    state.topList = topList
   }
 }
