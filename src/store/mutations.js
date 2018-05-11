@@ -24,5 +24,9 @@ export default {
   },
   setCurrentIndex(state, index) {
     state.currentIndex = index
+  },
+
+  setDisc(state, songs) {
+    state.disc = songs
   }
 }

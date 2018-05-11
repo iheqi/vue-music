@@ -6,6 +6,7 @@
       </div>
       <h1 class="title" v-html="title"></h1>
     </header>
+    
     <div class="bg-img" :style="bgStyle" ref="bgImg">
       <div class="play-wrapper" v-show="songs.length">
         <div class="play">
@@ -16,11 +17,11 @@
 
       <div class="filter" ref="filter"></div>
     </div>
-
+    <loading v-show="!songs.length" class="loading"></loading>
+    
     <div class="song-list-wrapper" ref="wrapper" @pullingDown='scaleImg'>
       <song-list :songs='songs' @openPlayer='openPlayer'></song-list>
     </div>
-    <loading v-show="!songs.length" class="loading"></loading>
   </div>
 </template>
 
@@ -34,7 +35,12 @@ export default {
   name: 'MusicList',
   props: {
     bgImg: String,
-    songs: Array,
+    songs: {
+      type:  Array,
+      default() {  // type Object/Array must use a factory function to return the default value.
+        return []   
+      }
+    },
     title: String
   },
   components: {
@@ -48,7 +54,7 @@ export default {
   },
   methods: {
     goBack() {
-      this.$router.push('/singer')
+      this.$router.go(-1)
     },
     
     scaleImg() {
@@ -61,9 +67,10 @@ export default {
       this.$refs.bgImg.style['transform'] = `scale(1)`
     },
     openPlayer(item, index) {
+      console.log(this.songs)
       this.selectPlay({
         list: this.songs,
-        index     // 传入当前歌手的歌单和所点击的歌的索引
+        index     // 传入当前歌单和所点击的歌的索引
       })
     },
     ...mapActions(['selectPlay'])
@@ -75,9 +82,7 @@ export default {
   },
   mounted () {
     this.$nextTick(() => {
-      /* setTimeout(() => {
-          
-      }, 2000) */
+
       this.scroll = new Bscroll(this.$refs['wrapper'], {
             click: true,
             probeType: 2
@@ -85,14 +90,20 @@ export default {
           this.scroll.on('scroll', this.scaleImg)
           this.scroll.on('touchEnd', this.scaleOneImg)
     })
-    
-    
+    console.log(this.songs)
   }
 }
 </script>
 <style lang="stylus" scoped>
   @import '~styles/variables.styl'
     .music-list
+      position : fixed
+      z-index : 101
+      top : 0
+      left : 0
+      right : 0
+      bottom : 0
+      background : $color-background
       .header
         width: 100%
         position: absolute

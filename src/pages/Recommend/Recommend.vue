@@ -2,17 +2,21 @@
   <div class="recommend-wrapper" ref="wrapper">
     <div>
       <recommend-swiper :list='list'></recommend-swiper>
-      <recommend-list :songList='songList'></recommend-list>
+      <recommend-list :discList='discList'></recommend-list>
+      <router-view></router-view>
     </div>
   </div>
 </template>
 <script>
-import { getRecommendData } from '@/providers/recommend'
+import { getRecommend, getDiscList } from '@/providers/recommend'
 import RecommendSwiper from './components/Swiper'
 import RecommendList from './components/List'
 import Bscroll from 'better-scroll'
+import { mapMutations, mapState } from 'vuex' 
+
 
 export default {
+
   name: 'Recommend',
   components: {
     RecommendSwiper,
@@ -21,23 +25,44 @@ export default {
   data () {
     return {
       list: [],
-      songList: []
+      discList: [],
+      ...mapState(['disc'])
     }
   },
   methods: {
-    getData () {
-      getRecommendData().then((res) => {
+    getRecommendData () {
+      getRecommend().then((res) => {
         if (res.code === 0) {
           this.list = res.data.slider
-          this.songList = res.data.songList
+        }
+      })
+    },
+/*     selectDisc(disc) {
+      this.$router.push({
+        path: `/recommend/${disc.id}`
+      })
+    } */
+    getDiscListData() {
+      getDiscList().then(res => {
+        if (res.code === 0) {
+          this.discList = res.data.list
+          console.log(this.discList)
         }
       })
     }
   },
   mounted () {
-    this.getData()
+    this.getRecommendData()
+    this.getDiscListData()
     this.scroll = new Bscroll(this.$refs.wrapper)
-  }
+  },
+
+/*   watch: {
+    disc() {
+      console.log('fuck asas')
+      
+    }
+  } */
 }
 </script>
 

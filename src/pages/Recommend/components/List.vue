@@ -4,14 +4,19 @@
       <h1 class="list-title">热门歌单推荐</h1>
 
       <ul>
-        <li class="song-item" v-for="song of songList" :key="song.id">
+        <li 
+          class="song-item" 
+          v-for="disc of discList" 
+          :key="disc.dissid"
+          @click="selectItem(disc)"
+        >
           <div class="icon">
-            <img v-lazy="song.picUrl" width="60" height="60">
+            <img v-lazy="disc.imgurl" width="60" height="60">
           </div>
 
           <div class="text">
-            <h2 class="author">{{song.songListAuthor}}</h2>
-            <p class="desc">{{song.songListDesc}}</p>
+            <h2 class="author">{{disc.creator.name}}</h2>
+            <p class="desc">{{disc.dissname}}</p>
           </div>
         </li>
       </ul>
@@ -27,25 +32,37 @@
 <script>
 import Loading from '@/components/loading/Loading'
 import Bscroll from 'better-scroll'
+import { mapMutations } from 'vuex' 
 
 export default {
   name: 'RecommendList',
   props: {
-    songList: Array,
+    discList: Array,
   },
   components: {
     Loading
   },
   computed: {
     ifLoading () {
-      return !this.songList.length
+      return !this.discList.length
     }
   },
   mounted () {
     this.$nextTick(() => {
-      this.scroll = new Bscroll(this.$refs.wrapper)
+      this.scroll = new Bscroll(this.$refs.wrapper, {
+        click: true
+      })
     }) 
-  }  
+    
+  },
+  methods: {
+    selectItem(disc) {
+      console.log(disc)
+      this.setDisc(disc)
+      this.$router.push('/disc/' + disc.dissid)
+    },
+    ...mapMutations(['setDisc'])
+  }
 }
 </script>
 
