@@ -1,13 +1,14 @@
 <template>
-  <div class="toplist">
-    textasasas
-    asasasasasasasa
-    <music-list :title="title" :bgImg="bgImg"></music-list>
-  </div>
+  <transition name="slide">
+    <music-list :title="title" :bgImg="bgImg" :songs='songs' :rank='rank'></music-list>
+  </transition>
 </template>
 <script>
 import MusicList from '@/components/music-list/MusicList'
 import { mapState } from 'vuex'
+import { getMusicList } from '@/providers/rank'
+import { createSong } from '@/providers/SongModel'
+
 export default {
   name: 'TopList',
   components: {
@@ -19,17 +20,52 @@ export default {
       return this.topList.topTitle
     },
     bgImg() {
-      return this.topList.picUrl
+      if (this.songs.length) {
+        return this.songs[0].img
+      } 
+      return ''
     }
   },
   mounted() {
-    console.log(this.topList)
+    this.getMusicList()
+  },
+  data() {
+    return {
+      songs: [],
+      rank: true
+    }
+  },
+  methods: {
+    getMusicList() {
+      if (!this.topList.id) {
+        this.$router.push('/rank')
+        return 
+      }
+      getMusicList(this.topList.id).then((res) => {
+        if (res.code === 0) {
+          this.songs = this.normalizeSongs(res.songlist)
+        }
+      })
+    },
+
+    normalizeSongs(list) {
+      console.log(list)
+      let result = []
+      list.forEach((item) => {
+        const musicData = item.data
+        if (musicData.songid && musicData.albumid) {
+          result.push(createSong(musicData))
+        }
+      })
+      console.log(result)
+      return result
+    }
   }
 }
 </script>
 <style lang="stylus" scoped>
-  .toplist
-    background : red
-    position : fixed
-    z-index : 1000
+  .slide-enter-active, .slide-leave-active
+    transition : all .3s
+  .slide-enter, .slide-leave-to
+    transform : translate3d(100%, 0, 0)
 </style>

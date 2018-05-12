@@ -20,7 +20,7 @@
     <loading v-show="!songs.length" class="loading"></loading>
     
     <div class="song-list-wrapper" ref="wrapper" @pullingDown='scaleImg'>
-      <song-list :songs='songs' @openPlayer='openPlayer'></song-list>
+      <song-list :songs='songs' @openPlayer='openPlayer' :rank='rank'></song-list>
     </div>
   </div>
 </template>
@@ -41,7 +41,11 @@ export default {
         return []   
       }
     },
-    title: String
+    title: String,
+    rank: {
+      type: Boolean,
+      default: false
+    }
   },
   components: {
     SongList,
@@ -100,7 +104,7 @@ export default {
   
     .music-list
       position : fixed
-      z-index : 101
+      z-index : 20
       top : 0
       left : 0
       right : 0
