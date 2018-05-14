@@ -17,8 +17,11 @@
       </div>
     </div>
 
-    <div class="search-result-wrapper">
-      <suggest :query='query'></suggest>
+    <div 
+      class="search-result-wrapper" 
+      v-show="query"
+    >
+        <suggest :query='query'></suggest>
     </div>
   </div>
   
@@ -40,7 +43,7 @@ export default {
   data() {
     return {
       hotKey: [],
-      query: ''
+      query: '',
     }
   },
   methods: {
@@ -57,7 +60,7 @@ export default {
 
     queryChange(query) {
       this.query = query
-    }
+    },
   }
 }
 </script>
@@ -85,10 +88,6 @@ export default {
             font-size: $font-size-medium
             color: $color-text-d
             border-radius: .1rem
-    .search-result-wrapper
-      position: fixed
-      width: 100%
-      top: 3.6rem
-      bottom: 0
+    
 </style>
 
