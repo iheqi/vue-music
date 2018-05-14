@@ -1,10 +1,10 @@
 <template>
   <div class="search">
     <div class="search-box-wrapper">
-      <search-box ref="searchBox"></search-box>
+      <search-box ref="searchBox" @query='queryChange'></search-box>
     </div>
 
-    <div class="hot-keys-wrapper">
+    <div class="hot-keys-wrapper" v-show="!query">
       <div class="hot-keys">
         <div class="hot-key">
           <h1 class="title">热门搜索</h1>
@@ -16,37 +16,48 @@
         </div>
       </div>
     </div>
+
+    <div class="search-result-wrapper">
+      <suggest :query='query'></suggest>
+    </div>
   </div>
   
 </template>
 <script>
 import SearchBox from '@/components/search-box/SearchBox'
+import Suggest from '@/components/suggest/Suggest'
 import { getHotKey } from '@/providers/search'
 
 export default {
   name: 'Search',
   components: {
     SearchBox,
+    Suggest
   },
   mounted () {
     this.getHotKey()
   },
   data() {
     return {
-      hotKey: []
+      hotKey: [],
+      query: ''
     }
   },
   methods: {
     getHotKey() {
-      getHotKey().then((res) => {
+      getHotKey().then((res) => {   // 得到热门搜索词
         if (res.code === 0) {
           this.hotKey = res.data.hotkey.slice(0, 10)
         }
       })
     },
-    addQuery(key) {
+    addQuery(key) {                        // 点击热门搜索的关键词时
       this.$refs.searchBox.setQuery(key)   // 组件上的方法即公共接口，可以这样调用子组件方法（组件一定要获取对啊，fuck）
-    }                                      // 子组件调用父组件则是：this.$parent
+    },                                     // 子组件调用父组件则是：this.$parent
+
+    queryChange(query) {
+      this.query = query
+    }
   }
 }
 </script>
@@ -74,5 +85,10 @@ export default {
             font-size: $font-size-medium
             color: $color-text-d
             border-radius: .1rem
+    .search-result-wrapper
+      position: fixed
+      width: 100%
+      top: 3.6rem
+      bottom: 0
 </style>
 
