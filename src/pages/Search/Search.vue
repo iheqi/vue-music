@@ -17,12 +17,11 @@
       </div>
     </div>
 
-    <div 
-      class="search-result-wrapper" 
-      v-show="query"
-    >
+    <div class="search-result-wrapper" v-show="query">
         <suggest :query='query'></suggest>
     </div>
+
+    <router-view></router-view>
   </div>
   
 </template>

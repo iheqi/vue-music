@@ -21,7 +21,7 @@ export default {
           height : .6rem
           display : inline-block
           background : url('~@/assets/imgs/logo@2x.png')
-          background-size : .6rem
+          background-size : .6rem .6rem
           margin-right : .18rem
           margin-top : .12rem
         .text

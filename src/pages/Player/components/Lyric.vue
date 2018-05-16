@@ -68,7 +68,8 @@ export default {
     }
   },
   watch: {
-    currentSong() {
+    currentSong(val) {
+      console.log(val)
       if (this.currentLyric) {
         this.currentLyric.stop()   // play()api是用定时器实现的，在换歌时清除之前的，防止跳动
         console.log('stop')

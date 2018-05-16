@@ -1,7 +1,7 @@
 <template>
   <div class="suggest" ref="wrapper">
     <ul class="suggest-list">
-      <li class="suggest-item" v-for="item of result" :key="item.singerid">
+      <li class="suggest-item" v-for="item of result" :key="item.singerid" @click="selectItem(item)">
         <div class="icon">
           <i class='iconfont' v-html="getIcon(item)"></i>
         </div>
@@ -20,6 +20,10 @@ import { search } from '@/providers/search'
 import { filterSinger } from '@/providers/SongModel'
 import Bsrcoll from 'better-scroll'
 import Loading from '@/components/loading/Loading'
+import SingerModel from '@/providers/SingerModel'
+import { mapMutations, mapActions } from 'vuex'
+import { createSong } from '@/providers/SongModel'
+
 
 const perpage = 20
 
@@ -81,10 +85,19 @@ export default {
         }
       }
       if (data.song) {
-        result = result.concat(data.song.list)
+        result = result.concat(this.normalizeSongs(data.song.list))
       }
       console.log('result', result)
       return result
+    },
+    normalizeSongs(list) {
+      let ret = []
+      list.forEach((musicData) => {
+        if (musicData.songid && musicData.albummid) {
+          ret.push(createSong(musicData))
+        }
+      })
+      return ret
     },
     getIcon(item) {
       if (item.type === 'singer') {
@@ -96,16 +109,31 @@ export default {
       if (item.type === 'singer') {
         return item.singername
       }
-      return `${item.songname} - ${filterSinger(item.singer)}`
+      return `${item.name} - ${filterSinger(item.singer)}`
     },
     checkMore(data) {
       const song = data.song   // song对象上有curnum curpage totalnum属性
-      console.log(song.curpage, song.curnum, song.totalnum)
       if (!song.list.length || (song.curpage * perpage + song.curnum) > song.totalnum) {
         this.hasMore = false
       }
-      console.log(this.hasMore)
-    }
+    },
+    selectItem(item) {
+      if (item.type === 'singer') {
+        const singer = new SingerModel({
+          id: item.singermid,
+          name: item.singername
+        })
+        this.$router.push({
+          path: `/search/${singer.id}`
+        })
+        this.setSinger(singer)
+      } else {                          // 如果点击是歌曲
+        this.insertSong(item)
+      }
+    },
+    
+    ...mapMutations(['setSinger']),
+    ...mapActions(['insertSong'])
   },
   watch: {
     query (oldVal, newVal) {

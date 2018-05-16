@@ -49,7 +49,6 @@ export default {
       
     },
     normalizeSongs(list) {
-      console.log(list)
       let result = []
       for (let musicData of list) {
         if (musicData.songid, musicData.albumid) {

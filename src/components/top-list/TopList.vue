@@ -49,7 +49,6 @@ export default {
     },
 
     normalizeSongs(list) {
-      console.log(list)
       let result = []
       list.forEach((item) => {
         const musicData = item.data
@@ -57,7 +56,6 @@ export default {
           result.push(createSong(musicData))
         }
       })
-      console.log(result)
       return result
     }
   }

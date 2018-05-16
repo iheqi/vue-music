@@ -12,20 +12,24 @@ import TopList from '@/components/top-list/TopList'
 Vue.use(Router)
 
 export default new Router({
-  routes: [{
+  routes: [
+    {
       path: '/',
       redirect: '/recommend'     /* 重定向 */
-    }, {
+    }, 
+    {
       path: '/recommend',
       component: Recommend,
-    }, {
+    }, 
+    {
       path: '/singer',
       component: Singer,
       children: [{
         path: ':id',
         component: Detail
       }]
-    }, {
+    }, 
+    {
       path: '/rank',
       component: Rank,
       children: [
@@ -34,12 +38,19 @@ export default new Router({
           component: TopList
         }
       ]
-    }, {
+    }, 
+    {
       path: '/search',
-      component: Search
-  }, {
-    name: 'disc',
-    path: '/disc/:id',
-    component: Disc
-  }]
+      component: Search,
+      children: [{
+        path: ':id',
+        component: Detail    // 由搜索跳到歌手详情
+      }]
+    }, 
+    {
+      name: 'disc',
+      path: '/disc/:id',
+      component: Disc
+    }
+  ]
 })

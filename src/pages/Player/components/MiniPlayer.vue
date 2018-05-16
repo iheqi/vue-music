@@ -96,7 +96,7 @@ export default {
         width: 30px
         padding: 0 10px
         .icon-mini
-          font-size : 40px 
+          font-size : 36px
           color: $color-theme-d
         .icon-playlist
           font-size: 30px

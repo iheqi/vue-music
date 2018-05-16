@@ -42,7 +42,7 @@ export default {
       display : flex
       background: $color-highlight-background
       width: 100%
-      height: .8rem
+      height: .76rem
       padding: 0 .12rem
       align-items: center
       box-sizing: border-box

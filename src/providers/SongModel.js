@@ -48,6 +48,10 @@ export function createSong(musicData) {
 
 
 export function filterSinger(singer) {  // 有多个歌手时处理一下
+  console.log(singer)
+  if (!Array.isArray(singer)) {
+    return singer
+  }
   let ret = []
   if (!singer) {
     return ''
@@ -55,6 +59,5 @@ export function filterSinger(singer) {  // 有多个歌手时处理一下
   singer.forEach((s) => {
     ret.push(s.name)
   })
-  console.log(ret.join('/'))
   return ret.join('/')
 }

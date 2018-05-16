@@ -140,6 +140,7 @@ export default {
       .i-center
         padding: 0 20px
         text-align: center
+        font-size: .7rem
       .i-right
         text-align: left
         
