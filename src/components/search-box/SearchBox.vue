@@ -7,6 +7,8 @@
 </template>
 
 <script>
+import { debounce } from '@/providers/util'
+
 export default {
   name: 'SearchBox',
   props: {
@@ -29,9 +31,12 @@ export default {
     }
   },
   created () {
-    this.$watch('query', (newVal) => {    // 为何不直接监听
+    /* (newVal) => {    // 为何不直接监听
       this.$emit('query', newVal)
-    })
+    } */
+    this.$watch('query', debounce((newVal) => {    // 节流
+      this.$emit('query', newVal)
+    }, 200))
   }
 }
 </script>

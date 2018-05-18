@@ -33,7 +33,7 @@ export default class SongModel {
 
 }
 
-export function createSong(musicData) {
+export function createSong(musicData) {    // 创建SongModel对象，避免麻烦的传参
   return new SongModel({
     id: musicData.songid,
     mid: musicData.songmid,
@@ -48,7 +48,6 @@ export function createSong(musicData) {
 
 
 export function filterSinger(singer) {  // 有多个歌手时处理一下
-  console.log(singer)
   if (!Array.isArray(singer)) {
     return singer
   }

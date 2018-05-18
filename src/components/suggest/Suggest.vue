@@ -12,6 +12,10 @@
 
       <loading v-show="hasMore" title=""></loading>
     </ul>
+
+    <div class="no-result-wrapper" v-show="!hasMore && !result.length">
+      <no-result title="抱歉，暂无搜索结果"></no-result>
+    </div>
   </div>
 </template>
 
@@ -23,7 +27,7 @@ import Loading from '@/components/loading/Loading'
 import SingerModel from '@/providers/SingerModel'
 import { mapMutations, mapActions } from 'vuex'
 import { createSong } from '@/providers/SongModel'
-
+import NoResult from '@/components/no-result/NoResult'
 
 const perpage = 20
 
@@ -87,7 +91,6 @@ export default {
       if (data.song) {
         result = result.concat(this.normalizeSongs(data.song.list))
       }
-      console.log('result', result)
       return result
     },
     normalizeSongs(list) {
@@ -151,10 +154,12 @@ export default {
         pullUpLoad: true
       })
       this.scroll.on('pullingUp', this.searchMore)
+      // this.scroll.on('beforeScrollStart', this.)   在移动端滚动时收起键盘(当input失去焦点时自然会失去焦点啊)
     })
   },
   components: {
-    Loading
+    Loading,
+    NoResult
   }
 }
 </script>

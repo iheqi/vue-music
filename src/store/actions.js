@@ -10,7 +10,7 @@ export default {
 
   },
   insertSong({commit, state}, song) {  // 搞那么多逻辑
-    let playlist = state.playlist.slice()
+    let playlist = state.playlist.slice()      // 不要在mutation之外修改state的属性
     let currentIndex = state.currentIndex
   
     let currentSong = playlist[currentIndex]
