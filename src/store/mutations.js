@@ -32,5 +32,9 @@ export default {
 
   setTopList(state, topList) {
     state.topList = topList
+  },
+
+  setSearchHistory(state, history) {
+    state.searchHistory = history
   }
 }

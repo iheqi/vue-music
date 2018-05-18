@@ -18,7 +18,7 @@
     </div>
 
     <div class="search-result-wrapper" v-show="query">
-        <suggest :query='query'></suggest>
+        <suggest :query='query' @select='saveHistory'></suggest>
     </div>
 
     <router-view></router-view>
@@ -29,6 +29,7 @@
 import SearchBox from '@/components/search-box/SearchBox'
 import Suggest from '@/components/suggest/Suggest'
 import { getHotKey } from '@/providers/search'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   name: 'Search',
@@ -60,6 +61,14 @@ export default {
     queryChange(query) {
       this.query = query
     },
+
+    saveHistory() {
+      this.setSearchHistory(this.query)
+    },
+    ...mapActions(['setSearchHistory'])
+  },
+  computed: {
+    ...mapState(['searchHistory'])
   }
 }
 </script>

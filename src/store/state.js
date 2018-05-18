@@ -7,7 +7,8 @@ const state = {
   mode: 1,
   currentIndex: -1,
   disc: {},
-  topList: {}
+  topList: {},
+  searchHistory: []
 }
 
 export default state

@@ -69,16 +69,23 @@ export default {
   },
   watch: {
     currentSong(val) {
-      console.log(val)
       if (this.currentLyric) {
         this.currentLyric.stop()   // play()api是用定时器实现的，在换歌时清除之前的，防止跳动
+        this.playingLyric = ''
+        this.currentLineNum = 0    // 这套api没用啊
         console.log('stop')
       }
       this.getLyric()
     },
     playing() {
       if (this.currentLyric) {
-        this.currentLyric.togglePlay()   // 歌词滚动跟随播放状态
+        /* this.currentLyric.togglePlay()   // 歌词滚动跟随播放状态(这api不行啊) */
+        if (this.playing) {
+          this.currentLyric.play()
+        } else {
+          this.currentLyric.stop()
+          console.log('stop')
+        }
       }
     },
     currentTime() {

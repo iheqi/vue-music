@@ -56,7 +56,6 @@ export default {
       this.page = 1
       this.result = []   // 新请求时清空
       search(this.query, this.page, this.showSinger, perpage).then((res) => {   // !! 搜索
-        console.log(res.data)
         if (res.code === 0) {
           this.result = this.getResult(res.data)
         }
@@ -65,12 +64,9 @@ export default {
       })
     },
     searchMore() {
-      console.log('more')
-      
       if (!this.hasMore) {
         return
       }
-      console.log('more')
       this.page ++   // 如果有更多数据，则加载下一页的，page是第几页的参数
 
       search(this.query, this.page, this.showSinger, perpage).then((res) => {   // !! 搜索
@@ -133,6 +129,7 @@ export default {
       } else {                          // 如果点击是歌曲
         this.insertSong(item)
       }
+      this.$emit('select')      // 用于搜索历史
     },
     
     ...mapMutations(['setSinger']),
