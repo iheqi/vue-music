@@ -59,3 +59,7 @@ export function saveSearchHistory(query) {
 
   return JSON.parse(localStorage.getItem('searchs'))
 }
+
+export function loadSearch() {   // 用在state中
+  return JSON.parse(localStorage.getItem('searchs'))
+}

@@ -15,6 +15,17 @@
           </ul>
         </div>
       </div>
+
+      <div class="search-history" v-show="searchHistory.length">
+        <h1 class="title">
+          <span class="text">搜索历史</span>
+          <span>
+            <i class="iconfont">&#xe72f;</i>
+          </span>
+        </h1>
+        
+        <search-list :searches='searchHistory'></search-list>
+      </div>
     </div>
 
     <div class="search-result-wrapper" v-show="query">
@@ -30,12 +41,14 @@ import SearchBox from '@/components/search-box/SearchBox'
 import Suggest from '@/components/suggest/Suggest'
 import { getHotKey } from '@/providers/search'
 import { mapActions, mapState } from 'vuex'
+import SearchList from '@/components/search-list/SearchList'
 
 export default {
   name: 'Search',
   components: {
     SearchBox,
-    Suggest
+    Suggest,
+    SearchList
   },
   mounted () {
     this.getHotKey()
@@ -64,6 +77,7 @@ export default {
 
     saveHistory() {
       this.setSearchHistory(this.query)
+      console.log(this.searchHistory)
     },
     ...mapActions(['setSearchHistory'])
   },
@@ -86,7 +100,7 @@ export default {
           margin: 0 .3rem .3rem .4rem
           .title
             margin-bottom: .4rem
-            font-size: $font-size-medium
+            font-size: $font-size-medium-x
             color: $color-text-l
           .item
             display: inline-block
@@ -96,6 +110,17 @@ export default {
             font-size: $font-size-medium
             color: $color-text-d
             border-radius: .1rem
+      .search-history
+        position : relative
+        margin : 0 .4rem
+        .title
+          display: flex
+          align-items: center
+          height: .8rem
+          font-size: $font-size-medium-x
+          color: $color-text-l
+          .text
+            flex: 1
     
 </style>
 
