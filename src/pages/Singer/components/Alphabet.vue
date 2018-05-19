@@ -1,5 +1,5 @@
 <template>
-    <ul class="list">
+    <ul class="list" v-show="singers.length">
       <li class="item" v-for="item of letters" :key="item"
         @click='handleLetterClick'
         @touchstart='handleTouchStart'
@@ -16,7 +16,10 @@
 export default {
   name: 'Alphabet',
   props: {
-    singers: Array,
+    singers: {
+      type: Array,
+      default: []
+    },
     index: {
       type: Number,
       default: 0
@@ -85,7 +88,8 @@ export default {
   @import '~styles/variables.styl';
   .list
     position : fixed
-    top : 10%
+    top : 50%
+    transform : translateY(-50%)
     right : 0
     display : flex
     flex-direction : column

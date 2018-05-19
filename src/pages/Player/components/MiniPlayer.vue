@@ -96,10 +96,10 @@ export default {
         width: 30px
         padding: 0 10px
         .icon-mini
-          font-size : 36px
+          font-size : 34px
           color: $color-theme-d
         .icon-playlist
-          font-size: 30px
+          font-size: 34px
           color: $color-theme-d
   @keyframes cd-rotate
     0%

@@ -68,6 +68,7 @@ export default {
   @import '~styles/variables'
   @import '~styles/mixins'
     .toplist
+      position : fixed
       width: 100%
       top: 1.76rem
       bottom: 0

@@ -41,6 +41,7 @@ export default {
       const finalWidth = Math.max(0, this.touch.left + deltaX)  // 最终进度
       const offsetWidth = Math.min(finalWidth,  this.$refs.progressBar.clientWidth - 16)  // 不超过总长度
       this.setProgress(offsetWidth)
+      this.progressTime()  //  为了滑动时能显示时间，不用 percentChange 是因为触发太多的东西
     },
     progressTouchEnd() {
       this.touch.initiated = false
@@ -56,9 +57,17 @@ export default {
       //this.$emit('percentChange', percent)
       this.bus.$emit('percentChange', percent)
     },
+    progressTime() {
+      const barWidth = this.$refs.progressBar.clientWidth - 16
+      const percent = this.$refs.progress.clientWidth / barWidth
+      this.bus.$emit('progressTime', percent)
+    },
     progressClick(ev) {
       this.setProgress(ev.offsetX)  // 相对于元素的偏移量
       this.percentChange()
+    },
+    touchStatus() {        // 给normalPlayer的接口
+      return this.touch.initiated
     }
   },
   watch: {

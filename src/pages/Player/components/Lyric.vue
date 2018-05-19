@@ -54,14 +54,15 @@ export default {
           observeParents: true,             // 解决画廊隐藏或显示由于计算而引起的错误 
           observer: true                    // 这里会在自身或父级元素dom变化时刷新一次
       },
-      playingLine: ''
+      playingLine: '',
+      timer: null
     }
   },
   props: {
     currentTime: 0
   },
   computed: {
-    ...mapState(['playing']),
+    ...mapState(['playing', 'mode']),
     ...mapGetters(['currentSong']),
     cdRotate () {
       return this.playing ? 'play' : 'play pause'   // 'play pause'而不是'pause'
@@ -70,33 +71,28 @@ export default {
   watch: {
     currentSong(val) {
       if (this.currentLyric) {
-        this.currentLyric.stop()   // play()api是用定时器实现的，在换歌时清除之前的，防止跳动
-        this.playingLyric = ''
-        this.currentLineNum = 0    // 这套api没用啊
-        console.log('stop')
+        /* this.currentLyric.stop()   // play()api是用定时器实现的，在换歌时清除之前的，防止跳动*/
+        this.reset()
       }
       this.getLyric()
     },
     playing() {
       if (this.currentLyric) {
-        /* this.currentLyric.togglePlay()   // 歌词滚动跟随播放状态(这api不行啊) */
-        if (this.playing) {
-          this.currentLyric.play()
-        } else {
-          this.currentLyric.stop()
-          console.log('stop')
-        }
+        this.currentLyric.togglePlay()   // 歌词滚动跟随播放状态
       }
     },
-    currentTime() {
-      if (this.currentLyric) {
-        this.currentLyric.seek(this.currentTime * 1000)
+    /* currentTime() {
+      if (this.currentLyric && this.playing) {
+        this.currentLyric.seek(this.currentTime * 1000)   // 滚到到相应的时间,这里监听了currentTime导致执行次数太多，改成在mounted中监听percent（本来也该这样）
       }
-    }
+    } */
   },
   methods: {
     getLyric() {
       this.currentSong.getLyric().then((lyric) => {
+        if (this.currentSong.lyric !== lyric) {
+          return
+        }
         this.currentLyric = new Lyric(lyric, this.handleLyric)
         if (this.playing) {
           this.currentLyric.play()   // 滚动api
@@ -108,15 +104,26 @@ export default {
       })
 
     },
-    handleLyric({lineNum, txt}) {   // 回调还有参数
-      this.currentLineNum = lineNum
-      if (lineNum > 6) {
-        let lineEl = this.$refs.lyricLine[lineNum - 6]  // 6行约中间
-        this.scroll.scrollToElement(lineEl, 800)
-      } else {
-        this.scroll.scrollTo(0, 0, 1000)
+    handleLyric({lineNum, txt}) {   // 歌词行数改变时，调用回调还有参数(但最后一行歌词时有点问题，还没解决)
+      if (this.timer) {
+        clearTimeout(this.timer)
       }
-      this.playingLine = txt
+      console.log(txt, lineNum)
+      setTimeout(() => {  
+        this.currentLineNum = lineNum
+        if (lineNum > 6) {
+          let lineEl = this.$refs.lyricLine[lineNum - 6]  // 6行约中间
+          this.scroll.scrollToElement(lineEl, 900)       // 这里滚到的就是最上面那行，然后上面那句就约在中间
+        } else {
+          this.scroll.scrollTo(0, 0, 1000)
+        }
+        this.playingLine = txt
+      }, 500)
+    },
+    reset() {
+      this.currentLyric.stop()
+      this.playingLyric = ''
+      this.currentLineNum = 0    // 这套api没用啊,直接全置0了好了
     }
   },
   mounted () {
@@ -129,6 +136,15 @@ export default {
           this.currentLyric.seek(this.currentTime * 1000)
         }
       }) */
+
+      this.$nextTick(() => {
+        this.bus.$on('percentChange', (percent) => {
+          this.currentLyric.seek(this.currentSong.duration * percent * 1000)
+        })
+      })
+    }),
+    this.bus.$on('ended', () => {
+      this.currentLyric.seek(0)       // 解决loop时歌曲结束歌词不滚
     })
   }
 }

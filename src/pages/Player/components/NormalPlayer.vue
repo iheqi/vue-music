@@ -1,8 +1,8 @@
 <template>
   <transition name='normal'>
     <div class="normal-player">
-      <div class="background">
-        <img width="100%" height="100%" src="" alt="">
+      <div class="background"><!-- 只能用这个方法（css揭秘p158） -->
+        <img width="100%" height="100%" :src="currentSong.img">
       </div>
 
       <div class="top">
@@ -15,9 +15,9 @@
       
       <div class="bottom">
         <div class="progress-wrapper">
-          <span class="time time-l">{{format(currentTime)}}</span>
+          <span class="time time-l">{{format(progressTime)}}</span>
             <div class="progress-bar-wrapper">
-              <progress-bar :percent='percent'></progress-bar>
+              <progress-bar :percent='percent' ref="progress-bar"></progress-bar>
             </div>
           <span class="time time-r">{{format(currentSong.duration)}}</span>
         </div>
@@ -40,11 +40,29 @@ export default {
       default: 0
     }
   },
+  data() {
+    return {
+      progressTime: this.currentTime 
+    }
+  },
+  watch: {     // 
+    currentTime() {
+      let progressBar = this.$refs['progress-bar']
+      if (progressBar.touchStatus()) {       // 滑动中progress不跟currentTime改变，避免鼠标一直按着时
+        return
+      }
+      this.progressTime = this.currentTime
+    }
+  },
   computed: {
     ...mapGetters(['currentSong']),
     percent() {
       return this.currentTime / this.currentSong.duration
-    }
+    },
+    /* bgImg() {
+
+      return `background: url(${this.currentSong.img}); background-size: 100% 100%; `
+    } */
   },
   components: {
     PlayerHeader,
@@ -67,6 +85,17 @@ export default {
       }
       return num
     },
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.bus.$on('percentChange', (percent) => {   //
+        this.progressTime = this.currentSong.duration * percent
+      })
+
+      this.bus.$on('progressTime', (percent) => {   //
+        this.progressTime = this.currentSong.duration * percent
+      })
+    })
   }
 }
 </script>
@@ -91,8 +120,8 @@ export default {
         position: absolute
         left: 0
         top: 0
-        bottom : 0
-        right : 0
+        width: 100%
+        height: 100%
         z-index: -1
         opacity: 0.6
         filter: blur(20px)

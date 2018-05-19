@@ -7,7 +7,7 @@
       <i class="iconfont" @click="preSong">&#xe610;</i>
     </div>
     <div class="icon i-center">
-      <i class="iconfont" v-html='ifPlaying' @click='togglePlaying'></i>
+      <i class="iconfont center" v-html='ifPlaying' @click='togglePlaying'></i>
     </div>
     <div class="icon i-right">
       <i class="iconfont" @click="nextSong">&#xe611;</i>
@@ -126,7 +126,7 @@ export default {
   
     .operators
       position: absolute
-      bottom: 1rem
+      bottom: 6%
       width: 100%
       display: flex
       align-items: center
@@ -140,7 +140,8 @@ export default {
       .i-center
         padding: 0 20px
         text-align: center
-        font-size: .7rem
+        .center
+          font-size: .78rem
       .i-right
         text-align: left
         
