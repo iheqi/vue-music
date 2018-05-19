@@ -1,5 +1,5 @@
 <template>
-  <div class="search-list" v-show="searches.length">
+  <div class="search-list" v-show="searches && searches.length">
     <ul>
       <li class="search-item" v-for="item in searches" :key="item" @click="selectItem(item)">
         <span class="text">{{ item }}</span>
@@ -22,7 +22,7 @@ export default {
     }
   },
   methods: {
-    selectItem(item) {
+    selectItem(item) {             // 派发事件，不做过多的业务逻辑
       this.$emit('select', item)
     },
     deleteOne(item) {

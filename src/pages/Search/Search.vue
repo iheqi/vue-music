@@ -16,10 +16,10 @@
         </div>
       </div>
 
-      <div class="search-history" v-show="searchHistory.length">
+      <div class="search-history" v-show="searchHistory && searchHistory.length">
         <h1 class="title">
           <span class="text">搜索历史</span>
-          <span class="delete" @click="clearAll">
+          <span class="delete" @click="showConfirm">
             <i class="iconfont">&#xe72f;</i>
           </span>
         </h1>
@@ -36,7 +36,7 @@
     <div class="search-result-wrapper" v-show="query">
         <suggest :query='query' @select='saveHistory'></suggest>
     </div>
-
+    <confirm ref="confirm" @confirm='clearSearchHistory'></confirm>
     <router-view></router-view>
   </div>
   
@@ -44,16 +44,19 @@
 <script>
 import SearchBox from '@/components/search-box/SearchBox'
 import Suggest from '@/components/suggest/Suggest'
+import Confirm from '@/components/confirm/Confirm'
 import { getHotKey } from '@/providers/search'
 import { mapActions, mapState } from 'vuex'
 import SearchList from '@/components/search-list/SearchList'
+
 
 export default {
   name: 'Search',
   components: {
     SearchBox,
     Suggest,
-    SearchList
+    SearchList,
+    Confirm
   },
   mounted () {
     this.getHotKey()
@@ -88,10 +91,13 @@ export default {
     ...mapActions(['setSearchHistory', 'deleteSearchHistory', 'clearSearchHistory']),
     deleteOne(query) {
       this.deleteSearchHistory(query)
-      console.log('delete')
     },
-    clearAll() {
+    /* clearAll() {    // 单纯的调用的话那直接用就好了
       this.clearSearchHistory()
+    } */
+
+    showConfirm() {
+      this.$refs.confirm.show()
     }
   },
   computed: {

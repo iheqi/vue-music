@@ -47,7 +47,7 @@ function insertSong({commit, state}, song) {  // 搞那么多逻辑
 }
 
 function setSearchHistory({ commit, state }, song) {
-  commit('setSearchHistory', saveSearchHistory(song))
+  commit('setSearchHistory', saveSearch(song))
 }
 
 function findIndex(list, song) {

@@ -71,6 +71,6 @@ export function deleteSearch(query) {
 }
 
 export function clearSearch() {
-  localStorage.clear
+  localStorage.clear()
   return []
 }
