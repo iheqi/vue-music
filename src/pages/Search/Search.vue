@@ -4,32 +4,34 @@
       <search-box ref="searchBox" @query='queryChange'></search-box>
     </div>
 
-    <div class="hot-keys-wrapper" v-show="!query">
-      <div class="hot-keys">
-        <div class="hot-key">
-          <h1 class="title">热门搜索</h1>
-          <ul>
-            <li class="item" v-for="hot of hotKey" :key="hot.n" @click="addQuery(hot.k)">
-              {{hot.k}}
-            </li>
-          </ul>
+    <div class="shortcut-wrapper" v-show="!query" ref="shortcut-wrapper">
+      <div>
+        <div class="hot-keys">
+          <div class="hot-key">
+            <h1 class="title">热门搜索</h1>
+            <ul>
+              <li class="item" v-for="hot of hotKey" :key="hot.n" @click="addQuery(hot.k)">
+                {{hot.k}}
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
 
-      <div class="search-history" v-show="searchHistory && searchHistory.length">
-        <h1 class="title">
-          <span class="text">搜索历史</span>
-          <span class="delete" @click="showConfirm">
-            <i class="iconfont">&#xe72f;</i>
-          </span>
-        </h1>
-        
-        <search-list 
-          :searches='searchHistory'
-          @select="addQuery"  
-          @delete="deleteOne"  
-        >  <!-- 直接调用就可以了,触发事件时已经将参数传入了-->
-        </search-list>
+        <div class="search-history" v-show="searchHistory && searchHistory.length">
+          <h1 class="title">
+            <span class="text">搜索历史</span>
+            <span class="delete" @click="showConfirm">
+              <i class="iconfont">&#xe72f;</i>
+            </span>
+          </h1>
+          
+          <search-list 
+            :searches='searchHistory'
+            @select="addQuery"  
+            @delete="deleteOne"  
+          >  <!-- 直接调用就可以了,触发事件时已经将参数传入了-->
+          </search-list>
+        </div>
       </div>
     </div>
 
@@ -48,7 +50,7 @@ import Confirm from '@/components/confirm/Confirm'
 import { getHotKey } from '@/providers/search'
 import { mapActions, mapState } from 'vuex'
 import SearchList from '@/components/search-list/SearchList'
-
+import Bscroll from 'better-scroll'
 
 export default {
   name: 'Search',
@@ -60,6 +62,11 @@ export default {
   },
   mounted () {
     this.getHotKey()
+    this.$nextTick(() => {
+      this.scroll = new Bscroll(this.$refs['shortcut-wrapper'], {
+        click: true
+      })
+    })
   },
   data() {
     return {
@@ -102,6 +109,15 @@ export default {
   },
   computed: {
     ...mapState(['searchHistory'])
+  },
+  watch: {
+    query(newQuery) {
+      if (!newQuery) {    // 解决从搜索结果中返回时搜索历史无法滚动的问题（为什么无法滚动又没说清楚靠）
+        setTimeout(() => {
+          this.scroll.refresh()
+        }, 20)
+      }
+    }
   }
 }
 </script>
@@ -111,7 +127,12 @@ export default {
     .search-box-wrapper
       margin : .4rem
 
-    .hot-keys-wrapper
+    .shortcut-wrapper
+      position: fixed
+      top: 3.56rem
+      bottom: 0
+      width: 100%
+      overflow : hidden
       .hot-keys
         height: 100%
         overflow: hidden
@@ -132,6 +153,7 @@ export default {
       .search-history
         position : relative
         margin : 0 .4rem
+        padding-bottom : 1.4rem
         .title
           display: flex
           align-items: center
