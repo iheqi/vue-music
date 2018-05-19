@@ -1,10 +1,12 @@
-import { saveSearchHistory } from '@/providers/cache'
+import { saveSearch, deleteSearch, clearSearch } from '@/providers/cache'
 
 //  ES2015 的 参数解构 来简化代码，取出context中的commit方法，context相当于store。
 export default {
   selectPlay,
   insertSong,
-  setSearchHistory
+  setSearchHistory,
+  deleteSearchHistory,
+  clearSearchHistory
 }
 
 function selectPlay({ commit }, { list, index }) {
@@ -53,4 +55,14 @@ function findIndex(list, song) {
     return item.id === song.id
   })
 }
+
+
+function deleteSearchHistory({ commit, state }, query) {
+  commit('setSearchHistory', deleteSearch(query))
+}
+
+function clearSearchHistory({commit}) {
+  commit('setSearchHistory', clearSearch())
+}
+
 

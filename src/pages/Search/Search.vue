@@ -19,12 +19,17 @@
       <div class="search-history" v-show="searchHistory.length">
         <h1 class="title">
           <span class="text">搜索历史</span>
-          <span>
+          <span class="delete" @click="clearAll">
             <i class="iconfont">&#xe72f;</i>
           </span>
         </h1>
         
-        <search-list :searches='searchHistory'></search-list>
+        <search-list 
+          :searches='searchHistory'
+          @select="addQuery"  
+          @delete="deleteOne"  
+        >  <!-- 直接调用就可以了,触发事件时已经将参数传入了-->
+        </search-list>
       </div>
     </div>
 
@@ -69,6 +74,7 @@ export default {
     },
     addQuery(key) {                        // 点击热门搜索的关键词时
       this.$refs.searchBox.setQuery(key)   // 组件上的方法即公共接口，可以这样调用子组件方法（组件一定要获取对啊，fuck）
+      console.log(key)
     },                                     // 子组件调用父组件则是：this.$parent
 
     queryChange(query) {
@@ -79,7 +85,14 @@ export default {
       this.setSearchHistory(this.query)
       console.log(this.searchHistory)
     },
-    ...mapActions(['setSearchHistory'])
+    ...mapActions(['setSearchHistory', 'deleteSearchHistory', 'clearSearchHistory']),
+    deleteOne(query) {
+      this.deleteSearchHistory(query)
+      console.log('delete')
+    },
+    clearAll() {
+      this.clearSearchHistory()
+    }
   },
   computed: {
     ...mapState(['searchHistory'])
@@ -121,6 +134,8 @@ export default {
           color: $color-text-l
           .text
             flex: 1
+          .delete
+            padding: .1rem
     
 </style>
 

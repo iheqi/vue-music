@@ -1,9 +1,9 @@
 <template>
   <div class="search-list" v-show="searches.length">
     <ul>
-      <li class="search-item" v-for="item in searches" :key="item">
+      <li class="search-item" v-for="item in searches" :key="item" @click="selectItem(item)">
         <span class="text">{{ item }}</span>
-        <span class="icon">
+        <span class="icon" @click.stop="deleteOne(item)">
           <i class="iconfont delete">&#xe620;</i>
         </span>
       </li>
@@ -19,6 +19,14 @@ export default {
         default() {
           return [1,2,3]
         }
+    }
+  },
+  methods: {
+    selectItem(item) {
+      this.$emit('select', item)
+    },
+    deleteOne(item) {
+      this.$emit('delete', item)
     }
   }
 }
@@ -36,7 +44,9 @@ export default {
       .text
         flex: 1
         color: $color-text-l
+        text-indent : .1rem
       .icon
+        padding : .1rem
         .delete
           font-size: $font-size-medium
           color: $color-text-d

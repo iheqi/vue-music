@@ -2,7 +2,7 @@ import LocalForage from 'localforage';
 
 const MAX_LEN = 15
 
-function insertSearchHistory(arr, val, maxLen) {
+function insertSearch(arr, val, maxLen) {
   let index = arr.indexOf(val)
 
   if (index === 0) {
@@ -42,24 +42,35 @@ function insertSearchHistory(arr, val, maxLen) {
   })
 } */
 
-export function saveSearchHistory(query) {
+export function saveSearch(query) {
   let searchs = JSON.parse(localStorage.getItem('searchs'))
-
-  console.log(searchs)
 
   if (!searchs) {
     searchs = []
   }
 
-  insertSearchHistory(searchs, query, MAX_LEN)
-
+  insertSearch(searchs, query, MAX_LEN)
   localStorage.setItem('searchs', JSON.stringify(searchs))
-
-  console.log(JSON.parse(localStorage.getItem('searchs')))
 
   return JSON.parse(localStorage.getItem('searchs'))
 }
 
 export function loadSearch() {   // 用在state中
   return JSON.parse(localStorage.getItem('searchs'))
+}
+
+
+export function deleteSearch(query) {
+  let searchs = loadSearch()
+  let index = searchs.indexOf(query)
+
+  searchs.splice(index, 1)
+
+  localStorage.setItem('searchs', JSON.stringify(searchs))
+  return JSON.parse(localStorage.getItem('searchs'))
+}
+
+export function clearSearch() {
+  localStorage.clear
+  return []
 }
