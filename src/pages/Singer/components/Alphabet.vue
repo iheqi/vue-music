@@ -98,7 +98,7 @@ export default {
     background: $color-background-d
     font-family: Helvetica
     border-radius: .2rem
-    padding: .1rem 0
+    padding: .2rem 0
     .item
       text-align : center
       height : $font-size-small

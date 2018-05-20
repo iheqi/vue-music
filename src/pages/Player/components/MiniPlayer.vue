@@ -13,7 +13,7 @@
         <i class="iconfont icon-mini" v-html="ifPlaying"></i>
       </div>
 
-      <div class="control">
+      <div class="control" @click.stop="showPlayList">
         <i class="iconfont icon-playlist">&#xe62b;</i>
       </div>
     </div>
@@ -31,6 +31,9 @@ export default {
     },
     togglePlay () {
       this.setPlaying(!this.playing)
+    },
+    showPlayList() {
+      this.$parent.showPlayList()       // 子组件调用父组件的方法
     }
   },
   computed: {

@@ -2,6 +2,7 @@
   <div class="player" v-show='playlist.length'>
     <normal-player v-show="fullScreen" :currentTime='currentTime'></normal-player>
     <mini-player v-show="!fullScreen"></mini-player>
+    <play-list ref="playlist"></play-list>
     <audio 
       :src="currentSong.url" 
       ref="audio" 
@@ -15,13 +16,15 @@
 <script>
 import NormalPlayer from './components/NormalPlayer'
 import MiniPlayer from './components/MiniPlayer'
+import PlayList from './components/PlayList'
 import { mapMutations, mapState, mapGetters } from 'vuex'
 
 export default {
   name: 'Player',
   components: {
     NormalPlayer,
-    MiniPlayer
+    MiniPlayer,
+    PlayList
   },
   computed: {
     ...mapState(['fullScreen', 'playlist', 'playing']),
@@ -62,6 +65,9 @@ export default {
     ...mapMutations(['setPlaying']),
     end () {
       this.bus.$emit('ended');
+    },
+    showPlayList() {
+      this.$refs.playlist.show()
     }
   },
   mounted () {
