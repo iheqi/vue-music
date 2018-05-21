@@ -1,6 +1,6 @@
 <template>
   <div class="playlist" v-show="showFlag" @click='hide'>
-    <div class="list-wrapper">
+    <div class="list-wrapper" @click.stop>
       <div class="list-header">
         <h1 class="header">
           <i class="mode iconfont" v-html="iconMode"></i>
@@ -9,11 +9,15 @@
         </h1>
       </div>
 
-      <div class="list-content">
+      <div class="list-content" ref="content">
         <ul>
-          <li class="item">
-            <i class="current"></i>
-            <p class="text"></p>
+          <li class="item" v-for="(item, index) of playlist" 
+            :key="item.id" 
+            @click="selectItem(item, index)"
+            ref="liItem"
+          >
+            <i class="current iconfont" v-html="getCurrentIcon(item)"></i>
+            <p class="text">{{item.name}}</p>
             <span class="like">
               <i class="iconfont icon-like">&#xe612;</i>
             </span>
@@ -31,12 +35,17 @@
           <span class="text">添加歌曲到队列</span>
         </div>
       </div>
+
+      <div @click="hide" class="list-close">
+        <span>关闭</span>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters, mapMutations } from 'vuex'
+import Bscroll from 'better-scroll'
 
 export default {
   name: 'PlayList',
@@ -48,10 +57,32 @@ export default {
   methods: {
     show() {
       this.showFlag = true
+      setTimeout(() => {        // 解决换歌后无法滚动
+        this.scroll.refresh()
+      }, 20)
+      this.scrollToCurrent(newSong)
     },
     hide() {
       this.showFlag = false
-    }
+    },
+    getCurrentIcon(item) {
+      if (item.id === this.currentSong.id) {
+        return '&#xe63a;'
+      }
+      return ''
+    },
+    selectItem(item, index) {
+       this.setCurrentIndex(index)
+    },  
+    ...mapMutations(['setCurrentIndex']),
+    scrollToCurrent(currentSong) {             // 滚动当前歌曲在顶部
+      const index = this.playlist.findIndex((song) => {
+        return currentSong.id === song.id
+      })
+      setTimeout(() => {
+        this.scroll.scrollToElement(this.$refs.liItem[index], 500)
+      }, 100)
+    } 
   },
   computed: {
     iconMode() {
@@ -82,14 +113,30 @@ export default {
       }
       return modeText
     },
-    ...mapState(['mode'])  
+    ...mapState(['mode', 'playlist']),
+    ...mapGetters(['currentSong']),
+     
   },
-  
+  mounted () {
+    this.scroll = new Bscroll(this.$refs.content, {
+      click: true
+    })
+  },
+  watch: {
+    currentSong(newSong, oldSong) {
+      if (!this.showFlag || newSong.id === oldSong.id) {
+        return
+      }
+      this.scrollToCurrent(newSong)
+    }
+  }
 }
 </script>
 
 <style lang="stylus" scoped>
 @import '~styles/variables';
+@import '~styles/mixins';
+
   .playlist
     position: fixed
     left: 0
@@ -118,6 +165,7 @@ export default {
             flex: 1
             font-size: $font-size-medium
             color: $color-text-l
+            ellipsis()
           .clear
             font-size : $font-size-large-x
             color: $color-text-d
@@ -132,16 +180,20 @@ export default {
           .current
             flex: 0 0 .4rem
             width: .4rem
-            font-size: $font-size-small
+            font-size: $font-size-medium-x
             color: $color-theme-d
+            margin-right : .1rem
           .text
             flex: 1
             font-size: $font-size-medium
             color: $color-text-d
+            ellipsis()
+            
           .like
-            margin-right: .3rem
-            font-size: $font-size-small
+            margin-right: .1rem
+            font-size: $font-size-small-s
             color: $color-theme
+            font-weight : 1000
             .icon-like
               color: $color-sub-theme
               font-size : $font-size-large-x
@@ -152,8 +204,8 @@ export default {
               font-size : $font-size-large-x
               
       .list-operate
-        width: 2.8rem
-        margin: .4rem auto .6rem auto
+        width: 3rem
+        margin: .4rem auto .4rem auto
         .add
           display: flex
           align-items: center
@@ -163,8 +215,14 @@ export default {
           color: $color-text-l
           .icon-add
             margin-right: .1rem
-            font-size: $font-size-small-s
+            font-size: $font-size-small
             transform : rotate(45deg)
           .text
-            font-size: $font-size-small
+            font-size: $font-size-medium
+      .list-close
+        text-align: center
+        line-height: 1rem
+        background: $color-background
+        font-size: $font-size-medium-x
+        color: $color-text-l
 </style>

@@ -24,6 +24,7 @@ export default {
   },
   setCurrentIndex(state, index) {
     state.currentIndex = index
+    state.playing = true          // 因为改变了currentSong会自动播放，所以必须设置为true
   },
 
   setDisc(state, songs) {

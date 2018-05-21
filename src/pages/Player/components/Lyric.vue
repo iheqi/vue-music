@@ -55,7 +55,7 @@ export default {
           observer: true                    // 这里会在自身或父级元素dom变化时刷新一次
       },
       playingLine: '',
-      timer: null
+      // timer: null
     }
   },
   props: {
@@ -105,11 +105,9 @@ export default {
 
     },
     handleLyric({lineNum, txt}) {   // 歌词行数改变时，调用回调还有参数(但最后一行歌词时有点问题，还没解决)
-      if (this.timer) {
-        clearTimeout(this.timer)
-      }
+
       console.log(txt, lineNum)
-      setTimeout(() => {  
+
         this.currentLineNum = lineNum
         if (lineNum > 6) {
           let lineEl = this.$refs.lyricLine[lineNum - 6]  // 6行约中间
@@ -118,12 +116,12 @@ export default {
           this.scroll.scrollTo(0, 0, 1000)
         }
         this.playingLine = txt
-      }, 500)
     },
     reset() {
       this.currentLyric.stop()
       this.playingLyric = ''
       this.currentLineNum = 0    // 这套api没用啊,直接全置0了好了
+      this.currentLyric = null   // 这句很重要。。
     }
   },
   mounted () {

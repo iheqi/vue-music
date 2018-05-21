@@ -34,9 +34,9 @@ export default {
         index = this.playlist.length - 1
       }
       this.setCurrentIndex(index)
-      if (!this.playing) {      // 解决其暂停状态下点击时播放而图标没变化
+      /* if (!this.playing) {      // 解决其暂停状态下点击时自动播放而图标没变化（已在mutations在设置）
         this.togglePlaying()
-      }
+      } */
     },
     nextSong() {
       let index = this.currentIndex + 1
@@ -44,9 +44,9 @@ export default {
         index = 0
       }
       this.setCurrentIndex(index)
-      if (!this.playing) {
+      /* if (!this.playing) {
         this.togglePlaying()
-      }
+      } */
     },
     setIconMode() {
       this.setMode()
