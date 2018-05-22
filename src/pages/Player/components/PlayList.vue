@@ -3,7 +3,7 @@
     <div class="list-wrapper" @click.stop>
       <div class="list-header">
         <h1 class="header">
-          <i class="mode iconfont" v-html="iconMode"></i>
+          <i class="mode iconfont" v-html="iconMode" @click="setMode"></i>
           <p class="text" v-html="modeText"></p>
           <i class="clear iconfont" @click="showConfirm">&#xe72f;</i>
         </h1>
@@ -49,9 +49,11 @@
 import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 import Bscroll from 'better-scroll'
 import Confirm from '@/components/confirm/Confirm'
+import { playMixin } from '@/providers/mixins'
 
 export default {
   name: 'PlayList',
+  mixins: [playMixin],
   data () {
     return {
       showFlag: false
@@ -77,7 +79,7 @@ export default {
     selectItem(item, index) {
        this.setCurrentIndex(index)
     },  
-    ...mapMutations(['setCurrentIndex']),
+    ...mapMutations(['setCurrentIndex', 'setMode']),
     ...mapActions(['deleteSong', 'clearPlayList']),
     scrollToCurrent(currentSong) {             // 滚动当前歌曲在顶部
       const index = this.playlist.findIndex((song) => {
@@ -102,20 +104,7 @@ export default {
     } 
   },
   computed: {
-    iconMode() {
-      let iconMode = '&#xe649;'
-      switch (this.mode) {
-        case 1: 
-          iconMode = '&#xe649;'
-          break
-        case 2:
-          iconMode = '&#xe721;'
-          break
-        case 3:
-          iconMode = '&#xe613;'
-      }
-      return iconMode
-    },
+    
     modeText() {
       let modeText = '顺序播放'
       switch (this.mode) {

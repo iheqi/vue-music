@@ -1,7 +1,7 @@
 <template>
   <div class="operators">
     <div class="icon i-left">
-      <i class="iconfont" v-html="iconMode" @click="setIconMode"></i>
+      <i class="iconfont" v-html="iconMode" @click="setMode"></i>
     </div>
     <div class="icon i-left">
       <i class="iconfont" @click="preSong">&#xe610;</i>
@@ -20,9 +20,10 @@
 
 <script>
 import { mapMutations, mapGetters, mapState } from  'vuex'
-
+import { playMixin } from '@/providers/mixins'
 export default {
   name: 'Operators',
+  mixins: [playMixin],
   methods: {
     ...mapMutations(['setPlaying', 'setCurrentIndex', 'setMode']),
     togglePlaying () {
@@ -48,10 +49,6 @@ export default {
         this.togglePlaying()
       } */
     },
-    setIconMode() {
-      this.setMode()
-    },
-    
     orderPlay() {
       if (this.currentIndex === this.playlist.length-1) {
         this.togglePlaying()
@@ -70,21 +67,6 @@ export default {
     ...mapState(['playing', 'currentIndex', 'playlist', 'mode']),
     ifPlaying() {
       return this.playing ? '&#xe600;' : '&#xe63a;'
-    },
-    
-    iconMode() {
-      let iconMode = '&#xe649;'
-      switch (this.mode) {
-        case 1: 
-          iconMode = '&#xe649;'
-          break
-        case 2:
-          iconMode = '&#xe721;'
-          break
-        case 3:
-          iconMode = '&#xe613;'
-      }
-      return iconMode
     }
   },
   watch: {
