@@ -30,7 +30,7 @@
       </div>
 
       <div class="list-operate">
-        <div class="add">
+        <div class="add" @click="addSong">
           <i class="iconfont icon-add">&#xe620;</i>
           <span class="text">添加歌曲到队列</span>
         </div>
@@ -41,6 +41,7 @@
       </div>
 
       <confirm ref="confirm" @confirm='confirmClear'></confirm>
+      <add-song ref="addSong"></add-song>
     </div>
   </div>
 </template>
@@ -50,6 +51,8 @@ import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 import Bscroll from 'better-scroll'
 import Confirm from '@/components/confirm/Confirm'
 import { playMixin } from '@/providers/mixins'
+import AddSong from '@/components/add-song/AddSong'
+
 
 export default {
   name: 'PlayList',
@@ -101,6 +104,9 @@ export default {
     confirmClear() {
       this.clearPlayList()
       this.hide()
+    },
+    addSong() {
+      this.$refs.addSong.show()
     } 
   },
   computed: {
@@ -137,7 +143,8 @@ export default {
     }
   },
   components: {
-    Confirm
+    Confirm,
+    AddSong
   }
 }
 </script>

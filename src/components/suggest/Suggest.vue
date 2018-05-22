@@ -164,10 +164,10 @@ export default {
 @import '~styles/variables'
 @import '~styles/mixins'
   .suggest
-    position: fixed
+    position: absolute
     overflow : hidden
     width: 100%
-    top: 3.4rem
+    top: 0
     bottom: 0
     .suggest-list
       padding: 0 .5rem

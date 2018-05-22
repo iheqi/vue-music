@@ -31,9 +31,6 @@ export default {
     }
   },
   created () {
-    /* (newVal) => {    // 为何不直接监听
-      this.$emit('query', newVal)
-    } */
     this.$watch('query', debounce((newVal) => {    // 节流
       this.$emit('query', newVal)
     }, 200))

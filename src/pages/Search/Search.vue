@@ -51,9 +51,11 @@ import { getHotKey } from '@/providers/search'
 import { mapActions, mapState } from 'vuex'
 import SearchList from '@/components/search-list/SearchList'
 import Bscroll from 'better-scroll'
+import { searchMixin } from '@/providers/mixins'
 
 export default {
   name: 'Search',
+  mixins: [searchMixin],
   components: {
     SearchBox,
     Suggest,
@@ -71,7 +73,6 @@ export default {
   data() {
     return {
       hotKey: [],
-      query: '',
     }
   },
   methods: {
@@ -82,26 +83,7 @@ export default {
         }
       })
     },
-    addQuery(key) {                        // 点击热门搜索的关键词时
-      this.$refs.searchBox.setQuery(key)   // 组件上的方法即公共接口，可以这样调用子组件方法（组件一定要获取对啊，fuck）
-      console.log(key)
-    },                                     // 子组件调用父组件则是：this.$parent
-
-    queryChange(query) {
-      this.query = query
-    },
-
-    saveHistory() {
-      this.setSearchHistory(this.query)
-      console.log(this.searchHistory)
-    },
-    ...mapActions(['setSearchHistory', 'deleteSearchHistory', 'clearSearchHistory']),
-    deleteOne(query) {
-      this.deleteSearchHistory(query)
-    },
-    /* clearAll() {    // 单纯的调用的话那直接用就好了
-      this.clearSearchHistory()
-    } */
+    ...mapActions(['clearSearchHistory']),
 
     showConfirm() {
       this.$refs.confirm.show()
@@ -164,6 +146,11 @@ export default {
             flex: 1
           .delete
             padding: .1rem
+    .search-result-wrapper
+      position: fixed
+      top: 3.4rem
+      bottom: 0
+      width: 100%
     
 </style>
 
