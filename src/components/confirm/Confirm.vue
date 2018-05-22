@@ -4,7 +4,7 @@
       <div class="confirm-wrapper">
         <div class="content">
           
-          <p class="text">清空历史？</p>
+          <p class="text">{{text}}</p>
 
           <div class="operate">
             <div class="operate-btn border-top  left" @click="hide()">取消</div>
@@ -20,7 +20,9 @@
 export default {
   name: 'Confirm',
   props: {
-
+    text: {
+      default: '确定清空？'
+    }
   },
   data () {
     return {

@@ -39,7 +39,7 @@
   </div>
 </template>
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapMutations } from 'vuex'
 import Lyric from 'lyric-parser'
 import Bscroll from 'better-scroll'
 
@@ -69,12 +69,21 @@ export default {
     }
   },
   watch: {
-    currentSong(val) {
+    currentSong(newSong, oldSong) {
+      if (!newSong.id) {
+        return
+      }
+      if (newSong.id === oldSong.id) {
+        return
+      }
       if (this.currentLyric) {
         /* this.currentLyric.stop()   // play()api是用定时器实现的，在换歌时清除之前的，防止跳动*/
         this.reset()
       }
-      this.getLyric()
+      clearTimeout(this.timer)
+      this.timer = setTimeout(() => {
+        this.getLyric()
+      }, 1000)
     },
     playing() {
       if (this.currentLyric) {
@@ -89,6 +98,9 @@ export default {
   },
   methods: {
     getLyric() {
+      if (!this.currentSong) {
+        return
+      }
       this.currentSong.getLyric().then((lyric) => {
         if (this.currentSong.lyric !== lyric) {
           return
@@ -122,7 +134,8 @@ export default {
       this.playingLyric = ''
       this.currentLineNum = 0    // 这套api没用啊,直接全置0了好了
       this.currentLyric = null   // 这句很重要。。
-    }
+    },
+    ...mapMutations(['setPlaying'])
   },
   mounted () {
     this.$nextTick(() => {
@@ -135,15 +148,14 @@ export default {
         }
       }) */
 
-      this.$nextTick(() => {
-        this.bus.$on('percentChange', (percent) => {
-          this.currentLyric.seek(this.currentSong.duration * percent * 1000)
-        })
+      this.bus.$on('percentChange', (percent) => {
+        this.currentLyric.seek(this.currentSong.duration * percent * 1000)
       })
-    }),
-    this.bus.$on('ended', () => {
-      this.currentLyric.seek(0)       // 解决loop时歌曲结束歌词不滚
+      this.bus.$on('ended', () => {
+        this.currentLyric.seek(0)       // 解决loop时歌曲结束歌词不滚
+      })
     })
+    
   }
 }
 </script>

@@ -5,12 +5,12 @@
         <h1 class="header">
           <i class="mode iconfont" v-html="iconMode"></i>
           <p class="text" v-html="modeText"></p>
-          <i class="clear iconfont">&#xe72f;</i>
+          <i class="clear iconfont" @click="showConfirm">&#xe72f;</i>
         </h1>
       </div>
 
       <div class="list-content" ref="content">
-        <ul>
+        <transition-group name="list" tag="ul">
           <li class="item" v-for="(item, index) of playlist" 
             :key="item.id" 
             @click="selectItem(item, index)"
@@ -22,11 +22,11 @@
               <i class="iconfont icon-like">&#xe612;</i>
             </span>
 
-            <span class="delete">
+            <span class="delete" @click.stop="deleteOne(item)">
               <i class="iconfont icon-d">&#xe620;</i>
             </span>
           </li>
-        </ul>
+        </transition-group>
       </div>
 
       <div class="list-operate">
@@ -39,13 +39,16 @@
       <div @click="hide" class="list-close">
         <span>关闭</span>
       </div>
+
+      <confirm ref="confirm" @confirm='confirmClear'></confirm>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations } from 'vuex'
+import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 import Bscroll from 'better-scroll'
+import Confirm from '@/components/confirm/Confirm'
 
 export default {
   name: 'PlayList',
@@ -60,7 +63,7 @@ export default {
       setTimeout(() => {        // 解决换歌后无法滚动
         this.scroll.refresh()
       }, 20)
-      this.scrollToCurrent(newSong)
+      this.scrollToCurrent(this.currentSong)
     },
     hide() {
       this.showFlag = false
@@ -75,6 +78,7 @@ export default {
        this.setCurrentIndex(index)
     },  
     ...mapMutations(['setCurrentIndex']),
+    ...mapActions(['deleteSong', 'clearPlayList']),
     scrollToCurrent(currentSong) {             // 滚动当前歌曲在顶部
       const index = this.playlist.findIndex((song) => {
         return currentSong.id === song.id
@@ -82,6 +86,19 @@ export default {
       setTimeout(() => {
         this.scroll.scrollToElement(this.$refs.liItem[index], 500)
       }, 100)
+    },
+    deleteOne(item) {
+      this.deleteSong(item)
+      if (this.playlist.length === 0) {    // 解决删没了歌曲
+        this.hide()
+      }
+    },
+    showConfirm() {
+      this.$refs.confirm.show()
+    },
+    confirmClear() {
+      this.clearPlayList()
+      this.hide()
     } 
   },
   computed: {
@@ -129,6 +146,9 @@ export default {
       }
       this.scrollToCurrent(newSong)
     }
+  },
+  components: {
+    Confirm
   }
 }
 </script>
@@ -177,6 +197,12 @@ export default {
           align-items: center
           height: .8rem
           padding: 0 .6rem 0 .4rem
+          &.list-enter-active, &.list-leave-active
+            transition: all 0.1s
+          &.list-enter, &.list-leave-to
+            height: 0
+            // font-size : 0
+            // transform : scaleY(0)
           .current
             flex: 0 0 .4rem
             width: .4rem

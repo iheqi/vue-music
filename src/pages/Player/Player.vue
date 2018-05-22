@@ -33,11 +33,15 @@ export default {
   
   watch: {
     currentSong() {
-      setTimeout(() => {   // 处理从后台切回的情况
-        this.$refs.audio.play()
-      }, 1000)
+      if (this.playing) {       // fuck，歌都删完了还播放的原因
+        setTimeout(() => {      // 处理从后台切回的情况
+          this.$refs.audio.play()
+          console.log('fuck')
+        }, 1000)
+      }
     },
     playing(newVal) {
+      console.log(newVal)
       const audio = this.$refs.audio
       this.$nextTick(() => {
         newVal ? audio.play() : audio.pause()
