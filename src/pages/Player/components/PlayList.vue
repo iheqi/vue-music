@@ -1,49 +1,51 @@
 <template>
-  <div class="playlist" v-show="showFlag" @click='hide'>
-    <div class="list-wrapper" @click.stop>
-      <div class="list-header">
-        <h1 class="header">
-          <i class="mode iconfont" v-html="iconMode" @click="setMode"></i>
-          <p class="text" v-html="modeText"></p>
-          <i class="clear iconfont" @click="showConfirm">&#xe72f;</i>
-        </h1>
-      </div>
-
-      <div class="list-content" ref="content">
-        <transition-group name="list" tag="ul">
-          <li class="item" v-for="(item, index) of playlist" 
-            :key="item.id" 
-            @click="selectItem(item, index)"
-            ref="liItem"
-          >
-            <i class="current iconfont" v-html="getCurrentIcon(item)"></i>
-            <p class="text">{{item.name}}</p>
-            <span class="like">
-              <i class="iconfont icon-like">&#xe612;</i>
-            </span>
-
-            <span class="delete" @click.stop="deleteOne(item)">
-              <i class="iconfont icon-d">&#xe620;</i>
-            </span>
-          </li>
-        </transition-group>
-      </div>
-
-      <div class="list-operate">
-        <div class="add" @click="addSong">
-          <i class="iconfont icon-add">&#xe620;</i>
-          <span class="text">添加歌曲到队列</span>
+  <transition name="list-fade">
+    <div class="playlist" v-show="showFlag" @click='hide'>
+      <div class="list-wrapper" @click.stop>
+        <div class="list-header">
+          <h1 class="header">
+            <i class="mode iconfont" v-html="iconMode" @click="setMode"></i>
+            <p class="text" v-html="modeText"></p>
+            <i class="clear iconfont" @click="showConfirm">&#xe72f;</i>
+          </h1>
         </div>
-      </div>
 
-      <div @click="hide" class="list-close">
-        <span>关闭</span>
-      </div>
+        <div class="list-content" ref="content">
+          <transition-group name="list" tag="ul">
+            <li class="item" v-for="(item, index) of playlist" 
+              :key="item.id" 
+              @click="selectItem(item, index)"
+              ref="liItem"
+            >
+              <i class="current iconfont" v-html="getCurrentIcon(item)"></i>
+              <p class="text">{{item.name}}</p>
+              <span class="like">
+                <i class="iconfont icon-like">&#xe612;</i>
+              </span>
 
-      <confirm ref="confirm" @confirm='confirmClear'></confirm>
-      <add-song ref="addSong"></add-song>
+              <span class="delete" @click.stop="deleteOne(item)">
+                <i class="iconfont icon-d">&#xe620;</i>
+              </span>
+            </li>
+          </transition-group>
+        </div>
+
+        <div class="list-operate">
+          <div class="add" @click="addSong">
+            <i class="iconfont icon-add">&#xe620;</i>
+            <span class="text">添加歌曲到队列</span>
+          </div>
+        </div>
+
+        <div @click="hide" class="list-close">
+          <span>关闭</span>
+        </div>
+
+        <confirm ref="confirm" @confirm='confirmClear'></confirm>
+        <add-song ref="addSong"></add-song>
+      </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -161,6 +163,14 @@ export default {
     bottom: 0
     z-index: 200
     background-color: $color-background-d
+    &.list-fade-enter-active, &.list-fade-leave-active
+      transition: opacity 0.3s
+      .list-wrapper
+        transition: all 0.3s
+    &.list-fade-enter, &.list-fade-leave-to
+      opacity: 0
+      .list-wrapper       // 这是防止背景也跟着变换
+        transform: translate3d(0, 100%, 0)
     .list-wrapper
       position: absolute
       left: 0

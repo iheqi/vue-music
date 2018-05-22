@@ -10,7 +10,7 @@ const state = {
   currentIndex: -1,
   disc: {},
   topList: {},
-  searchHistory: loadSearch()
+  searchHistory: loadSearch(),
 }
 
 export default state

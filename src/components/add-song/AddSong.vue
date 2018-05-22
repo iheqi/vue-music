@@ -1,29 +1,32 @@
 <template>
-  <div class="add-song" v-show="showFlag" @click.stop>
-    <div class="header">
-      <h1 class="title">添加歌曲到列表</h1>
-      <div class="close" @click="hide">
-        <i class="icon-close iconfont">&#xe620;</i>
+  <transition name="slide">
+    <div class="add-song" v-show="showFlag" @click.stop>
+      <div class="header">
+        <h1 class="title">添加歌曲到列表</h1>
+        <div class="close" @click="hide">
+          <i class="icon-close iconfont">&#xe620;</i>
+        </div>
+      </div>
+
+      <div class="search-box-wrapper"> 
+        <search-box placeholder='搜索歌曲' @query='queryChange'></search-box>
+      </div>
+
+      <div class="shortcut" v-show="!query">
+        <switches :currentIndex='currentIndex' :switches='switches' @switch='switchItem'></switches>
+      </div>
+
+      <div class="search-result" v-show="query">
+        <suggest :query='query' :showSinger='false' @select="saveHistory"></suggest>
       </div>
     </div>
-
-    <div class="search-box-wrapper"> 
-      <search-box placeholder='搜索歌曲' @query='queryChange'></search-box>
-    </div>
-
-    <div class="shortcut" v-show="!query">
-
-    </div>
-
-    <div class="search-result" v-show="query">
-      <suggest :query='query' :showSinger='false' @select="saveHistory"></suggest>
-    </div>
-  </div>
+  </transition>
 </template>
 
 <script>
 import SearchBox from '@/components/search-box/SearchBox'
 import Suggest from '@/components/suggest/Suggest'
+import Switches from '@/components/switches/Switches'
 import { searchMixin } from '@/providers/mixins'
 
 export default {
@@ -31,6 +34,12 @@ export default {
   data() {
     return {
       showFlag: false,
+      currentIndex: 0,
+      switches: [{
+        name: '最近播放'
+      }, {
+        name: '搜索历史'
+      }]
     }
   },
   methods: {
@@ -40,11 +49,14 @@ export default {
     hide() {
       this.showFlag = false
     },
-
+    switchItem(index) {
+      this.currentIndex = index
+    }
   },
   components: {
     SearchBox,
-    Suggest
+    Suggest,
+    Switches
   }  
 }
 </script>
@@ -59,6 +71,10 @@ export default {
     width: 100%
     z-index: 200
     background: $color-background
+    &.slide-enter-active, &.slide-leave-active
+      transition: all 0.3s
+    &.slide-enter, &.slide-leave-to
+      transform: translateX(100%)
     .header
       position : relative
       height : .9rem
