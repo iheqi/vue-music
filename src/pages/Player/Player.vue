@@ -9,6 +9,7 @@
       @error="error" 
       @timeupdate="updateTime"
       @ended="end"
+      @play="ready"
     ></audio>
   </div>
 </template>
@@ -17,14 +18,15 @@
 import NormalPlayer from './components/NormalPlayer'
 import MiniPlayer from './components/MiniPlayer'
 import PlayList from './components/PlayList'
-import { mapMutations, mapState, mapGetters } from 'vuex'
+import { mapMutations, mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'Player',
   components: {
     NormalPlayer,
     MiniPlayer,
-    PlayList
+    PlayList,
+    //songReady: false,
   },
   computed: {
     ...mapState(['fullScreen', 'playlist', 'playing']),
@@ -67,11 +69,16 @@ export default {
       }
     },
     ...mapMutations(['setPlaying']),
+    ...mapActions(['setPlayHistory']),
     end () {
       this.bus.$emit('ended');
     },
     showPlayList() {
       this.$refs.playlist.show()
+    },
+    ready() {
+      //this.songReady = true
+      this.setPlayHistory(this.currentSong)
     }
   },
   mounted () {

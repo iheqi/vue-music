@@ -71,7 +71,6 @@ export default {
       this.$refs.bgImg.style['transform'] = `scale(1)`
     },
     openPlayer(item, index) {
-      console.log(this.songs)
       this.selectPlay({
         list: this.songs,
         index     // 传入当前歌单和所点击的歌的索引

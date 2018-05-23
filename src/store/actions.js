@@ -1,4 +1,4 @@
-import { saveSearch, deleteSearch, clearSearch } from '@/providers/cache'
+import { saveSearch, deleteSearch, clearSearch, savePlay } from '@/providers/cache'
 
 //  ES2015 的 参数解构 来简化代码，取出context中的commit方法，context相当于store。
 export default {
@@ -8,7 +8,8 @@ export default {
   deleteSearchHistory,
   clearSearchHistory,
   deleteSong,
-  clearPlayList
+  clearPlayList,
+  setPlayHistory
 }
 
 function selectPlay({ commit }, { list, index }) {
@@ -39,7 +40,7 @@ function insertSong({commit, state}, song) {  // 搞那么多逻辑
       playlist.splice(index + 1, 1)
     }
   }
-
+  console.log('insert', song)
   commit('setCurrentIndex', currentIndex)
   commit('setPlaylist', playlist)
   commit('setFullScreen', true)
@@ -90,5 +91,9 @@ function clearPlayList({commit}) {
   commit('setCurrentIndex', -1)
   commit('setPlaylist', [])
   commit('setPlaying', false)
+}
+
+function setPlayHistory({commit}, song) {
+  commit('setPlayHistory', savePlay(song))
 }
 

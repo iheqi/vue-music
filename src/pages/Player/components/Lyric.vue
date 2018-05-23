@@ -101,6 +101,7 @@ export default {
       if (!this.currentSong) {
         return
       }
+      console.log(this.currentSong, this.currentSong.getLyric)
       this.currentSong.getLyric().then((lyric) => {
         if (this.currentSong.lyric !== lyric) {
           return

@@ -37,5 +37,9 @@ export default {
 
   setSearchHistory(state, history) {
     state.searchHistory = history
+  },
+
+  setPlayHistory(state, history) {
+    state.playHistory = history
   }
 }

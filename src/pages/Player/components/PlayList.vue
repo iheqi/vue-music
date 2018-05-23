@@ -55,7 +55,6 @@ import Confirm from '@/components/confirm/Confirm'
 import { playMixin } from '@/providers/mixins'
 import AddSong from '@/components/add-song/AddSong'
 
-
 export default {
   name: 'PlayList',
   mixins: [playMixin],
@@ -69,8 +68,8 @@ export default {
       this.showFlag = true
       setTimeout(() => {        // 解决换歌后无法滚动
         this.scroll.refresh()
+        this.scrollToCurrent(this.currentSong)
       }, 20)
-      this.scrollToCurrent(this.currentSong)
     },
     hide() {
       this.showFlag = false
@@ -88,8 +87,10 @@ export default {
     ...mapActions(['deleteSong', 'clearPlayList']),
     scrollToCurrent(currentSong) {             // 滚动当前歌曲在顶部
       const index = this.playlist.findIndex((song) => {
+        console.log(song, currentSong)
         return currentSong.id === song.id
       })
+      console.log(index, this.$refs.liItem)
       setTimeout(() => {
         this.scroll.scrollToElement(this.$refs.liItem[index], 500)
       }, 100)

@@ -1,4 +1,4 @@
-import { loadSearch } from '@/providers/cache'
+import { loadSearch, loadPlay } from '@/providers/cache'
 
 const state = {
   singer: {},
@@ -11,6 +11,7 @@ const state = {
   disc: {},
   topList: {},
   searchHistory: loadSearch(),
+  playHistory: loadPlay()
 }
 
 export default state

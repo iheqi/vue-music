@@ -14,6 +14,15 @@
 
       <div class="shortcut" v-show="!query">
         <switches :currentIndex='currentIndex' :switches='switches' @switch='switchItem'></switches>
+        <div class="list-wrapper" ref="list-wrapper">
+          <div v-if="currentIndex === 0" class="song-list-wrapper" ref="song-list-wrapper">
+            <song-list :songs='playHistory' @openPlayer="selectSong"></song-list>
+          </div>
+
+          <div class="search-wrapper">
+
+          </div>
+        </div>
       </div>
 
       <div class="search-result" v-show="query">
@@ -28,6 +37,11 @@ import SearchBox from '@/components/search-box/SearchBox'
 import Suggest from '@/components/suggest/Suggest'
 import Switches from '@/components/switches/Switches'
 import { searchMixin } from '@/providers/mixins'
+import SongList from '@/components/song-list/SongList'
+import { mapState, mapActions } from 'vuex'
+import Bscroll from 'better-scroll'
+import SongModel from '@/providers/SongModel'
+
 
 export default {
   mixins: [searchMixin],
@@ -51,13 +65,30 @@ export default {
     },
     switchItem(index) {
       this.currentIndex = index
-    }
+    },
+    selectSong(song, index) {
+      if (index !== 0) {
+        this.insertSong(new SongModel(song))
+      }
+    },
+    ...mapActions(['insertSong'])
   },
   components: {
     SearchBox,
     Suggest,
-    Switches
-  }  
+    Switches,
+    SongList
+  },
+  computed: {
+    ...mapState(['playHistory'])  
+  },
+  mounted() {
+    setTimeout(() => {
+      this.scroll = new Bscroll(this.$refs['song-list-wrapper'], {
+        click: true
+      })
+    }, 200)
+  }
 }
 </script>
 
@@ -94,6 +125,16 @@ export default {
           color: $color-theme
     .search-box-wrapper
       margin: .4rem
+    .shortcut
+      .list-wrapper
+        position: absolute
+        top: 3.3rem
+        bottom: 0
+        width: 100%
+        overflow: hidden
+        .song-list-wrapper
+          height: 100%
+          
     .search-result
       position: fixed
       top: 2.5rem

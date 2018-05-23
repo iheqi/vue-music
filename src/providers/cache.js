@@ -1,9 +1,20 @@
 import LocalForage from 'localforage';
 
 const MAX_LEN = 15
+const PLAY_MAX_LEN = 30
 
-function insertSearch(arr, val, maxLen) {
-  let index = arr.indexOf(val)
+function insertArray(arr, val, maxLen) {
+  let index = 0
+  console.log(typeof val, typeof val === 'object')
+  if (typeof val === 'object') {
+    index = arr.findIndex((a) => {
+      console.log(a.id, val.id, index)
+      return a.id === val.id
+    })
+    
+  } else {
+    index = arr.indexOf(val)
+  }
 
   if (index === 0) {
     return 
@@ -18,59 +29,75 @@ function insertSearch(arr, val, maxLen) {
 }
 
 /* export function saveSearchHistory(query) {
-  LocalForage.getItem('searchs').then((err, searchs) => {  // 返回一个promise，回调函数两个参数为err， val
-    console.log(searchs)
-    console.log(typeof searchs)
+  LocalForage.getItem('searches').then((err, searches) => {  // 返回一个promise，回调函数两个参数为err， val
+    console.log(searches)
+    console.log(typeof searches)
     
-    if (typeof searchs === 'undefined') {
-      searchs = []
+    if (typeof searches === 'undefined') {
+      searches = []
     }
-    insertSearchHistory(searchs, query, MAX_LEN)
-    console.log(searchs)
+    insertArrayHistory(searches, query, MAX_LEN)
+    console.log(searches)
     
-    let s = searchs
+    let s = searches
 
     console.log(s)
 
-    LocalForage.setItem('searchs', s).then(() => {   // 不知为何searchs始终为undefined
-      LocalForage.getItem('searchs').then((err, searchs) => {
-        console.log(searchs)
+    LocalForage.setItem('searches', s).then(() => {   // 不知为何searches始终为undefined
+      LocalForage.getItem('searches').then((err, searches) => {
+        console.log(searches)
       })
-      return searchs
+      return searches
     })
 
   })
 } */
 
 export function saveSearch(query) {
-  let searchs = JSON.parse(localStorage.getItem('searchs'))
+  let searches = JSON.parse(localStorage.getItem('searches'))
 
-  if (!searchs) {
-    searchs = []
+  if (!searches) {
+    searches = []
   }
 
-  insertSearch(searchs, query, MAX_LEN)
-  localStorage.setItem('searchs', JSON.stringify(searchs))
+  insertArray(searches, query, MAX_LEN)
+  localStorage.setItem('searches', JSON.stringify(searches))
 
-  return JSON.parse(localStorage.getItem('searchs'))
+  return JSON.parse(localStorage.getItem('searches'))
 }
 
 export function loadSearch() {   // 用在state中
-  return JSON.parse(localStorage.getItem('searchs'))
+  return JSON.parse(localStorage.getItem('searches'))
 }
 
 
 export function deleteSearch(query) {
-  let searchs = loadSearch()
-  let index = searchs.indexOf(query)
+  let searches = loadSearch()
+  let index = searches.indexOf(query)
 
-  searchs.splice(index, 1)
+  searches.splice(index, 1)
 
-  localStorage.setItem('searchs', JSON.stringify(searchs))
-  return JSON.parse(localStorage.getItem('searchs'))
+  localStorage.setItem('searches', JSON.stringify(searches))
+  return JSON.parse(localStorage.getItem('searches'))
 }
 
 export function clearSearch() {
   localStorage.clear()
   return []
+}
+
+export function loadPlay() {
+  return JSON.parse(localStorage.getItem('songs'))
+}
+
+export function savePlay(song) {
+  let songs = loadPlay()
+  if (!songs) {
+    songs = []
+  }
+
+  insertArray(songs, song, PLAY_MAX_LEN)
+  localStorage.setItem('songs', JSON.stringify(songs))
+
+  return JSON.parse(localStorage.getItem('songs'))
 }
