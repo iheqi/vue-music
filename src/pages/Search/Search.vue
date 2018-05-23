@@ -89,9 +89,6 @@ export default {
       this.$refs.confirm.show()
     }
   },
-  computed: {
-    ...mapState(['searchHistory'])
-  },
   watch: {
     query(newQuery) {
       if (!newQuery) {    // 解决从搜索结果中返回时搜索历史无法滚动的问题（为什么无法滚动又没说清楚靠）

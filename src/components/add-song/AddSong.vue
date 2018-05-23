@@ -9,18 +9,18 @@
       </div>
 
       <div class="search-box-wrapper"> 
-        <search-box placeholder='搜索歌曲' @query='queryChange'></search-box>
+        <search-box placeholder='搜索歌曲' @query='queryChange' ref="searchBox"></search-box>
       </div>
 
       <div class="shortcut" v-show="!query">
         <switches :currentIndex='currentIndex' :switches='switches' @switch='switchItem'></switches>
         <div class="list-wrapper" ref="list-wrapper">
-          <div v-if="currentIndex === 0" class="song-list-wrapper" ref="song-list-wrapper">
+          <div v-show="currentIndex===0" class="song-list-wrapper" ref="song-list-wrapper">
             <song-list :songs='playHistory' @openPlayer="selectSong"></song-list>
           </div>
 
-          <div class="search-wrapper">
-
+          <div class="search-wrapper" v-show="currentIndex===1">
+            <search-list @delete='deleteSearchHistory' @select="addQuery" :searches='searchHistory'></search-list>
           </div>
         </div>
       </div>
@@ -41,7 +41,7 @@ import SongList from '@/components/song-list/SongList'
 import { mapState, mapActions } from 'vuex'
 import Bscroll from 'better-scroll'
 import SongModel from '@/providers/SongModel'
-
+import SearchList from '@/components/search-list/SearchList'
 
 export default {
   mixins: [searchMixin],
@@ -59,6 +59,9 @@ export default {
   methods: {
     show() {
       this.showFlag = true
+      setTimeout(() => {      // 页面事先隐藏时，scroll已经计算好了，显示时需要刷新一下
+        this.scroll.refresh()
+      }, 20)
     },
     hide() {
       this.showFlag = false
@@ -77,17 +80,16 @@ export default {
     SearchBox,
     Suggest,
     Switches,
-    SongList
+    SongList,
+    SearchList
   },
   computed: {
     ...mapState(['playHistory'])  
   },
   mounted() {
-    setTimeout(() => {
-      this.scroll = new Bscroll(this.$refs['song-list-wrapper'], {
-        click: true
-      })
-    }, 200)
+    this.scroll = new Bscroll(this.$refs['song-list-wrapper'], {
+      click: true
+    })
   }
 }
 </script>
@@ -134,7 +136,8 @@ export default {
         overflow: hidden
         .song-list-wrapper
           height: 100%
-          
+        .search-wrapper
+          padding: .4rem .6rem
     .search-result
       position: fixed
       top: 2.5rem

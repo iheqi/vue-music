@@ -26,7 +26,11 @@ export const searchMixin = {
       query: ''
     }
   },
+  computed: {
+    ...mapState(['searchHistory'])
+  },
   methods: {
+    
     ...mapActions(['setSearchHistory', 'deleteSearchHistory']),
     queryChange(query) {
       this.query = query
