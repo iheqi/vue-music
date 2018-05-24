@@ -9,7 +9,9 @@ export default {
   clearSearchHistory,
   deleteSong,
   clearPlayList,
-  setPlayHistory
+  setPlayHistory,
+  setFavoriteList,
+  deleteFavoriteList
 }
 
 function selectPlay({ commit }, { list, index }) {

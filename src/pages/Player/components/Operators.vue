@@ -12,14 +12,14 @@
     <div class="icon i-right">
       <i class="iconfont" @click="nextSong">&#xe611;</i>
     </div>
-    <div class="icon i-right">
-      <i class="iconfont">&#xe612;</i>
+    <div class="icon i-right" @click="toggleFavorite(currentSong)">
+      <i class="iconfont like" v-html="getFavoriteIcon(currentSong)"></i>
     </div>
   </div>
 </template>
 
 <script>
-import { mapMutations, mapGetters, mapState } from  'vuex'
+import { mapMutations, mapState } from  'vuex'
 import { playMixin } from '@/providers/mixins'
 export default {
   name: 'Operators',
@@ -125,5 +125,9 @@ export default {
           font-size: .78rem
       .i-right
         text-align: left
+        .like
+          color : $color-sub-theme
+          font-weight: 1000
+          font-size : .6rem
         
 </style>

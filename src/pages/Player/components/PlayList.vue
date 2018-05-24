@@ -19,8 +19,8 @@
             >
               <i class="current iconfont" v-html="getCurrentIcon(item)"></i>
               <p class="text">{{item.name}}</p>
-              <span class="like">
-                <i class="iconfont icon-like">&#xe612;</i>
+              <span class="like" @click.stop="toggleFavorite(item)">
+                <i class="iconfont icon-like" v-html="getFavoriteIcon(item)"></i>
               </span>
 
               <span class="delete" @click.stop="deleteOne(item)">
@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import Bscroll from 'better-scroll'
 import Confirm from '@/components/confirm/Confirm'
 import { playMixin } from '@/providers/mixins'
@@ -130,7 +130,6 @@ export default {
       return modeText
     },
     ...mapState(['mode', 'playlist']),
-    ...mapGetters(['currentSong']),
      
   },
   mounted () {

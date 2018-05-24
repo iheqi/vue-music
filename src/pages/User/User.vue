@@ -1,7 +1,7 @@
 <template>
   <transition name="slide">
     <div class="user-center">
-      <div class="back">
+      <div class="back" @click="back">
         <i class="iconfont back-icon">&#xe60a;</i>
       </div>
 
@@ -13,8 +13,14 @@
         <i class="play-icon"></i>
       </div>
 
-      <div class="list-wrapper">
+      <div class="list-wrapper" ref="list-wrapper">
+        <div v-show="currentIndex===0" class="song-list-wrapper">
+          <song-list :songs='favoriteList' @openPlayer="selectSong"></song-list>
+        </div>
 
+        <div class="song-list-wrapper" v-show="currentIndex===1" ref="song-list-wrapper">
+          <song-list :songs='playHistory' @openPlayer="selectSong"></song-list>
+        </div>
       </div>
     </div>
   </transition>
@@ -23,6 +29,10 @@
 
 <script>
 import Switches from '@/components/switches/Switches'
+import { mapState, mapActions } from 'vuex'
+import SongList from '@/components/song-list/SongList'
+import SongModel from '@/providers/SongModel'
+import Bscroll from 'better-scroll'
 
 export default {
   name: 'User',
@@ -33,12 +43,35 @@ export default {
     }
   },
   components: {
-    Switches
+    Switches,
+    SongList
   },
   methods: {
     switchItem(index) {
       this.currentIndex = index
+      setTimeout(() => {      // 页面事先隐藏时，scroll已经计算好了，显示时需要刷新一下
+        this.scroll.refresh()
+      }, 20)
+    },
+    selectSong(song) {
+      this.insertSong(new SongModel(song))
+    },
+    ...mapActions(['insertSong']),
+    back() {
+      this.$router.back()
     }
+  },
+  computed: {
+    ...mapState(['favoriteList', 'playHistory'])
+  },
+  mounted() {
+    this.$nextTick(() => {
+      setTimeout(() => {
+        this.scroll = new Bscroll(this.$refs['song-list-wrapper'], {
+          click: true
+        })
+      }, 1000)
+    })
   }
 }
 </script>
@@ -69,4 +102,13 @@ export default {
         color: $color-theme
     .switches-wrapper
       margin: .2rem 0 .6rem 0
+    
+    .list-wrapper
+      position: absolute
+      top: 1.3rem
+      bottom: 0
+      width: 100%
+      overflow: hidden
+      .song-list-wrapper
+        height: 100%
 </style>
