@@ -1,4 +1,4 @@
-import { saveSearch, deleteSearch, clearSearch, savePlay } from '@/providers/cache'
+import { saveSearch, deleteSearch, clearSearch, savePlay, saveFavorite, deleteFavorite } from '@/providers/cache'
 
 //  ES2015 的 参数解构 来简化代码，取出context中的commit方法，context相当于store。
 export default {
@@ -94,4 +94,17 @@ function clearPlayList({commit}) {
 function setPlayHistory({commit}, song) {
   commit('setPlayHistory', savePlay(song))
 }
+
+/* 收藏列表 */
+function setFavoriteList({commit}, song) {
+  commit('setFavoriteList', saveFavorite(song))
+}
+
+function deleteFavoriteList({commit}, song) {
+  commit('setFavoriteList', deleteFavorite(song))
+}
+
+
+
+
 

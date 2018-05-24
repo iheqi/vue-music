@@ -2,6 +2,7 @@ import LocalForage from 'localforage';
 
 const MAX_LEN = 15
 const PLAY_MAX_LEN = 30
+const FAVORITE_MAX_LEN = 200
 
 function insertArray(arr, val, maxLen) {
   let index = 0
@@ -48,32 +49,32 @@ function insertArray(arr, val, maxLen) {
   })
 } */
 
-export function saveSearch(query) {
-  let searches = JSON.parse(localStorage.getItem('searches'))
-
-  if (!searches) {
-    searches = []
+export function loadCache(key) {
+  let result = JSON.parse(localStorage.getItem(key))
+  if (!result) {
+    result = []
   }
+  return result
+}
+
+/* 搜索历史 */
+export function saveSearch(query) {
+  let searches = loadCache('searches')
 
   insertArray(searches, query, MAX_LEN)
   localStorage.setItem('searches', JSON.stringify(searches))
 
-  return JSON.parse(localStorage.getItem('searches'))
+  return loadCache('searches')
 }
-
-export function loadSearch() {   // 用在state中
-  return JSON.parse(localStorage.getItem('searches'))
-}
-
 
 export function deleteSearch(query) {
-  let searches = loadSearch()
+  let searches = loadCache('searches')
   let index = searches.indexOf(query)
 
   searches.splice(index, 1)
 
   localStorage.setItem('searches', JSON.stringify(searches))
-  return JSON.parse(localStorage.getItem('searches'))
+  return loadCache('searches')
 }
 
 export function clearSearch() {
@@ -81,18 +82,36 @@ export function clearSearch() {
   return []
 }
 
-export function loadPlay() {
-  return JSON.parse(localStorage.getItem('songs'))
-}
+/* 播放历史 */
 
 export function savePlay(song) {
-  let songs = loadPlay()
-  if (!songs) {
-    songs = []
-  }
+  let songs = loadCache('songs')
 
   insertArray(songs, song, PLAY_MAX_LEN)
   localStorage.setItem('songs', JSON.stringify(songs))
 
-  return JSON.parse(localStorage.getItem('songs'))
+  return loadCache('songs')
+}
+
+/* 收藏列表 */
+
+
+export function saveFavorite(song) {
+  let songs = loadCache('favorite')
+
+  insertArray(songs, song, FAVORITE_MAX_LEN)
+  localStorage.setItem('favorite', JSON.stringify(songs))
+  return loadCache('favorite')
+}
+
+export function deleteFavorite(song) {
+  let songs = loadCache('favorite')
+  let index = songs.findIndex((s) => {
+    return s.id = song.id
+  })
+  if (index > -1) {
+    songs.splice(index, 1)
+  }
+  localStorage.setItem('favorite', JSON.stringify(songs))
+  return loadCache('favorite')
 }
