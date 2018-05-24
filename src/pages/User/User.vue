@@ -22,6 +22,10 @@
           <song-list :songs='playHistory' @openPlayer="selectSong"></song-list>
         </div>
       </div>
+
+      <div class="no-result-wrapper">
+        <no-result v-show="noResult" :title="noResultTitle"></no-result>
+      </div>
     </div>
   </transition>
 </template>
@@ -33,6 +37,8 @@ import { mapState, mapActions } from 'vuex'
 import SongList from '@/components/song-list/SongList'
 import SongModel from '@/providers/SongModel'
 import Bscroll from 'better-scroll'
+import NoResult from '@/components/no-result/NoResult'
+
 
 export default {
   name: 'User',
@@ -44,7 +50,8 @@ export default {
   },
   components: {
     Switches,
-    SongList
+    SongList,
+    NoResult
   },
   methods: {
     switchItem(index) {
@@ -62,7 +69,21 @@ export default {
     }
   },
   computed: {
-    ...mapState(['favoriteList', 'playHistory'])
+    ...mapState(['favoriteList', 'playHistory']),
+    noResult() {
+      if (this.currentIndex === 0) {
+        return !this.favoriteList.length
+      } else {
+        return !this.playHistory.length
+      }
+    },
+    noResultTitle() {
+      if (this.currentIndex === 0) {
+        return '暂无收藏歌曲'
+      } else {
+        return '你还没有听过歌曲'
+      }
+    }
   },
   mounted() {
     this.$nextTick(() => {
@@ -111,4 +132,9 @@ export default {
       overflow: hidden
       .song-list-wrapper
         height: 100%
+    .no-result-wrapper
+      position: absolute
+      width: 100%
+      top: 50%
+      transform: translateY(-50%)
 </style>
