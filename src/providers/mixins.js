@@ -43,7 +43,6 @@ export const searchMixin = {
     },
     addQuery(key) {                        // 点击热门搜索的关键词时
       this.$refs.searchBox.setQuery(key)   // 组件上的方法即公共接口，可以这样调用子组件方法（组件一定要获取对啊，fuck）
-      console.log(key)
     },                                     // 子组件调用父组件则是：this.$parent
   }
 

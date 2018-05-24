@@ -67,8 +67,10 @@ export default {
     show() {
       this.showFlag = true
       setTimeout(() => {        // 解决换歌后无法滚动
-        this.scroll.refresh()
         this.scrollToCurrent(this.currentSong)
+        setTimeout(() => {
+          this.scroll.refresh()
+        }, 2000)
       }, 20)
     },
     hide() {
@@ -87,7 +89,6 @@ export default {
     ...mapActions(['deleteSong', 'clearPlayList']),
     scrollToCurrent(currentSong) {             // 滚动当前歌曲在顶部
       const index = this.playlist.findIndex((song) => {
-        console.log(song, currentSong)
         return currentSong.id === song.id
       })
       console.log(index, this.$refs.liItem)

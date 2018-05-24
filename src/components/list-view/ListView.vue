@@ -57,7 +57,6 @@ export default {
         height += li.offsetHeight
         this.listHeight.push(height)
       }
-      console.log(this.listHeight)
     },
     scrollAlpha() {
 
@@ -69,7 +68,6 @@ export default {
         let height2 = list[i + 1]
         if (scrollTop >= height1 && scrollTop < height2) {
           this.$emit('scrollList', i)      // 这样算有点慢，当滚动过快时不准确,所以再绑定一个滚动停止事件来调用
-          console.log('i', i)
         }
       }
     },
@@ -124,7 +122,7 @@ export default {
         .singer-item
           display : flex
           align-items : center
-          padding: .4rem 0 0 .6rem
+          padding: .3rem 0 .2rem .6rem
           .singer-avatar
             width: 1rem
             height: 1rem

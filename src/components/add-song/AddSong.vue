@@ -26,8 +26,10 @@
       </div>
 
       <div class="search-result" v-show="query">
-        <suggest :query='query' :showSinger='false' @select="saveHistory"></suggest>
+        <suggest :query='query' :showSinger='false' @select="selectSuggest"></suggest>
       </div>
+
+      <toast ref="toast" :duration='2000'></toast>
     </div>
   </transition>
 </template>
@@ -42,6 +44,7 @@ import { mapState, mapActions } from 'vuex'
 import Bscroll from 'better-scroll'
 import SongModel from '@/providers/SongModel'
 import SearchList from '@/components/search-list/SearchList'
+import Toast from '@/components/toast/Toast'
 
 export default {
   mixins: [searchMixin],
@@ -69,10 +72,18 @@ export default {
     switchItem(index) {
       this.currentIndex = index
     },
+    selectSuggest() {
+      this.saveHistory()
+      this.showToast()
+    },
     selectSong(song, index) {
       if (index !== 0) {
         this.insertSong(new SongModel(song))
+        this.showToast()
       }
+    },
+    showToast() {
+      this.$refs.toast.show()
     },
     ...mapActions(['insertSong'])
   },
@@ -81,7 +92,8 @@ export default {
     Suggest,
     Switches,
     SongList,
-    SearchList
+    SearchList,
+    Toast
   },
   computed: {
     ...mapState(['playHistory'])  

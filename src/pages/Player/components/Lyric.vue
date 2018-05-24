@@ -144,7 +144,7 @@ export default {
 
       /* this.bus.$on('percentChange', () => {
         if (this.currentLyric) {
-          console.log('seek', this.currentTime)   // currentTime来自父组件，同时监听了percentChange，回调处理后父组件的currentTime可能还没改变
+           // currentTime来自父组件，同时监听了percentChange，回调处理后父组件的currentTime可能还没改变
           this.currentLyric.seek(this.currentTime * 1000)
         }
       }) */

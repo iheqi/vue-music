@@ -40,7 +40,6 @@ function insertSong({commit, state}, song) {  // 搞那么多逻辑
       playlist.splice(index + 1, 1)
     }
   }
-  console.log('insert', song)
   commit('setCurrentIndex', currentIndex)
   commit('setPlaylist', playlist)
   commit('setFullScreen', true)
@@ -76,7 +75,6 @@ function deleteSong({commit, state}, song) {
 
   if (currentIndex > index || currentIndex === playlist.length) {  // 讲得不清不楚（如果删除最后一首，且正在播放）
     currentIndex --
-    console.log(currentIndex)
   }
 
   commit('setCurrentIndex', currentIndex)

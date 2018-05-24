@@ -57,7 +57,6 @@ export default {
   },
   methods: {
     selectItem(disc) {
-      console.log(disc)
       this.setDisc(disc)
       this.$router.push('/disc/' + disc.dissid)
     },

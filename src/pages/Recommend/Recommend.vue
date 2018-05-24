@@ -46,7 +46,6 @@ export default {
       getDiscList().then(res => {
         if (res.code === 0) {
           this.discList = res.data.list
-          console.log(this.discList)
         }
       })
     }
@@ -56,13 +55,6 @@ export default {
     this.getDiscListData()
     this.scroll = new Bscroll(this.$refs.wrapper)
   },
-
-/*   watch: {
-    disc() {
-      console.log('fuck asas')
-      
-    }
-  } */
 }
 </script>
 

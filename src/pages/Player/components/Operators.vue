@@ -82,7 +82,6 @@ export default {
         case 3:
           next = this.loopPlay
       }
-      console.log('change')
       this.modeNext = next
     },
   },

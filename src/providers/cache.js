@@ -5,10 +5,8 @@ const PLAY_MAX_LEN = 30
 
 function insertArray(arr, val, maxLen) {
   let index = 0
-  console.log(typeof val, typeof val === 'object')
   if (typeof val === 'object') {
     index = arr.findIndex((a) => {
-      console.log(a.id, val.id, index)
       return a.id === val.id
     })
     
@@ -37,15 +35,12 @@ function insertArray(arr, val, maxLen) {
       searches = []
     }
     insertArrayHistory(searches, query, MAX_LEN)
-    console.log(searches)
     
     let s = searches
 
-    console.log(s)
 
     LocalForage.setItem('searches', s).then(() => {   // 不知为何searches始终为undefined
       LocalForage.getItem('searches').then((err, searches) => {
-        console.log(searches)
       })
       return searches
     })

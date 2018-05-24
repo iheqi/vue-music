@@ -40,13 +40,10 @@ export default {
         return
       }
       getSongList(this.disc.dissid).then((res) => {
-        console.log(res)
         if (res.code === 0) {
           this.songs = this.normalizeSongs(res.cdlist[0].songlist)
         }
       })
-      console.log('fuck')
-      
     },
     normalizeSongs(list) {
       let result = []

@@ -38,7 +38,6 @@ export default {
       if (this.playing) {       // fuck，歌都删完了还播放的原因
         setTimeout(() => {      // 处理从后台切回的情况
           this.$refs.audio.play()
-          console.log('fuck')
         }, 1000)
       }
     },

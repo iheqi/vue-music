@@ -44,7 +44,6 @@ export default {
     getTopList() {
       getTopList().then((res) => {
         if (res.code === 0) {
-          console.log(res.data)
           this.topList = res.data.topList
         }
       })
