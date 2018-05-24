@@ -7,7 +7,7 @@ import Search from '@/pages/Search/Search'
 import Detail from '@/pages/Detail/Detail'
 import Disc from '@/pages/Disc/Disc'
 import TopList from '@/components/top-list/TopList'
-
+import User from '@/pages/user/User'
 
 Vue.use(Router)
 
@@ -51,6 +51,11 @@ export default new Router({
       name: 'disc',
       path: '/disc/:id',
       component: Disc
+    },
+    {
+      name: 'user',
+      path: '/user',
+      component: User
     }
   ]
 })
