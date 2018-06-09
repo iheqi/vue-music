@@ -1,7 +1,7 @@
 <template>
   <div class="player" v-show='playlist.length'>
     <normal-player v-show="fullScreen" :currentTime='currentTime'></normal-player>
-    <mini-player v-show="!fullScreen"></mini-player>
+    <mini-player v-show="!fullScreen" :currentPercent='currentPercent'></mini-player>
     <play-list ref="playlist"></play-list>
     <audio 
       :src="currentSong.url" 
@@ -26,7 +26,7 @@ export default {
     NormalPlayer,
     MiniPlayer,
     PlayList,
-    //songReady: false,
+    //songReady: false         // 父子组件的通信很烦
   },
   computed: {
     ...mapState(['fullScreen', 'playlist', 'playing']),
@@ -35,23 +35,27 @@ export default {
   
   watch: {
     currentSong() {
-      if (this.playing) {       // fuck，歌都删完了还播放的原因
+      if (this.playing) {       // 歌都删完了还播放的原因
         setTimeout(() => {      // 处理从后台切回的情况
           this.$refs.audio.play()
         }, 1000)
       }
     },
     playing(newVal) {
-      console.log(newVal)
       const audio = this.$refs.audio
       this.$nextTick(() => {
         newVal ? audio.play() : audio.pause()
       })
+    },
+    currentTime(val) {
+      this.currentPercent = val / this.currentSong.duration
+      console.log(val)
     }
   },
   data () {
     return {
-      currentTime: 0
+      currentTime: 0,
+      currentPercent: 0
     }
   },
   methods: {
@@ -86,7 +90,7 @@ export default {
         this.percentChange(percent)
       })
     })
-  }
+  },
 }
 </script>
 

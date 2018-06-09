@@ -142,13 +142,6 @@ export default {
     this.$nextTick(() => {
       this.scroll = new Bscroll(this.$refs.lyricWrapper)
 
-      /* this.bus.$on('percentChange', () => {
-        if (this.currentLyric) {
-           // currentTime来自父组件，同时监听了percentChange，回调处理后父组件的currentTime可能还没改变
-          this.currentLyric.seek(this.currentTime * 1000)
-        }
-      }) */
-
       this.bus.$on('percentChange', (percent) => {
         this.currentLyric.seek(this.currentSong.duration * percent * 1000)
       })
@@ -162,6 +155,7 @@ export default {
 </script>
 <style lang="stylus" scoped>
   @import '~styles/variables.styl';
+  @import '~styles/mixins.styl';
     .middle >>> .swiper-pagination-bullet-active   /* 穿透，不受scoped限制 */
       background-color : #fff !important
 
@@ -214,6 +208,7 @@ export default {
               line-height: 20px
               font-size: $font-size-medium
               color: $color-text-l
+              ellipsis()
         .middle-r
           display: inline-block
           width: 100%

@@ -10,7 +10,9 @@
       </div>
 
       <div class="control" @click.stop="togglePlay">
-        <i class="iconfont icon-mini" v-html="ifPlaying"></i>
+        <progress-circle :currentPercent='currentPercent'>
+          <i class="iconfont icon-mini" v-html="ifPlaying"></i>
+        </progress-circle>
       </div>
 
       <div class="control" @click.stop="showPlayList">
@@ -21,6 +23,7 @@
 </template>
 <script>
 import { mapMutations, mapGetters, mapState } from 'vuex'
+import ProgressCircle from '@/components/progress-circle/ProgressCircle'
 
 export default {
   name: 'MiniPlayer',
@@ -45,6 +48,15 @@ export default {
     ...mapState(['playing']),
     cdRotate () {
       return this.playing ? 'play' : 'play pause'   // 'play pause'而不是'pause'
+    }
+  },
+  components: {
+    ProgressCircle
+  },
+  props: {
+    currentPercent: {
+      type: Number,
+      default: 0
     }
   }
 }
@@ -96,11 +108,14 @@ export default {
           ellipsis()
       .control
         flex: 0 0 30px
-        width: 30px
+        width: 31px
         padding: 0 10px
         .icon-mini
           font-size : 34px
           color: $color-theme-d
+          position : absolute
+          left: 0
+          top: 0
         .icon-playlist
           font-size: 34px
           color: $color-theme-d

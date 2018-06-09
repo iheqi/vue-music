@@ -25,6 +25,8 @@ export default {
 </script>
 <style lang="stylus" scoped>
   @import '~styles/variables.styl';
+  @import '~styles/mixins.styl';
+  
     .header
       position: relative
       margin-bottom: .5rem
@@ -45,6 +47,7 @@ export default {
         text-align: center
         font-size: $font-size-large
         color: $color-text
+        ellipsis()
       .subtitle
         line-height: .4rem
         text-align: center

@@ -8,9 +8,14 @@
           </span>
         </div>
         <div class="content">
-          <h2 class="song-name">{{song.name}}</h2>
+          <h2 class="name">{{song.name}}</h2>
           <p class="desc">{{getDesc(song)}}</p>
         </div>
+
+        <!-- <div class="operator" @click.stop>
+          取消收藏
+        </div> -->
+        <slot/>
       </li>
     </ul>
   </div>
@@ -94,4 +99,8 @@ export default {
           margin-top: .1rem
           color: $color-text-d
           ellipsis()
+      .operator
+        padding : .2rem
+        color : $color-text-ll
+        font-size : $font-size-medium
 </style>

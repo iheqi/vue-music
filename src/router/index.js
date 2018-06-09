@@ -1,14 +1,52 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Recommend from '@/pages/Recommend/Recommend'
-import Singer from '@/pages/Singer/Singer'
-import Rank from '@/pages/Rank/Rank'
-import Search from '@/pages/Search/Search'
-import Detail from '@/pages/Detail/Detail'
-import Disc from '@/pages/Disc/Disc'
-import TopList from '@/components/top-list/TopList'
-import User from '@/pages/user/User'
+/*import Recommend from '@/pages/Recommend/Recommend'*/  /* 改用懒加载 */
 
+const Recommend = (resolve) => {
+  import('@/pages/Recommend/Recommend').then((module) => {
+    resolve(module)
+  })
+}
+
+const Search = (resolve) => {
+  import('@/pages/Search/Search').then((module) => {
+    resolve(module)
+  })
+}
+
+const Detail = (resolve) => {
+  import('@/pages/Detail/Detail').then((module) => {
+    resolve(module)
+  })
+}
+
+const Disc = (resolve) => {
+  import('@/pages/Disc/Disc').then((module) => {
+    resolve(module)
+  })
+}
+
+const Singer = (resolve) => {
+  import('@/pages/Singer/Singer').then((module) => {
+    resolve(module)
+  })
+}
+
+const Rank = (resolve) => {
+  import('@/pages/Rank/Rank').then((module) => {
+    resolve(module)
+  })
+}
+const User = (resolve) => {
+  import('@/pages/User/User').then((module) => {
+    resolve(module)
+  })
+}
+const TopList = (resolve) => {
+  import('@/components/top-list/TopList').then((module) => {
+    resolve(module)
+  })
+}
 Vue.use(Router)
 
 export default new Router({
