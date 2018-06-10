@@ -29,7 +29,7 @@
         <suggest :query='query' :showSinger='false' @select="selectSuggest"></suggest>
       </div>
 
-      <toast ref="toast" :duration='2000'></toast>
+      <toast ref="toast" :duration='2000' position='top'></toast>
     </div>
   </transition>
 </template>

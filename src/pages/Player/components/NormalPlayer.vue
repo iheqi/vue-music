@@ -23,15 +23,18 @@
         </div>
         <operators></operators>
       </div>
+
+      <toast ref="toast" position='bottom' :duration='1000' :text='toastText()'></toast>
     </div>
   </transition>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import PlayerHeader from './PlayerHeader'
 import Lyric from './Lyric'
 import Operators from './Operators'
 import ProgressBar from './ProgressBar'
+import Toast from '@/components/toast/Toast'
 
 export default {
   name: 'NormalPlayer',
@@ -45,30 +48,37 @@ export default {
       progressTime: this.currentTime 
     }
   },
-  watch: {     // 
+  watch: {  
     currentTime() {
       let progressBar = this.$refs['progress-bar']
       if (progressBar.touchStatus()) {       // 滑动中progress不跟currentTime改变，避免鼠标一直按着时
         return
       }
       this.progressTime = this.currentTime
+    },
+    mode() {
+      this.showToast()
+      console.log(this.toastText())
     }
   },
   computed: {
     ...mapGetters(['currentSong']),
+    ...mapState(['mode']),
     percent() {
       return this.currentTime / this.currentSong.duration
     },
     /* bgImg() {
-
       return `background: url(${this.currentSong.img}); background-size: 100% 100%; `
     } */
+
+
   },
   components: {
     PlayerHeader,
     Lyric,
     Operators,
-    ProgressBar
+    ProgressBar,
+    Toast
   },
   methods: {
     format(interval) {
@@ -85,6 +95,24 @@ export default {
       }
       return num
     },
+    showToast() {
+      this.$refs.toast.show()
+    },
+
+    toastText() {
+      let text = ''
+      switch (this.mode) {
+        case 1: 
+          text = '列表循环'
+          break
+        case 2: 
+          text = '顺序播放'
+          break
+        case 3:
+          text = '单曲循环'
+      }
+      return text
+    }
   },
   mounted() {
     this.$nextTick(() => {

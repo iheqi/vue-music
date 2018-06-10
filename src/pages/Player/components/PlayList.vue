@@ -91,7 +91,6 @@ export default {
       const index = this.playlist.findIndex((song) => {
         return currentSong.id === song.id
       })
-      console.log(index, this.$refs.liItem)
       setTimeout(() => {
         this.scroll.scrollToElement(this.$refs.liItem[index], 500)
       }, 100)

@@ -93,7 +93,6 @@ export default {
           this.scroll.on('scroll', this.scaleImg)
           this.scroll.on('touchEnd', this.scaleOneImg)
     })
-    console.log(this.songs)
   }
 }
 </script>

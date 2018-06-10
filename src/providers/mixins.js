@@ -7,13 +7,13 @@ export const playMixin = {
       let iconMode = '&#xe649;'
       switch (this.mode) {
         case 1: 
-          iconMode = '&#xe649;'
+          iconMode = '&#xe649;'     // 顺序播放
           break
         case 2:
-          iconMode = '&#xe721;'
+          iconMode = '&#xe721;'     // 列表循环
           break
         case 3:
-          iconMode = '&#xe613;'
+          iconMode = '&#xe613;'     // 单曲循环
       }
       return iconMode
     },

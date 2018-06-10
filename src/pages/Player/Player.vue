@@ -49,7 +49,6 @@ export default {
     },
     currentTime(val) {
       this.currentPercent = val / this.currentSong.duration
-      console.log(val)
     }
   },
   data () {
