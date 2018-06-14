@@ -1,7 +1,7 @@
 <template>
   <div>
     <ul class="song-list">
-      <li v-for="(song, i) of songs" :key="song.id" class="item" @click='openPlayer(song, i)'>
+      <li v-for="(song, i) of songs" :key="song.id" class="item border-bottom" @click='openPlayer(song, i)'>
         <div class="rank" v-show="rank">
           <span :class="getRankClass(i)">
             {{ getRankText(i) }}
@@ -12,20 +12,26 @@
           <p class="desc">{{getDesc(song)}}</p>
         </div>
 
-        <!-- <div class="operator" @click.stop>
+        <div v-show="operator" class="operator" @click.stop='deleteFavoriteList(song)'>
           取消收藏
-        </div> -->
+        </div>
         <slot/>
       </li>
     </ul>
   </div>
 </template>
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: 'SongList',
   props: {
     songs: Array,
     rank: {
+      type: Boolean,
+      default: false
+    },
+    operator: {
       type: Boolean,
       default: false
     }
@@ -48,7 +54,8 @@ export default {
       if (i > 2) {
         return i + 1
       }
-    }
+    },
+    ...mapActions(['deleteFavoriteList'])
   }
 }
 </script>

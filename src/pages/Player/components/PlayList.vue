@@ -125,6 +125,9 @@ export default {
           break
         case 3:
           modeText = '单曲循环'
+          break
+        case 4:
+          modeText = '随机播放'
       }
       return modeText
     },

@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <div class="back" @click="back">
-      <span class="iconfont icon-back">&#xe607;</span>
+      <span class="iconfont icon-back">&#xe60a;</span>
     </div>
     <h1 class="title" v-html="currentSong.name"></h1>
     <h2 class="subtitle" v-html="currentSong.singer"></h2>
@@ -40,6 +40,7 @@ export default {
           padding: .16rem
           font-size: .6rem
           color: $color-theme
+          transform: rotate(-90deg) 
       .title
         width: 70%
         margin: 0 auto

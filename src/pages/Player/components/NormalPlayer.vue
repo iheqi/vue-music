@@ -110,6 +110,9 @@ export default {
           break
         case 3:
           text = '单曲循环'
+          break
+        case 4:
+          text = '随机播放'
       }
       return text
     }

@@ -14,6 +14,9 @@ export const playMixin = {
           break
         case 3:
           iconMode = '&#xe613;'     // 单曲循环
+          break
+        case 4:
+          iconMode = '&#xe84a;'     // 随机播放
       }
       return iconMode
     },

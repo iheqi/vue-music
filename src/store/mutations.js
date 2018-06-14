@@ -12,15 +12,16 @@ export default {
   setPlaylist(state, flag) {
     state.playlist = flag
   },
-  setSequenceList(state, flag) {
-    state.sequenceList = flag
-  },
+
   setMode(state) {
-    if (state.mode === 3) {
+    if (state.mode === 4) {
       state.mode = 1
       return 
     }
     state.mode++
+  },
+  randomMode(state) {
+    state.mode = 4
   },
   setCurrentIndex(state, index) {
     state.currentIndex = index

@@ -61,6 +61,10 @@ export default {
       setTimeout(() => {
         this.togglePlaying()
       }, 100)
+    },
+    randomPlay() {
+      let index = Math.floor(Math.random()* + this.playlist.length)
+      this.setCurrentIndex(index)
     }
   },
   computed: {
@@ -69,24 +73,12 @@ export default {
       return this.playing ? '&#xe600;' : '&#xe63a;'
     }
   },
-  watch: {
-    mode() {
-      let next
-      switch (this.mode) {
-        case 1:  // 列表循环
-          next = this.nextSong
-          break
-        case 2:  // 顺序播放
-          next = this.orderPlay
-          break
-        case 3:
-          next = this.loopPlay
-      }
-      this.modeNext = next
-    },
-  },
   mounted() {
     this.bus.$on('ended', () => {
+      if (this.playlist.length === 1) {
+        this.loopPlay();
+        return
+      }
       switch (this.mode) {
         case 1:  // 列表循环
           this.nextSong()
@@ -96,6 +88,9 @@ export default {
           break
         case 3:
           this.loopPlay()
+          break
+        case 4:
+          this.randomPlay()
       }
     });
   }
@@ -129,5 +124,5 @@ export default {
           color : $color-sub-theme
           font-weight: 1000
           font-size : .6rem
-        
+
 </style>

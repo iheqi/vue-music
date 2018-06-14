@@ -8,7 +8,7 @@
     </header>
     
     <div class="bg-img" :style="bgStyle" ref="bgImg">
-      <div class="play-wrapper" v-show="songs.length">
+      <div class="play-wrapper" v-show="false">
         <div class="play">
           <span class="iconfont play-icon">&#xe63a;</span>
           <span class="text">随机播放全部</span>

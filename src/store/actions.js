@@ -15,7 +15,6 @@ export default {
 }
 
 function selectPlay({ commit }, { list, index }) {
-  commit('setSequenceList', list)
   commit('setCurrentIndex', index)
   commit('setFullScreen', true)
   commit('setPlaying', true)

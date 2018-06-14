@@ -9,13 +9,16 @@
         <switches @switch='switchItem' :currentIndex='currentIndex' :switches='switches'></switches>
       </div>
 
-      <div class="play-btn">
-        <i class="play-icon"></i>
-      </div>
-
       <div class="list-wrapper" ref="list-wrapper">
         <div v-show="currentIndex===0" class="song-list-wrapper">
-          <song-list :songs='favoriteList' @openPlayer="selectSong"></song-list>
+          <div class="play-wrapper" v-show="favoriteList.length" @click="randomPlay">
+            <div class="play">
+              <span class="iconfont play-icon">&#xe63a;</span>
+              <span class="text">随机播放全部</span>
+            </div>
+          </div>
+
+          <song-list :songs='favoriteList' @openPlayer="selectSong" :operator='true'></song-list>
         </div>
 
         <div class="song-list-wrapper" v-show="currentIndex===1" ref="song-list-wrapper">
@@ -33,7 +36,7 @@
 
 <script>
 import Switches from '@/components/switches/Switches'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import SongList from '@/components/song-list/SongList'
 import SongModel from '@/providers/SongModel'
 import Bscroll from 'better-scroll'
@@ -63,13 +66,27 @@ export default {
     selectSong(song) {
       this.insertSong(new SongModel(song))
     },
-    ...mapActions(['insertSong']),
+    ...mapActions(['insertSong', 'selectPlay']),
+    ...mapMutations(['randomMode']),
     back() {
       this.$router.back()
-    }
+    },
+
+    randomPlay() {
+      let songs = []
+      for (let song of this.favoriteList) {
+        songs.push(new SongModel(song))
+      }
+      let index = Math.floor(this.favoriteList.length / 2)
+      this.selectPlay({
+        list: songs,
+        index
+      })
+      this.randomMode()
+    },
   },
   computed: {
-    ...mapState(['favoriteList', 'playHistory']),
+    ...mapState(['playlist','favoriteList', 'playHistory', 'mode']),
     noResult() {
       if (this.currentIndex === 0) {
         return !this.favoriteList.length
@@ -123,7 +140,7 @@ export default {
         color: $color-theme
     .switches-wrapper
       margin: .2rem 0 .6rem 0
-    
+
     .list-wrapper
       position: absolute
       top: 1.3rem
@@ -132,9 +149,29 @@ export default {
       overflow: hidden
       .song-list-wrapper
         height: 100%
+        .play-wrapper
+          width: 100%
+          z-index : 9
+          .play
+            width: 2.7rem
+            height : .64rem
+            margin : 0 auto
+            text-align: center
+            line-height : .64rem
+            border: 1px solid $color-theme
+            color: $color-theme
+            border-radius: 2rem
+            .play-icon
+              font-size: $font-size-large-x
+            .text
+              display: inline-block
+              vertical-align: middle
+              padding-bottom : .2rem
     .no-result-wrapper
       position: absolute
       width: 100%
       top: 50%
       transform: translateY(-50%)
+
+
 </style>
