@@ -2,33 +2,32 @@
   <div>
     <list-view
       :groups='singers'
-      :letter='letter' 
+      :letter='letter'
       @select="selectSinger"
       @scrollList="handleScroll"
       ref="listView"
     ></list-view>
-    <alphabet 
-      :singers='singers' 
+    <alphabet
+      :singers='singers'
       @clickLetter='handleLetterClick'
       :index='index'
     ></alphabet>
     <router-view></router-view>
   </div>
- 
+
 </template>
 <script>
 import { getSingerList, normalizeSinger } from '@/providers/singer'
-import SingerModel from '@/providers/SingerModel'
 import ListView from '@/components/list-view/ListView'
 import Alphabet from './components/Alphabet'
 import { mapMutations } from 'vuex'
 
 export default {
   name: 'Singer',
-  data () {
+  data() {
     return {
       singers: [],
-      letter: '',        // 传到list
+      letter: '', // 传到list
       index: 0
     }
   },
@@ -60,14 +59,14 @@ export default {
       this.index = i
     },
     ...mapMutations(['setSinger']),
-    listViewInit() {                   // 在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM。
-      this.$nextTick(() => {                 // 这才是正确的用法
+    listViewInit() { // 在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM。
+      this.$nextTick(() => { // 这才是正确的用法
         let listView = this.$refs.listView
         listView.calculateHeight()
       })
     }
   },
-  mounted () {
+  mounted() {
     this.getSingerData()
   }
 }
@@ -76,4 +75,3 @@ export default {
 <style lang="stylus" scoped>
 
 </style>
-

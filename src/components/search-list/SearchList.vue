@@ -15,14 +15,14 @@ export default {
   name: 'SearchList',
   props: {
     searches: {
-        type: Array,
-        default() {
-          return [1,2,3]
-        }
+      type: Array,
+      default() {
+        return [1, 2, 3]
+      }
     }
   },
   methods: {
-    selectItem(item) {             // 派发事件，不做过多的业务逻辑
+    selectItem(item) { // 派发事件，不做过多的业务逻辑
       this.$emit('select', item)
     },
     deleteOne(item) {

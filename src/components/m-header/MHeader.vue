@@ -39,6 +39,6 @@ export default {
           .user-icon
             display : block
             padding : .2rem
-            font-size : .5rem 
-          
+            font-size : .5rem
+
 </style>

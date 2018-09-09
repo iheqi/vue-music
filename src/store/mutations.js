@@ -16,7 +16,7 @@ export default {
   setMode(state) {
     if (state.mode === 4) {
       state.mode = 1
-      return 
+      return
     }
     state.mode++
   },
@@ -25,7 +25,7 @@ export default {
   },
   setCurrentIndex(state, index) {
     state.currentIndex = index
-    state.playing = true          // 因为改变了currentSong会自动播放，所以必须设置为true
+    state.playing = true // 因为改变了currentSong会自动播放，所以必须设置为true
   },
 
   setDisc(state, songs) {

@@ -1,7 +1,6 @@
 import { getSongLyric } from './song'
 import { Base64 } from 'js-base64'
-import { resolve } from 'url';
-
+// import { resolve } from 'url'
 
 export default class SongModel {
   constructor({id, mid, singer, name, album, duration, img, url}) {
@@ -25,15 +24,14 @@ export default class SongModel {
           this.lyric = Base64.decode(res.lyric)
           resolve(this.lyric)
         } else {
-          reject('no lyric')
+          reject(new Error('no lyric'))
         }
       })
     })
   }
-
 }
 
-export function createSong(musicData) {    // 创建SongModel对象，避免麻烦的传参
+export function createSong(musicData) { // 创建SongModel对象，避免麻烦的传参
   return new SongModel({
     id: musicData.songid,
     mid: musicData.songmid,
@@ -46,8 +44,7 @@ export function createSong(musicData) {    // 创建SongModel对象，避免麻�
   })
 }
 
-
-export function filterSinger(singer) {  // 有多个歌手时处理一下
+export function filterSinger(singer) { // 有多个歌手时处理一下
   if (!Array.isArray(singer)) {
     return singer
   }

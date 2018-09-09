@@ -12,8 +12,7 @@ import { getRecommend, getDiscList } from '@/providers/recommend'
 import RecommendSwiper from './components/Swiper'
 import RecommendList from './components/List'
 import Bscroll from 'better-scroll'
-import { mapMutations, mapState } from 'vuex' 
-
+import { mapState } from 'vuex'
 
 export default {
 
@@ -22,7 +21,7 @@ export default {
     RecommendSwiper,
     RecommendList
   },
-  data () {
+  data() {
     return {
       list: [],
       discList: [],
@@ -30,14 +29,14 @@ export default {
     }
   },
   methods: {
-    getRecommendData () {
+    getRecommendData() {
       getRecommend().then((res) => {
         if (res.code === 0) {
           this.list = res.data.slider
         }
       })
     },
-/*     selectDisc(disc) {
+    /*     selectDisc(disc) {
       this.$router.push({
         path: `/recommend/${disc.id}`
       })
@@ -50,11 +49,11 @@ export default {
       })
     }
   },
-  mounted () {
+  mounted() {
     this.getRecommendData()
     this.getDiscListData()
     this.scroll = new Bscroll(this.$refs.wrapper)
-  },
+  }
 }
 </script>
 
@@ -64,7 +63,6 @@ export default {
       left : 0
       right : 0
       top : 1.76rem
-      bottom : 0 
+      bottom : 0
       overflow : hidden
 </style>
-

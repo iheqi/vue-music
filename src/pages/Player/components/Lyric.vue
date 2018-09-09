@@ -20,8 +20,8 @@
           <div class="lyric-wrapper" ref="lyricWrapper">
             <div>
               <div v-if="currentLyric">
-                <p 
-                  v-for="(line, index) of currentLyric.lines" 
+                <p
+                  v-for="(line, index) of currentLyric.lines"
                   :key="index"
                   class='text'
                   :class="{'current': currentLineNum === index}"
@@ -45,16 +45,16 @@ import Bscroll from 'better-scroll'
 
 export default {
   name: 'Lyric',
-  data () {
+  data() {
     return {
       currentLyric: null,
       currentLineNum: 0,
       swiperOption: {
-          pagination: '.swiper-pagination',
-          observeParents: true,             // 解决画廊隐藏或显示由于计算而引起的错误 
-          observer: true                    // 这里会在自身或父级元素dom变化时刷新一次
+        pagination: '.swiper-pagination',
+        observeParents: true, // 解决画廊隐藏或显示由于计算而引起的错误
+        observer: true // 这里会在自身或父级元素dom变化时刷新一次
       },
-      playingLine: '',
+      playingLine: ''
       // timer: null
     }
   },
@@ -64,8 +64,8 @@ export default {
   computed: {
     ...mapState(['playing', 'mode']),
     ...mapGetters(['currentSong']),
-    cdRotate () {
-      return this.playing ? 'play' : 'play pause'   // 'play pause'而不是'pause'
+    cdRotate() {
+      return this.playing ? 'play' : 'play pause' // 'play pause'而不是'pause'
     }
   },
   watch: {
@@ -77,7 +77,7 @@ export default {
         return
       }
       if (this.currentLyric) {
-        /* this.currentLyric.stop()   // play()api是用定时器实现的，在换歌时清除之前的，防止跳动*/
+        /* this.currentLyric.stop()   // play()api是用定时器实现的，在换歌时清除之前的，防止跳动 */
         this.reset()
       }
       clearTimeout(this.timer)
@@ -87,9 +87,9 @@ export default {
     },
     playing() {
       if (this.currentLyric) {
-        this.currentLyric.togglePlay()   // 歌词滚动跟随播放状态
+        this.currentLyric.togglePlay() // 歌词滚动跟随播放状态
       }
-    },
+    }
     /* currentTime() {
       if (this.currentLyric && this.playing) {
         this.currentLyric.seek(this.currentTime * 1000)   // 滚到到相应的时间,这里监听了currentTime导致执行次数太多，改成在mounted中监听percent（本来也该这样）
@@ -107,37 +107,35 @@ export default {
         }
         this.currentLyric = new Lyric(lyric, this.handleLyric)
         if (this.playing) {
-          this.currentLyric.play()   // 滚动api
+          this.currentLyric.play() // 滚动api
         }
-      }).catch(() => {    // 如果没有获取到
+      }).catch(() => { // 如果没有获取到
         this.currentLyric = null
         this.currentLineNum = 0
         this.playingLine = ''
       })
-
     },
-    handleLyric({lineNum, txt}) {   // 歌词行数改变时，调用回调还有参数(但最后一行歌词时有点问题，还没解决)
-
+    handleLyric({lineNum, txt}) { // 歌词行数改变时，调用回调还有参数(但最后一行歌词时有点问题，还没解决)
       console.log(txt, lineNum)
 
-        this.currentLineNum = lineNum
-        if (lineNum > 6) {
-          let lineEl = this.$refs.lyricLine[lineNum - 6]  // 6行约中间
-          this.scroll.scrollToElement(lineEl, 900)       // 这里滚到的就是最上面那行，然后上面那句就约在中间
-        } else {
-          this.scroll.scrollTo(0, 0, 1000)
-        }
-        this.playingLine = txt
+      this.currentLineNum = lineNum
+      if (lineNum > 6) {
+        let lineEl = this.$refs.lyricLine[lineNum - 6] // 6行约中间
+        this.scroll.scrollToElement(lineEl, 900) // 这里滚到的就是最上面那行，然后上面那句就约在中间
+      } else {
+        this.scroll.scrollTo(0, 0, 1000)
+      }
+      this.playingLine = txt
     },
     reset() {
       this.currentLyric.stop()
       this.playingLyric = ''
-      this.currentLineNum = 0    // 这套api没用啊,直接全置0了好了
-      this.currentLyric = null   // 这句很重要。。
+      this.currentLineNum = 0 // 这套api没用啊,直接全置0了好了
+      this.currentLyric = null // 这句很重要。。
     },
     ...mapMutations(['setPlaying'])
   },
-  mounted () {
+  mounted() {
     this.$nextTick(() => {
       this.scroll = new Bscroll(this.$refs.lyricWrapper)
 
@@ -145,10 +143,9 @@ export default {
         this.currentLyric.seek(this.currentSong.duration * percent * 1000)
       })
       this.bus.$on('ended', () => {
-        this.currentLyric.seek(0)       // 解决loop时歌曲结束歌词不滚
+        this.currentLyric.seek(0) // 解决loop时歌曲结束歌词不滚
       })
     })
-    
   }
 }
 </script>
@@ -200,7 +197,7 @@ export default {
           .playing-line-wrapper
             width: 80%
             height : 30px
-            text-align : center 
+            text-align : center
             margin: 30px auto 0 auto
             .playing-line
               height: 20px
@@ -219,7 +216,7 @@ export default {
             margin: 0 auto
             overflow: hidden
             text-align: center
-            
+
             .text
               line-height: 32px
               color: $color-text-l

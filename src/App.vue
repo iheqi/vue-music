@@ -21,8 +21,8 @@ export default {
     MHeader,
     Tab,
     Player
-  }, 
-  mounted () {
+  },
+  mounted() {
   }
 }
 </script>

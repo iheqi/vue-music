@@ -23,9 +23,9 @@ export default {
     },
     picUrl() {
       return this.disc.imgurl
-    },
+    }
   },
-  data () {
+  data() {
     return {
       songs: []
     }
@@ -48,7 +48,7 @@ export default {
     normalizeSongs(list) {
       let result = []
       for (let musicData of list) {
-        if (musicData.songid, musicData.albumid) {
+        if (musicData.songid && musicData.albumid) {
           result.push(createSong(musicData))
         }
       }
@@ -63,7 +63,7 @@ export default {
     transition : all .3s
   .slide-enter, .slide-leave-to
     transform : translate3d(100%, 0, 0)
-  .disc 
+  .disc
     position : fixed
     top : 0
     bottom : 0

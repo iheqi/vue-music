@@ -14,9 +14,8 @@ import VueAwesomeSwiper from 'vue-awesome-swiper'
 import VueLazyload from 'vue-lazyload'
 import store from './store'
 
-//import '@/assets/styles/variables.styl'   这样导入全局用不了
-
-//require('styles/variables.styl')
+// import '@/assets/styles/variables.styl'   这样导入全局用不了
+// require('styles/variables.styl')
 
 Vue.use(VueLazyload, {
   preLoad: 1.3,
@@ -28,8 +27,7 @@ fastclick.attach(document.body)
 Vue.config.productionTip = false
 Vue.use(VueAwesomeSwiper)
 
-Vue.prototype.bus = new Vue();
-
+Vue.prototype.bus = new Vue()
 
 new Vue({
   el: '#app',

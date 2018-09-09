@@ -5,7 +5,7 @@
         <swiper-slide v-for='img of list' :key='img.id'>
             <img class='swiper-img' :src="img.picUrl" />
         </swiper-slide>
-        
+
         <div class="swiper-pagination"  slot="pagination"></div>
 
     </swiper>
@@ -18,23 +18,23 @@ export default {
   props: {
     list: Array
   },
-  data () {
-      return {
-        swiperOption: {
-            pagination: '.swiper-pagination',
-            autoplay: 3000,
-            loop: true,
-            observeParents: true,             // 解决画廊隐藏或显示由于计算而引起的错误 
-            observer: true                    // 这里会在自身或父级元素dom变化时刷新一次
-        }
-      } 
+  data() {
+    return {
+      swiperOption: {
+        pagination: '.swiper-pagination',
+        autoplay: 3000,
+        loop: true,
+        observeParents: true, // 解决画廊隐藏或显示由于计算而引起的错误
+        observer: true // 这里会在自身或父级元素dom变化时刷新一次
+      }
+    }
   },
   /* 解决当list还是[]时渲染的问题 */
-    computed: {
-        showSwiper() {
-            return this.list.length
-        }
+  computed: {
+    showSwiper() {
+      return this.list.length
     }
+  }
 }
 </script>
 

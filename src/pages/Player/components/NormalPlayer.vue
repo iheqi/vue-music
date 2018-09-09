@@ -12,7 +12,7 @@
       <div>
         <lyric :currentTime='currentTime'></lyric>
       </div>
-      
+
       <div class="bottom">
         <div class="progress-wrapper">
           <span class="time time-l">{{format(progressTime)}}</span>
@@ -45,13 +45,13 @@ export default {
   },
   data() {
     return {
-      progressTime: this.currentTime 
+      progressTime: this.currentTime
     }
   },
-  watch: {  
+  watch: {
     currentTime() {
       let progressBar = this.$refs['progress-bar']
-      if (progressBar.touchStatus()) {       // 滑动中progress不跟currentTime改变，避免鼠标一直按着时
+      if (progressBar.touchStatus()) { // 滑动中progress不跟currentTime改变，避免鼠标一直按着时
         return
       }
       this.progressTime = this.currentTime
@@ -66,11 +66,10 @@ export default {
     ...mapState(['mode']),
     percent() {
       return this.currentTime / this.currentSong.duration
-    },
+    }
     /* bgImg() {
       return `background: url(${this.currentSong.img}); background-size: 100% 100%; `
     } */
-
 
   },
   components: {
@@ -82,12 +81,12 @@ export default {
   },
   methods: {
     format(interval) {
-      interval = interval | 0   // 即取整
+      interval = interval | 0 // 即取整
       const minute = interval / 60 | 0
       const second = this.pad(interval % 60)
       return `${minute}:${second}`
     },
-    pad(num, n = 2) {    // 补个0
+    pad(num, n = 2) { // 补个0
       let len = num.toString().length
       while (len < n) {
         num = '0' + num
@@ -102,10 +101,10 @@ export default {
     toastText() {
       let text = ''
       switch (this.mode) {
-        case 1: 
+        case 1:
           text = '列表循环'
           break
-        case 2: 
+        case 2:
           text = '顺序播放'
           break
         case 3:
@@ -119,11 +118,11 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.bus.$on('percentChange', (percent) => {   //
+      this.bus.$on('percentChange', (percent) => { //
         this.progressTime = this.currentSong.duration * percent
       })
 
-      this.bus.$on('progressTime', (percent) => {   //
+      this.bus.$on('progressTime', (percent) => { //
         this.progressTime = this.currentSong.duration * percent
       })
     })

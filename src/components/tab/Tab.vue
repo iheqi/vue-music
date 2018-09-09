@@ -10,7 +10,7 @@
 
     <router-link class="tab-item" tag="div" to="/rank">
       <span class="tab-link">排行</span>
-    </router-link> 
+    </router-link>
 
     <router-link class="tab-item" tag="div" to="/search">
       <span class="tab-link">搜索</span>
@@ -31,7 +31,7 @@ export default {
       font-size: $font-size-medium
       .tab-item
         flex: 1       /* 让所有弹性盒模型对象的子元素都有相同的长度 */
-        text-align: center 
+        text-align: center
         .tab-link
           padding-bottom: .1rem
           color: $color-text-l

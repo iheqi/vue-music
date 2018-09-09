@@ -8,7 +8,7 @@
         </div>
       </div>
 
-      <div class="search-box-wrapper"> 
+      <div class="search-box-wrapper">
         <search-box placeholder='搜索歌曲' @query='queryChange' ref="searchBox"></search-box>
       </div>
 
@@ -62,7 +62,7 @@ export default {
   methods: {
     show() {
       this.showFlag = true
-      setTimeout(() => {      // 页面事先隐藏时，scroll已经计算好了，显示时需要刷新一下
+      setTimeout(() => { // 页面事先隐藏时，scroll已经计算好了，显示时需要刷新一下
         this.scroll.refresh()
       }, 20)
     },
@@ -96,7 +96,7 @@ export default {
     Toast
   },
   computed: {
-    ...mapState(['playHistory'])  
+    ...mapState(['playHistory'])
   },
   mounted() {
     this.scroll = new Bscroll(this.$refs['song-list-wrapper'], {
@@ -156,4 +156,3 @@ export default {
       bottom: 0
       width: 100%
 </style>
-

@@ -19,7 +19,7 @@ export default {
   },
   data() {
     return {
-      query: '',
+      query: ''
     }
   },
   methods: {
@@ -30,8 +30,8 @@ export default {
       this.query = key
     }
   },
-  created () {
-    this.$watch('query', debounce((newVal) => {    // 节流
+  created() {
+    this.$watch('query', debounce((newVal) => { // 节流
       this.$emit('query', newVal)
     }, 200))
   }
@@ -49,7 +49,7 @@ export default {
       align-items: center
       box-sizing: border-box
       border-radius : 0.12rem
-      
+
       .icon-search
         font-size: .42rem
         color: $color-background
@@ -60,7 +60,7 @@ export default {
         background: $color-highlight-background
         color: $color-text-l
         font-size: $font-size-medium
-        &::placeholder    // 
+        &::placeholder    //
           color: $color-text-d
           font-size : .26rem
       .icon-dismiss

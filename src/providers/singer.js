@@ -1,9 +1,8 @@
-import josnp from './jsonp'
 import { ParamsModel, options } from './config'
-import jsonp from './jsonp';
+import jsonp from './jsonp'
 import SingerModel from './SingerModel'
 
-export function getSingerList() {  // 和为一个对象传入
+export function getSingerList() { // 和为一个对象传入
   const url = 'https://c.y.qq.com/v8/fcg-bin/v8.fcg'
   const data = Object.assign({}, ParamsModel, {
     channel: 'singer',
@@ -42,7 +41,7 @@ export function normalizeSinger(list) {
       items: []
     }
   }
-    
+
   list.forEach((item, index) => {
     if (index > 0 && index < 10) {
       singers.hotSingers.items.push(new SingerModel({
@@ -72,7 +71,7 @@ export function normalizeSinger(list) {
     if (val.letter.match(/[a-zA-Z]/g)) {
       ret.push(val)
     } else if (val.letter === '热门') {
-        hot.push(val)
+      hot.push(val)
     }
   }
   ret.sort((a, b) => {
@@ -81,7 +80,7 @@ export function normalizeSinger(list) {
   return hot.concat(ret)
 }
 
-/* 
+/*
 export function getSingerList() {
   const url = 'https://c.y.qq.com/v8/fcg-bin/fcg_v8_singer_track_cp.fcg'
   const data = Object.assign({}, ParamsModel, {

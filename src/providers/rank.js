@@ -9,11 +9,10 @@ export function getTopList() {
     g_tk: 1391294004,
     uin: 0,
     platform: 'h5',
-    needNewCode: 1,
+    needNewCode: 1
   })
 
   return jsonp(url, query, options)
-  
 }
 
 export function getMusicList(topid) {

@@ -8,14 +8,14 @@
 <script>
 import { mapState } from 'vuex'
 import { getSingerDetail } from '@/providers/singer'
-import SongModel from '@/providers/SongModel'
+// import SongModel from '@/providers/SongModel'
 import { createSong } from '@/providers/SongModel'
 import MusicList from '@/components/music-list/MusicList'
 
 export default {
-  name: "Detail",  
+  name: 'Detail',
   computed: {
-    title () {
+    title() {
       return this.singer.name
     },
     bgImg() {
@@ -23,12 +23,12 @@ export default {
     },
     ...mapState(['singer'])
   },
-  data () {
+  data() {
     return {
       songs: []
     }
   },
-  mounted () {
+  mounted() {
     this.getDetail()
   },
   methods: {
@@ -38,7 +38,7 @@ export default {
         return
       }
       getSingerDetail(this.singer.id).then((res) => {
-        if (res.code == 0) {
+        if (res.code === 0) {
           this.songs = this.normalizeSongs(res.data.list)
         }
       })

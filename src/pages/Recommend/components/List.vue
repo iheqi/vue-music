@@ -4,9 +4,9 @@
       <h1 class="list-title">热门歌单推荐</h1>
 
       <ul>
-        <li 
-          class="song-item" 
-          v-for="disc of discList" 
+        <li
+          class="song-item"
+          v-for="disc of discList"
           :key="disc.dissid"
           @click="selectItem(disc)"
         >
@@ -26,34 +26,32 @@
     </div>
   </div>
 
-
 </template>
 
 <script>
 import Loading from '@/components/loading/Loading'
 import Bscroll from 'better-scroll'
-import { mapMutations } from 'vuex' 
+import { mapMutations } from 'vuex'
 
 export default {
   name: 'RecommendList',
   props: {
-    discList: Array,
+    discList: Array
   },
   components: {
     Loading
   },
   computed: {
-    ifLoading () {
+    ifLoading() {
       return !this.discList.length
     }
   },
-  mounted () {
+  mounted() {
     this.$nextTick(() => {
       this.scroll = new Bscroll(this.$refs.wrapper, {
         click: true
       })
-    }) 
-    
+    })
   },
   methods: {
     selectItem(disc) {
@@ -95,5 +93,5 @@ export default {
             color: $color-text
           .desc
             color: $color-text-d
-            
+
 </style>

@@ -1,9 +1,9 @@
 <template>
   <ul class="switches">
-    <li 
-      class="switch-item" 
-      v-for="(item, index) of switches" 
-      :key="index" 
+    <li
+      class="switch-item"
+      v-for="(item, index) of switches"
+      :key="index"
       :class="{'active': index === currentIndex}"
       @click="switchItem(index)"
     >
@@ -21,7 +21,7 @@ export default {
       type: Array,
       default() {
         return []
-      } 
+      }
     },
     currentIndex: {
       type: Number,
@@ -54,6 +54,5 @@ export default {
       &.active
         background: $color-highlight-background
         color: $color-text
-    
 
 </style>

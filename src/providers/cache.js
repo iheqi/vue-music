@@ -1,4 +1,4 @@
-import LocalForage from 'localforage';
+// import LocalForage from 'localforage'
 
 const MAX_LEN = 15
 const PLAY_MAX_LEN = 30
@@ -10,19 +10,18 @@ function insertArray(arr, val, maxLen) {
     index = arr.findIndex((a) => {
       return a.id === val.id
     })
-    
   } else {
     index = arr.indexOf(val)
   }
 
   if (index === 0) {
-    return 
+    return
   }
   if (index > 0) {
     arr.splice(index, 1)
   }
   arr.unshift(val)
-  if (maxLen && arr.length > maxLen) {   // 设置最多存储maxLen条历史
+  if (maxLen && arr.length > maxLen) { // 设置最多存储maxLen条历史
     arr.pop()
   }
 }
@@ -31,14 +30,13 @@ function insertArray(arr, val, maxLen) {
   LocalForage.getItem('searches').then((err, searches) => {  // 返回一个promise，回调函数两个参数为err， val
     console.log(searches)
     console.log(typeof searches)
-    
+
     if (typeof searches === 'undefined') {
       searches = []
     }
     insertArrayHistory(searches, query, MAX_LEN)
-    
-    let s = searches
 
+    let s = searches
 
     LocalForage.setItem('searches', s).then(() => {   // 不知为何searches始终为undefined
       LocalForage.getItem('searches').then((err, searches) => {
@@ -94,7 +92,6 @@ export function savePlay(song) {
 }
 
 /* 收藏列表 */
-
 
 export function saveFavorite(song) {
   let songs = loadCache('favorite')

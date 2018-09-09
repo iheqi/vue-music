@@ -12,8 +12,8 @@
 
         <div class="list-content" ref="content">
           <transition-group name="list" tag="ul">
-            <li class="item" v-for="(item, index) of playlist" 
-              :key="item.id" 
+            <li class="item" v-for="(item, index) of playlist"
+              :key="item.id"
               @click="selectItem(item, index)"
               ref="liItem"
             >
@@ -58,7 +58,7 @@ import AddSong from '@/components/add-song/AddSong'
 export default {
   name: 'PlayList',
   mixins: [playMixin],
-  data () {
+  data() {
     return {
       showFlag: false
     }
@@ -66,7 +66,7 @@ export default {
   methods: {
     show() {
       this.showFlag = true
-      setTimeout(() => {        // 解决换歌后无法滚动
+      setTimeout(() => { // 解决换歌后无法滚动
         this.scrollToCurrent(this.currentSong)
         setTimeout(() => {
           this.scroll.refresh()
@@ -83,11 +83,11 @@ export default {
       return ''
     },
     selectItem(item, index) {
-       this.setCurrentIndex(index)
-    },  
+      this.setCurrentIndex(index)
+    },
     ...mapMutations(['setCurrentIndex', 'setMode']),
     ...mapActions(['deleteSong', 'clearPlayList']),
-    scrollToCurrent(currentSong) {             // 滚动当前歌曲在顶部
+    scrollToCurrent(currentSong) { // 滚动当前歌曲在顶部
       const index = this.playlist.findIndex((song) => {
         return currentSong.id === song.id
       })
@@ -97,7 +97,7 @@ export default {
     },
     deleteOne(item) {
       this.deleteSong(item)
-      if (this.playlist.length === 0) {    // 解决删没了歌曲
+      if (this.playlist.length === 0) { // 解决删没了歌曲
         this.hide()
       }
     },
@@ -110,14 +110,14 @@ export default {
     },
     addSong() {
       this.$refs.addSong.show()
-    } 
+    }
   },
   computed: {
-    
+
     modeText() {
       let modeText = '顺序播放'
       switch (this.mode) {
-        case 1: 
+        case 1:
           modeText = '顺序播放'
           break
         case 2:
@@ -131,10 +131,10 @@ export default {
       }
       return modeText
     },
-    ...mapState(['mode', 'playlist']),
-     
+    ...mapState(['mode', 'playlist'])
+
   },
-  mounted () {
+  mounted() {
     this.scroll = new Bscroll(this.$refs.content, {
       click: true
     })
@@ -223,7 +223,7 @@ export default {
             font-size: $font-size-medium
             color: $color-text-d
             ellipsis()
-            
+
           .like
             margin-right: .1rem
             font-size: $font-size-small-s
@@ -237,7 +237,7 @@ export default {
             color: $color-theme
             .icon-d
               font-size : $font-size-large-x
-              
+
       .list-operate
         width: 3rem
         margin: .4rem auto .4rem auto

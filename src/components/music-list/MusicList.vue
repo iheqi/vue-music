@@ -6,7 +6,7 @@
       </div>
       <h1 class="title" v-html="title"></h1>
     </header>
-    
+
     <div class="bg-img" :style="bgStyle" ref="bgImg">
       <div class="play-wrapper" v-show="false">
         <div class="play">
@@ -18,7 +18,7 @@
       <div class="filter" ref="filter"></div>
     </div>
     <loading v-show="!songs.length" class="loading"></loading>
-    
+
     <div class="song-list-wrapper" ref="wrapper" @pullingDown='scaleImg'>
       <song-list :songs='songs' @openPlayer='openPlayer' :rank='rank'></song-list>
     </div>
@@ -36,9 +36,9 @@ export default {
   props: {
     bgImg: String,
     songs: {
-      type:  Array,
-      default() {  // type Object/Array must use a factory function to return the default value.
-        return []   
+      type: Array,
+      default() { // type Object/Array must use a factory function to return the default value.
+        return []
       }
     },
     title: String,
@@ -49,9 +49,9 @@ export default {
   },
   components: {
     SongList,
-    Loading,
+    Loading
   },
-  data () {
+  data() {
     return {
       timer: null
     }
@@ -60,20 +60,20 @@ export default {
     goBack() {
       this.$router.go(-1)
     },
-    
+
     scaleImg() {
       let scale = 1 + (this.scroll.y / 250)
       if (scale > 1) {
         this.$refs.bgImg.style['transform'] = `scale(${scale})`
       }
     },
-    scaleOneImg () {
+    scaleOneImg() {
       this.$refs.bgImg.style['transform'] = `scale(1)`
     },
     openPlayer(item, index) {
       this.selectPlay({
         list: this.songs,
-        index     // 传入当前歌单和所点击的歌的索引
+        index // 传入当前歌单和所点击的歌的索引
       })
     },
     ...mapActions(['selectPlay'])
@@ -83,15 +83,14 @@ export default {
       return `background-image:url(${this.bgImg})`
     }
   },
-  mounted () {
+  mounted() {
     this.$nextTick(() => {
-
       this.scroll = new Bscroll(this.$refs['wrapper'], {
-            click: true,
-            probeType: 2
-          })
-          this.scroll.on('scroll', this.scaleImg)
-          this.scroll.on('touchEnd', this.scaleOneImg)
+        click: true,
+        probeType: 2
+      })
+      this.scroll.on('scroll', this.scaleImg)
+      this.scroll.on('touchEnd', this.scaleOneImg)
     })
   }
 }
@@ -99,7 +98,7 @@ export default {
 <style lang="stylus" scoped>
   @import '~styles/variables.styl'
   @import '~styles/mixins'
-  
+
     .music-list
       position : fixed
       z-index : 20
@@ -125,7 +124,7 @@ export default {
           font-size: $font-size-large
           color: $color-text
           position : absolute
-          width : 100% 
+          width : 100%
           ellipsis()
       .bg-img
         position : relative
@@ -153,7 +152,7 @@ export default {
             .text
               display: inline-block
               vertical-align: middle
-              padding-bottom : .2rem              
+              padding-bottom : .2rem
         .filter
           position: absolute
           top: 0
@@ -167,9 +166,9 @@ export default {
         top: .9rem
         bottom: 0
         width: 100%
-        z-index : 9 
+        z-index : 9
         overflow : hidden
       .loading
-        padding-top : 1.2rem 
-          
+        padding-top : 1.2rem
+
 </style>

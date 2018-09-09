@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-/*import Recommend from '@/pages/Recommend/Recommend'*/  /* 改用懒加载 */
+/* import Recommend from '@/pages/Recommend/Recommend' */ /* 改用懒加载 */
 
 const Recommend = (resolve) => {
   import('@/pages/Recommend/Recommend').then((module) => {
@@ -53,12 +53,12 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/recommend'     /* 重定向 */
-    }, 
+      redirect: '/recommend' /* 重定向 */
+    },
     {
       path: '/recommend',
-      component: Recommend,
-    }, 
+      component: Recommend
+    },
     {
       path: '/singer',
       component: Singer,
@@ -66,7 +66,7 @@ export default new Router({
         path: ':id',
         component: Detail
       }]
-    }, 
+    },
     {
       path: '/rank',
       component: Rank,
@@ -76,15 +76,15 @@ export default new Router({
           component: TopList
         }
       ]
-    }, 
+    },
     {
       path: '/search',
       component: Search,
       children: [{
         path: ':id',
-        component: Detail    // 由搜索跳到歌手详情
+        component: Detail // 由搜索跳到歌手详情
       }]
-    }, 
+    },
     {
       name: 'disc',
       path: '/disc/:id',

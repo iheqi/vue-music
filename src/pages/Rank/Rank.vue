@@ -19,7 +19,7 @@
       <router-view></router-view>
       <loading v-show="!topList.length"></loading>
     </div>
-    
+
 </template>
 <script>
 import { getTopList } from '@/providers/rank.js'
@@ -29,7 +29,7 @@ import { mapMutations } from 'vuex'
 
 export default {
   name: 'Rank',
-  data () {
+  data() {
     return {
       topList: []
     }
@@ -50,15 +50,15 @@ export default {
     },
     selectItem(item) {
       this.$router.push({
-        path: '/rank/' + item.id 
+        path: '/rank/' + item.id
       })
       this.setTopList(item)
     },
     ...mapMutations(['setTopList'])
   },
   components: {
-    Loading,
-  },
+    Loading
+  }
 }
 
 </script>
@@ -99,4 +99,3 @@ export default {
               line-height: .52rem
 
 </style>
-

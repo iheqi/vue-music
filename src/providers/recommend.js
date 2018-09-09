@@ -36,8 +36,6 @@ export function getDiscList() {
   })
 }
 
-
-
 export function getSongList(disstid) {
   const url = '/api/getCdInfo'
 

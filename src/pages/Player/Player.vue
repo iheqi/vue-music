@@ -3,10 +3,10 @@
     <normal-player v-show="fullScreen" :currentTime='currentTime'></normal-player>
     <mini-player v-show="!fullScreen" :currentPercent='currentPercent'></mini-player>
     <play-list ref="playlist"></play-list>
-    <audio 
-      :src="currentSong.url" 
-      ref="audio" 
-      @error="error" 
+    <audio
+      :src="currentSong.url"
+      ref="audio"
+      @error="error"
       @timeupdate="updateTime"
       @ended="end"
       @play="ready"
@@ -25,18 +25,18 @@ export default {
   components: {
     NormalPlayer,
     MiniPlayer,
-    PlayList,
-    //songReady: false         // 父子组件的通信很烦
+    PlayList
+    // songReady: false         // 父子组件的通信很烦
   },
   computed: {
     ...mapState(['fullScreen', 'playlist', 'playing']),
     ...mapGetters(['currentSong'])
   },
-  
+
   watch: {
     currentSong() {
-      if (this.playing) {       // 歌都删完了还播放的原因
-        setTimeout(() => {      // 处理从后台切回的情况
+      if (this.playing) { // 歌都删完了还播放的原因
+        setTimeout(() => { // 处理从后台切回的情况
           this.$refs.audio.play()
         }, 1000)
       }
@@ -51,14 +51,14 @@ export default {
       this.currentPercent = val / this.currentSong.duration
     }
   },
-  data () {
+  data() {
     return {
       currentTime: 0,
       currentPercent: 0
     }
   },
   methods: {
-    error () {
+    error() {
       //
     },
     updateTime(ev) {
@@ -66,30 +66,30 @@ export default {
     },
     percentChange(percent) {
       this.$refs.audio.currentTime = this.currentSong.duration * percent
-      if (!this.playing) {   // 滑动后自动播放
+      if (!this.playing) { // 滑动后自动播放
         this.setPlaying(!this.playing)
       }
     },
     ...mapMutations(['setPlaying']),
     ...mapActions(['setPlayHistory']),
-    end () {
-      this.bus.$emit('ended');
+    end() {
+      this.bus.$emit('ended')
     },
     showPlayList() {
       this.$refs.playlist.show()
     },
     ready() {
-      //this.songReady = true
+      // this.songReady = true
       this.setPlayHistory(this.currentSong)
     }
   },
-  mounted () {
+  mounted() {
     this.$nextTick(() => {
       this.bus.$on('percentChange', (percent) => {
         this.percentChange(percent)
       })
     })
-  },
+  }
 }
 </script>
 

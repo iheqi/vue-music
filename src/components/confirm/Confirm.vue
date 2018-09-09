@@ -3,7 +3,7 @@
     <div class="confirm" v-show="showConfirm">
       <div class="confirm-wrapper">
         <div class="content">
-          
+
           <p class="text">{{text}}</p>
 
           <div class="operate">
@@ -24,23 +24,23 @@ export default {
       default: '确定清空？'
     }
   },
-  data () {
+  data() {
     return {
-      showConfirm: false      // 自身维护显示与隐藏 
+      showConfirm: false // 自身维护显示与隐藏
     }
   },
   methods: {
-    show () {             // 提供接口
+    show() { // 提供接口
       this.showConfirm = true
     },
-    hide () {
+    hide() {
       this.showConfirm = false
     },
     confirm() {
       this.hide()
       this.$emit('confirm')
     }
-  }  
+  }
 }
 </script>
 <style lang="stylus" scoped>
@@ -62,10 +62,10 @@ export default {
       width: 60%
       border-radius: .2rem
       background: $color-highlight-background
-      
+
       .content      // 用于显示时动画，如果直接写在wrapper会先偏移再缩放（不知为何）
         animation: confirm-zoom 0.3s
-        
+
         .text
           padding: .4rem .3rem
           line-height: .41rem
@@ -85,11 +85,11 @@ export default {
             border-top: 1px solid $color-background-d
             &.left
               border-right: 1px solid $color-background-d
-  
+
   /* .confirm-leave-active
     animation: confirm-fadein 0.3s
     transition : all 0.3s
-      
+
   @keyframes confirm-fadein
     0%
       opacity: 1

@@ -26,7 +26,7 @@ export default {
 <style lang="stylus" scoped>
   @import '~styles/variables.styl';
   @import '~styles/mixins.styl';
-  
+
     .header
       position: relative
       margin-bottom: .5rem
@@ -40,7 +40,7 @@ export default {
           padding: .16rem
           font-size: .6rem
           color: $color-theme
-          transform: rotate(-90deg) 
+          transform: rotate(-90deg)
       .title
         width: 70%
         margin: 0 auto

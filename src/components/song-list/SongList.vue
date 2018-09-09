@@ -66,7 +66,7 @@ export default {
   .song-list
     background : $color-background
     padding-bottom: 5.2rem  // 解决滚不到底部
-    padding-top : .16rem 
+    padding-top : .16rem
     .item
       display: flex
       align-items: center

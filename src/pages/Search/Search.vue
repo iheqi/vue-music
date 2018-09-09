@@ -24,11 +24,11 @@
               <i class="iconfont">&#xe72f;</i>
             </span>
           </h1>
-          
-          <search-list 
+
+          <search-list
             :searches='searchHistory'
-            @select="addQuery"  
-            @delete="deleteOne"  
+            @select="addQuery"
+            @delete="deleteOne"
           >  <!-- 直接调用就可以了,触发事件时已经将参数传入了-->
           </search-list>
         </div>
@@ -41,14 +41,14 @@
     <confirm ref="confirm" @confirm='clearSearchHistory'></confirm>
     <router-view></router-view>
   </div>
-  
+
 </template>
 <script>
 import SearchBox from '@/components/search-box/SearchBox'
 import Suggest from '@/components/suggest/Suggest'
 import Confirm from '@/components/confirm/Confirm'
 import { getHotKey } from '@/providers/search'
-import { mapActions, mapState } from 'vuex'
+import { mapActions } from 'vuex'
 import SearchList from '@/components/search-list/SearchList'
 import Bscroll from 'better-scroll'
 import { searchMixin } from '@/providers/mixins'
@@ -62,7 +62,7 @@ export default {
     SearchList,
     Confirm
   },
-  mounted () {
+  mounted() {
     this.getHotKey()
     this.$nextTick(() => {
       this.scroll = new Bscroll(this.$refs['shortcut-wrapper'], {
@@ -72,12 +72,12 @@ export default {
   },
   data() {
     return {
-      hotKey: [],
+      hotKey: []
     }
   },
   methods: {
     getHotKey() {
-      getHotKey().then((res) => {   // 得到热门搜索词
+      getHotKey().then((res) => { // 得到热门搜索词
         if (res.code === 0) {
           this.hotKey = res.data.hotkey.slice(0, 10)
         }
@@ -91,7 +91,7 @@ export default {
   },
   watch: {
     query(newQuery) {
-      if (!newQuery) {    // 解决从搜索结果中返回时搜索历史无法滚动的问题（为什么无法滚动又没说清楚靠）
+      if (!newQuery) { // 解决从搜索结果中返回时搜索历史无法滚动的问题（为什么无法滚动又没说清楚靠）
         setTimeout(() => {
           this.scroll.refresh()
         }, 20)
@@ -148,6 +148,5 @@ export default {
       top: 3.4rem
       bottom: 0
       width: 100%
-    
-</style>
 
+</style>

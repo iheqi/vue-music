@@ -16,13 +16,13 @@ export default {
   },
   computed: {
     ...mapState(['topList']),
-    title () {
+    title() {
       return this.topList.topTitle
     },
     bgImg() {
       if (this.songs.length) {
         return this.songs[0].img
-      } 
+      }
       return ''
     }
   },
@@ -39,7 +39,7 @@ export default {
     getMusicList() {
       if (!this.topList.id) {
         this.$router.push('/rank')
-        return 
+        return
       }
       getMusicList(this.topList.id).then((res) => {
         if (res.code === 0) {

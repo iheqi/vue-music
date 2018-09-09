@@ -21,12 +21,11 @@
 
 <script>
 import { search } from '@/providers/search'
-import { filterSinger } from '@/providers/SongModel'
+import { filterSinger, createSong } from '@/providers/SongModel'
 import Bsrcoll from 'better-scroll'
 import Loading from '@/components/loading/Loading'
 import SingerModel from '@/providers/SingerModel'
 import { mapMutations, mapActions } from 'vuex'
-import { createSong } from '@/providers/SongModel'
 import NoResult from '@/components/no-result/NoResult'
 
 const perpage = 20
@@ -54,34 +53,33 @@ export default {
     search() {
       this.hasMore = true
       this.page = 1
-      this.result = []   // 新请求时清空
-      search(this.query, this.page, this.showSinger, perpage).then((res) => {   // !! 搜索
+      this.result = [] // 新请求时清空
+      search(this.query, this.page, this.showSinger, perpage).then((res) => { // !! 搜索
         if (res.code === 0) {
           this.result = this.getResult(res.data)
         }
-        this.checkMore(res.data)  // 获取完后计算一下是否还有数据，为上拉加载做准备
-        
+        this.checkMore(res.data) // 获取完后计算一下是否还有数据，为上拉加载做准备
       })
     },
     searchMore() {
       if (!this.hasMore) {
         return
       }
-      this.page ++   // 如果有更多数据，则加载下一页的，page是第几页的参数
+      this.page++ // 如果有更多数据，则加载下一页的，page是第几页的参数
 
-      search(this.query, this.page, this.showSinger, perpage).then((res) => {   // !! 搜索
+      search(this.query, this.page, this.showSinger, perpage).then((res) => { // !! 搜索
         if (res.code === 0) {
-          this.result = this.result.concat(this.getResult(res.data))   // 跟前面页面的数据拼在一起
+          this.result = this.result.concat(this.getResult(res.data)) // 跟前面页面的数据拼在一起
         }
-        this.checkMore(res.data)  
+        this.checkMore(res.data)
       })
       this.scroll.finishPullUp()
     },
     getResult(data) {
       let result = []
-      if (!this.result.length) {   // 每次请求传回都会有歌手的信息，这里避免重复
+      if (!this.result.length) { // 每次请求传回都会有歌手的信息，这里避免重复
         if (data.zhida && data.zhida.singerid) {
-          result.push({ ...data.zhida, ...{type: 'singer'} })  // 扩展运算符
+          result.push({ ...data.zhida, ...{type: 'singer'} }) // 扩展运算符
         }
       }
       if (data.song) {
@@ -111,7 +109,7 @@ export default {
       return `${item.name} - ${filterSinger(item.singer)}`
     },
     checkMore(data) {
-      const song = data.song   // song对象上有curnum curpage totalnum属性
+      const song = data.song // song对象上有curnum curpage totalnum属性
       if (!song.list.length || (song.curpage * perpage + song.curnum) > song.totalnum) {
         this.hasMore = false
       }
@@ -126,24 +124,24 @@ export default {
           path: `/search/${singer.id}`
         })
         this.setSinger(singer)
-      } else {                          // 如果点击是歌曲
+      } else { // 如果点击是歌曲
         this.insertSong(item)
       }
-      this.$emit('select')      // 用于搜索历史
+      this.$emit('select') // 用于搜索历史
     },
-    
+
     ...mapMutations(['setSinger']),
     ...mapActions(['insertSong'])
   },
   watch: {
-    query (oldVal, newVal) {
+    query(oldVal, newVal) {
       if (oldVal.trim() === newVal.trim()) {
         return
       }
       this.search()
     }
   },
-  mounted () {
+  mounted() {
     this.search()
     this.$nextTick(() => {
       this.scroll = new Bsrcoll(this.$refs.wrapper, {
@@ -176,7 +174,7 @@ export default {
         align-items: center
         padding-bottom: .4rem
         .icon
-          margin-right: .2rem 
+          margin-right: .2rem
         .name
           flex: 1
           font-size: $font-size-medium

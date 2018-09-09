@@ -33,7 +33,6 @@
   </transition>
 </template>
 
-
 <script>
 import Switches from '@/components/switches/Switches'
 import { mapState, mapActions, mapMutations } from 'vuex'
@@ -42,10 +41,9 @@ import SongModel from '@/providers/SongModel'
 import Bscroll from 'better-scroll'
 import NoResult from '@/components/no-result/NoResult'
 
-
 export default {
   name: 'User',
-  data () {
+  data() {
     return {
       currentIndex: 0,
       switches: [{name: '我喜欢的'}, {name: '最近听的'}]
@@ -59,7 +57,7 @@ export default {
   methods: {
     switchItem(index) {
       this.currentIndex = index
-      setTimeout(() => {      // 页面事先隐藏时，scroll已经计算好了，显示时需要刷新一下
+      setTimeout(() => { // 页面事先隐藏时，scroll已经计算好了，显示时需要刷新一下
         this.scroll.refresh()
       }, 20)
     },
@@ -83,10 +81,10 @@ export default {
         index
       })
       this.randomMode()
-    },
+    }
   },
   computed: {
-    ...mapState(['playlist','favoriteList', 'playHistory', 'mode']),
+    ...mapState(['playlist', 'favoriteList', 'playHistory', 'mode']),
     noResult() {
       if (this.currentIndex === 0) {
         return !this.favoriteList.length
@@ -113,7 +111,6 @@ export default {
   }
 }
 </script>
-
 
 <style lang="stylus" scoped>
 @import '~styles/variables'
@@ -172,6 +169,5 @@ export default {
       width: 100%
       top: 50%
       transform: translateY(-50%)
-
 
 </style>

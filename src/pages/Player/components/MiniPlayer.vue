@@ -32,22 +32,22 @@ export default {
     openNormal() {
       this.setFullScreen(true)
     },
-    togglePlay () {
+    togglePlay() {
       this.setPlaying(!this.playing)
     },
     showPlayList() {
-      this.$parent.showPlayList()       // 子组件调用父组件的方法
+      this.$parent.showPlayList() // 子组件调用父组件的方法
     }
   },
   computed: {
     ...mapGetters(['currentSong']),
     ...mapState(['playing']),
-    ifPlaying () {
+    ifPlaying() {
       return this.playing ? '&#xe600;' : '&#xe63a;'
     },
     ...mapState(['playing']),
-    cdRotate () {
-      return this.playing ? 'play' : 'play pause'   // 'play pause'而不是'pause'
+    cdRotate() {
+      return this.playing ? 'play' : 'play pause' // 'play pause'而不是'pause'
     }
   },
   components: {
@@ -64,7 +64,7 @@ export default {
 <style lang="stylus" scoped>
   @import '~styles/variables.styl';
   @import '~styles/mixins';
-  
+
     .mini-enter-active, .mini-leave-active
       transition : all .4s
     .mini-enter, .mini-leave-to
@@ -90,7 +90,7 @@ export default {
             animation: cd-rotate 20s linear infinite
           &.pause
             animation-play-state: paused    // 设置动画运行或暂停。默认running
-    
+
       .text
         display: flex
         flex-direction: column

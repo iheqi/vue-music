@@ -1,29 +1,28 @@
-import { mapActions, mapState, mapMutations, mapGetters } from 'vuex'
-
+import { mapActions, mapState, mapGetters } from 'vuex'
 
 export const playMixin = {
   computed: {
     iconMode() {
       let iconMode = '&#xe649;'
       switch (this.mode) {
-        case 1: 
-          iconMode = '&#xe649;'     // 顺序播放
+        case 1:
+          iconMode = '&#xe649;' // 顺序播放
           break
         case 2:
-          iconMode = '&#xe721;'     // 列表循环
+          iconMode = '&#xe721;' // 列表循环
           break
         case 3:
-          iconMode = '&#xe613;'     // 单曲循环
+          iconMode = '&#xe613;' // 单曲循环
           break
         case 4:
-          iconMode = '&#xe84a;'     // 随机播放
+          iconMode = '&#xe84a;' // 随机播放
       }
       return iconMode
     },
 
     ...mapState(['favoriteList']),
-    ...mapGetters(['currentSong']),
-    
+    ...mapGetters(['currentSong'])
+
   },
   methods: {
     getFavoriteIcon(song) {
@@ -43,14 +42,14 @@ export const playMixin = {
       const index = this.favoriteList.findIndex((s) => {
         return s.id === song.id
       })
-      return index > -1          // boolean
+      return index > -1 // boolean
     },
     ...mapActions(['setFavoriteList', 'deleteFavoriteList'])
   }
 }
 
 export const searchMixin = {
-  data () {
+  data() {
     return {
       query: ''
     }
@@ -59,7 +58,7 @@ export const searchMixin = {
     ...mapState(['searchHistory'])
   },
   methods: {
-    
+
     ...mapActions(['setSearchHistory', 'deleteSearchHistory']),
     queryChange(query) {
       this.query = query
@@ -70,8 +69,8 @@ export const searchMixin = {
     deleteOne(query) {
       this.deleteSearchHistory(query)
     },
-    addQuery(key) {                        // 点击热门搜索的关键词时
-      this.$refs.searchBox.setQuery(key)   // 组件上的方法即公共接口，可以这样调用子组件方法（组件一定要获取对啊，fuck）
-    },                                     // 子组件调用父组件则是：this.$parent
+    addQuery(key) { // 点击热门搜索的关键词时
+      this.$refs.searchBox.setQuery(key) // 组件上的方法即公共接口，可以这样调用子组件方法（组件一定要获取对啊，fuck）
+    } // 子组件调用父组件则是：this.$parent
   }
 }

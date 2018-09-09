@@ -9,7 +9,6 @@
   </transition>
 </template>
 
-
 <script>
 export default {
   props: {
@@ -50,7 +49,6 @@ export default {
 }
 </script>
 
-
 <style lang="stylus" scoped>
 @import '~styles/variables';
   .toast
@@ -58,11 +56,11 @@ export default {
     width: 100%
     z-index: 500
     background: $color-dialog-background
-    
+
     .toast-content
       text-align: center
       padding: .4rem 0
-      
+
       .text
         font-size: $font-size-medium
         color: $color-text
@@ -79,4 +77,3 @@ export default {
     &.bottom-enter, &.bottom-leave-to
       transform: translate3d(0, 100%, 0)
 </style>
-

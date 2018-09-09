@@ -4,9 +4,9 @@
       <li v-for="singers of groups" :key="singers.letter" class="list-group"  :ref="singers.letter">
         <h2 class="singers-title">{{singers.letter}}</h2>
         <ul>
-          <li 
-            v-for="singer of singers.items" 
-            :key="singer.id" 
+          <li
+            v-for="singer of singers.items"
+            :key="singer.id"
             class="singer-item"
             @click="selectSinger(singer)"
           >
@@ -16,7 +16,6 @@
         </ul>
       </li>
     </ul>
-    
   </div>
 </template>
 <script>
@@ -28,17 +27,19 @@ export default {
   props: {
     groups: {
       type: Array,
-      default: []
+      default() {
+        return []
+      }
     },
     letter: String
   },
-  data () {
+  data() {
     return {
-      listHeight: [],
+      listHeight: []
     }
   },
   computed: {
-    listHeightCopy () {
+    listHeightCopy() {
       return this.listHeight
     }
   },
@@ -59,18 +60,17 @@ export default {
       }
     },
     scrollAlpha() {
-
       let scrollTop = -this.scroll.y
       // 判断其滚动到哪一位置
-      let list =  this.listHeight   
+      let list = this.listHeight
       for (let i = 0; i < list.length - 1; i++) {
         let height1 = list[i]
         let height2 = list[i + 1]
         if (scrollTop >= height1 && scrollTop < height2) {
-          this.$emit('scrollList', i)      // 这样算有点慢，当滚动过快时不准确,所以再绑定一个滚动停止事件来调用
+          this.$emit('scrollList', i) // 这样算有点慢，当滚动过快时不准确,所以再绑定一个滚动停止事件来调用
         }
       }
-    },
+    }
   },
   /* activated () {
     setTimeout(() => {
@@ -79,7 +79,7 @@ export default {
        // mounted只有第一次才获取得到（），computed又获取不到dom
   }, */
 
-  mounted () {
+  mounted() {
     this.$nextTick(() => {
       this.scroll = new Bscroll(this.$refs.wrapper, {
         click: true,
@@ -91,13 +91,13 @@ export default {
     //  this.calculateHeight()
   },
   watch: {
-    letter () {
+    letter() {
       if (this.letter) {
-        const element = this.$refs[this.letter][0]  // 因为获取v-for中的元素得到的会是一个元素数组，
-        this.scroll.scrollToElement(element)        // 就像getElementsByTagName那样，所有用下标获到真正的元素
+        const element = this.$refs[this.letter][0] // 因为获取v-for中的元素得到的会是一个元素数组，
+        this.scroll.scrollToElement(element) // 就像getElementsByTagName那样，所有用下标获到真正的元素
       }
     }
-  },  
+  }
 }
 </script>
 <style lang="stylus" scoped>

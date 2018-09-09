@@ -19,19 +19,19 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from  'vuex'
+import { mapMutations, mapState } from 'vuex'
 import { playMixin } from '@/providers/mixins'
 export default {
   name: 'Operators',
   mixins: [playMixin],
   methods: {
     ...mapMutations(['setPlaying', 'setCurrentIndex', 'setMode']),
-    togglePlaying () {
+    togglePlaying() {
       this.setPlaying(!this.playing)
     },
-    preSong() {    // 还需处理快速点击时的报错
+    preSong() { // 还需处理快速点击时的报错
       let index = this.currentIndex - 1
-      if (index == -1) {
+      if (index === -1) {
         index = this.playlist.length - 1
       }
       this.setCurrentIndex(index)
@@ -41,7 +41,7 @@ export default {
     },
     nextSong() {
       let index = this.currentIndex + 1
-      if (index == this.playlist.length) {
+      if (index === this.playlist.length) {
         index = 0
       }
       this.setCurrentIndex(index)
@@ -50,9 +50,9 @@ export default {
       } */
     },
     orderPlay() {
-      if (this.currentIndex === this.playlist.length-1) {
+      if (this.currentIndex === this.playlist.length - 1) {
         this.togglePlaying()
-        return 
+        return
       }
       this.nextSong()
     },
@@ -63,7 +63,7 @@ export default {
       }, 100)
     },
     randomPlay() {
-      let index = Math.floor(Math.random()* + this.playlist.length)
+      let index = Math.floor(Math.random() * +this.playlist.length)
       this.setCurrentIndex(index)
     }
   },
@@ -76,14 +76,14 @@ export default {
   mounted() {
     this.bus.$on('ended', () => {
       if (this.playlist.length === 1) {
-        this.loopPlay();
+        this.loopPlay()
         return
       }
       switch (this.mode) {
-        case 1:  // 列表循环
+        case 1: // 列表循环
           this.nextSong()
           break
-        case 2:  // 顺序播放
+        case 2: // 顺序播放
           this.orderPlay()
           break
         case 3:
@@ -92,14 +92,14 @@ export default {
         case 4:
           this.randomPlay()
       }
-    });
+    })
   }
 }
 </script>
 
 <style lang="stylus" scoped>
   @import '~styles/variables.styl';
-  
+
     .operators
       position: absolute
       bottom: 6%

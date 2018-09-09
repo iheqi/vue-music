@@ -3,14 +3,14 @@
     <div class="bar-inner">
       <div class="progress" ref="progress"></div>  <!-- 黄色条 -->
 
-      <div 
-        class="progress-btn-wrapper" 
+      <div
+        class="progress-btn-wrapper"
         ref="progressBtn"
         @touchstart='progressTouchStart'
         @touchmove='progressTouchMove'
         @touchend='progressTouchEnd'
       >
-        <div class="progress-btn"></div>
+        <div class="progress-btn"></div>   <!-- 小球 -->
       </div>
     </div>
   </div>
@@ -30,18 +30,18 @@ export default {
   methods: {
     progressTouchStart(ev) {
       this.touch.initiated = true
-      this.touch.startX = ev.touches[0].pageX             // 触摸点
-      this.touch.left = this.$refs.progress.clientWidth  // 目前进度
+      this.touch.startX = ev.touches[0].pageX // 触摸点
+      this.touch.left = this.$refs.progress.clientWidth // 目前进度
     },
     progressTouchMove(ev) {
       if (!this.touch.initiated) {
-        return 
+        return
       }
-      const deltaX = ev.touches[0].pageX - this.touch.startX  // 触摸距离
-      const finalWidth = Math.max(0, this.touch.left + deltaX)  // 最终进度
-      const offsetWidth = Math.min(finalWidth,  this.$refs.progressBar.clientWidth - 16)  // 不超过总长度
+      const deltaX = ev.touches[0].pageX - this.touch.startX // 触摸距离
+      const finalWidth = Math.max(0, this.touch.left + deltaX) // 最终进度
+      const offsetWidth = Math.min(finalWidth, this.$refs.progressBar.clientWidth - 16) // 不超过总长度
       this.setProgress(offsetWidth)
-      this.progressTime()  //  为了滑动时能显示时间，不用 percentChange 是因为触发太多的东西
+      this.progressTime() //  为了滑动时能显示时间，不用 percentChange 是因为触发太多的东西
     },
     progressTouchEnd() {
       this.touch.initiated = false
@@ -54,7 +54,7 @@ export default {
     percentChange() {
       const barWidth = this.$refs.progressBar.clientWidth - 16
       const percent = this.$refs.progress.clientWidth / barWidth
-      //this.$emit('percentChange', percent)
+      // this.$emit('percentChange', percent)
       this.bus.$emit('percentChange', percent)
     },
     progressTime() {
@@ -63,17 +63,17 @@ export default {
       this.bus.$emit('progressTime', percent)
     },
     progressClick(ev) {
-      this.setProgress(ev.offsetX)  // 相对于元素的偏移量
+      this.setProgress(ev.offsetX) // 相对于元素的偏移量
       this.percentChange()
     },
-    touchStatus() {        // 给normalPlayer的接口
+    touchStatus() { // 给normalPlayer的接口
       return this.touch.initiated
     }
   },
   watch: {
     percent(newVal) {
       if (newVal >= 0 && !this.touch.initiated) {
-        const barWidth = this.$refs.progressBar.clientWidth - 16   // clientWidth: width + padding
+        const barWidth = this.$refs.progressBar.clientWidth - 16 // clientWidth: width + padding
         const offsetWidth = newVal * barWidth
         this.setProgress(offsetWidth)
       }
@@ -112,4 +112,3 @@ export default {
             border-radius: 50%
             background: $color-theme
 </style>
-
